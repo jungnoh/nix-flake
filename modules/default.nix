@@ -11,6 +11,7 @@
   ./apps/pkgs.nix
   ./apps/vscode.nix
   ./apps/git.nix
+  ./apps/jetbrains.nix
   # 03: CLI
   ./cli/zsh.nix
   ./cli/direnv.nix
