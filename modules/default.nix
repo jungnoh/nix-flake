@@ -12,4 +12,5 @@
   ./apps/git.nix
   # 03: Shell
   ./cli/zsh.nix
+  ./cli/direnv.nix
 ]
