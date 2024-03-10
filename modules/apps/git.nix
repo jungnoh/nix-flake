@@ -14,6 +14,15 @@
       };
     };
 
+    home.programs.zsh.shellAliases = {
+      gf = "git fetch";
+      gco = "git checkout";
+      gpl = "git pull";
+      gph = "git push";
+      gsh = "git stash";
+      gsp = "git stash pop";
+    };
+
     home.packages = with pkgs; [
       git-lfs
       rs-git-fsmonitor

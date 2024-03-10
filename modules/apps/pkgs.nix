@@ -28,6 +28,7 @@
       grpcurl
       go
       rustup
+      vault
     ];
   };
 }
