@@ -11,6 +11,7 @@
         pull.ff = "only";
         push.autoSetupRemote = "true";
         rerere.enabled = "true";
+        core.editor = "vim";
       };
     };
 
