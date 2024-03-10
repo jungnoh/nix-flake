@@ -1,16 +1,17 @@
 [
   # 01: Base
   ./base/env.nix
-  ./base/fonts.nix
   ./base/nix.nix
-  ./base/home.nix
   ./base/homebrew.nix
-  # 02: Apps
+  # 02: System
+  ./system/fonts.nix
+  ./system/home.nix
+  # 03: Apps
   ./apps/homebrew.nix
   ./apps/pkgs.nix
   ./apps/vscode.nix
   ./apps/git.nix
-  # 03: Shell
+  # 03: CLI
   ./cli/zsh.nix
   ./cli/direnv.nix
 ]
