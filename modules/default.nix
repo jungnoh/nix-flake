@@ -1,6 +1,7 @@
 [
   # 01: Base
   ./base/env.nix
+  ./base/fonts.nix
   ./base/nix.nix
   ./base/home.nix
   ./base/homebrew.nix
