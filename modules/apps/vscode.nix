@@ -6,23 +6,22 @@
         enable = true;
         mutableExtensionsDir = false;
         extensions = with pkgs.vscode-extensions; [
+          # Language Supports
+          golang.go                     # Go
+          bbenoist.nix                  # Nix
+          ms-python.python              # Python
+          rust-lang.rust-analyzer       # Rust
+          hashicorp.terraform           # Terraform
+          tamasfe.even-better-toml      # TOML
+          redhat.vscode-yaml            # YAML
           # Vim
           vscodevim.vim
-          # Rust
-          rust-lang.rust-analyzer
-          tamasfe.even-better-toml
-          # Python
-          ms-python.python
-          # Go
-          golang.go
-          # Copilot
-          github.copilot
-          github.copilot-chat
-          # Nix
-          bbenoist.nix
           # Theme
           jdinhlife.gruvbox
           vscode-icons-team.vscode-icons
+          # Copilot
+          github.copilot
+          # github.copilot-chat
         ];
         userSettings = {
           "window.zoomLevel" = 1;

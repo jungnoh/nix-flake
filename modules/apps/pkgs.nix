@@ -4,7 +4,7 @@
     home.packages = with pkgs; [
       awscli
       saml2aws
-      btop
+      btop htop
       chafa
       fd
       ffmpeg
