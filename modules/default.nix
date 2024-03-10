@@ -8,6 +8,7 @@
   ./apps/homebrew.nix
   ./apps/pkgs.nix
   ./apps/vscode.nix
+  ./apps/git.nix
   # 03: Shell
   ./cli/zsh.nix
 ]
