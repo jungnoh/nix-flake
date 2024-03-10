@@ -1,31 +1,31 @@
 { pkgs, lib, config, ... }:
 {
-	config = {
-		# Initialize Homebrew Casks
-		homebrew = {
-			enable = true;
-			brewPrefix = "/opt/homebrew/bin";
-			onActivation = {
-				autoUpdate = true;
-				cleanup = "zap";
-				upgrade = true;
-			};
+  config = {
+    # Initialize Homebrew Casks
+    homebrew = {
+      enable = true;
+      brewPrefix = "/opt/homebrew/bin";
+      onActivation = {
+        autoUpdate = true;
+        cleanup = "zap";
+        upgrade = true;
+      };
 
-			global = {
-				brewfile = true;
-				lockfiles = true;
-			};
+      global = {
+        brewfile = true;
+        lockfiles = true;
+      };
 
-			extraConfig = ''
-				cask_args require_sha: true
-			'';
+      extraConfig = ''
+        cask_args require_sha: true
+      '';
 
-			taps = [
-				"homebrew/services"
-			];
-		};
+      taps = [
+        "homebrew/services"
+      ];
+    };
 
-		env.HOMEBREW_NO_ALAYTICS = "1";
-		env.PATH = [ "/opt/homebrew/bin" ];
-	};
+    env.HOMEBREW_NO_ALAYTICS = "1";
+    env.PATH = [ "/opt/homebrew/bin" ];
+  };
 }
