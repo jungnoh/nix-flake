@@ -10,11 +10,14 @@
     
 		home-manager.url = "github:nix-community/home-manager/release-23.11";
 		home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
+    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
 
   outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, ... }:
   let
     configuration = { pkgs, ... }: {
+      nixpkgs.config.allowUnfree = true;
       ## Configs needed for nix-darwin
       
       # List packages installed in system profile. To search by name, run:

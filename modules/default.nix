@@ -7,6 +7,7 @@
   # 02: Apps
   ./apps/homebrew.nix
   ./apps/pkgs.nix
+  ./apps/vscode.nix
   # 03: Shell
   ./cli/zsh.nix
 ]
