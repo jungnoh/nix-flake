@@ -20,7 +20,15 @@
           github.copilot-chat
           # Nix
           bbenoist.nix
+          # Theme
+          jdinhlife.gruvbox
+          vscode-icons-team.vscode-icons
         ];
+        userSettings = {
+          "window.zoomLevel" = 1;
+          "workbench.colorTheme" = "Gruvbox Dark Hard";
+          "workbench.iconTheme" = "vscode-icons";
+        };
       };
     };
   };
