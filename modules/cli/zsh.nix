@@ -11,6 +11,9 @@
     zsh = {
       enable = true;
       dotDir = ".config/zsh";
+      initExtraFirst = ''
+      [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+      '';
       shellAliases = {
         awslogin = "saml2aws login --force --session-duration=43200 --disable-keychain";
         vaultlogin = "vault login -method=oidc";
@@ -19,11 +22,14 @@
         tfa = "terraform apply";
         tfp = "terraform plan";
       };
-      oh-my-zsh = {
+      zplug = {
         enable = true;
-        theme = "robbyrussell";
-        plugins = ["git" "kubectl" "dotenv"];
+        plugins = [
+          { name = "bigH/git-fuzzy"; tags = ["as:command" "use:\"bin/git-fuzzy\""]; }
+          { name = "romkatv/powerlevel10k"; tags = ["as:theme" "depth:1"]; }
+        ];
       };
     };
   };
+  home.file.".p10k.zsh".text = (builtins.readFile ./p10k.zsh);
 }

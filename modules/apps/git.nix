@@ -15,6 +15,7 @@
     };
 
     home.programs.zsh.shellAliases = {
+      git = "LC_ALL=en_US.UTF-8 git";
       gf = "git fetch";
       gco = "git checkout";
       gpl = "git pull";
