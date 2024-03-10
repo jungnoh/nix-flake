@@ -25,7 +25,7 @@
       ];
     };
 
-    env.HOMEBREW_NO_ALAYTICS = "1";
+    env.HOMEBREW_NO_ANAYTICS = "1";
     env.PATH = [ "/opt/homebrew/bin" ];
   };
 }
