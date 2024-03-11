@@ -48,6 +48,7 @@ in with lib; {
     home-manager = {
       useUserPackages = true;
       useGlobalPkgs = true;
+      extraSpecialArgs = { inherit inputs; };
 
       users.${user} = {
         home = {

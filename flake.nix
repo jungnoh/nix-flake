@@ -13,8 +13,7 @@
 
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
-
-  outputs = inputs@{ self, nix-darwin, nixpkgs, home-manager, ... }:
+  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-unstable, home-manager, ... }:
   let
     configuration = { pkgs, ... }: {
       nixpkgs.config.allowUnfree = true;
@@ -35,14 +34,27 @@
 
       security.pam.enableSudoTouchIdAuth = true;
     };
+    system = "aarch64-darwin";
+    
+    overlays = {config, pkgs, ...}: {
+      config.nixpkgs.overlays = [
+        (final: prev: {
+          unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfree = true;
+          };
+        })
+      ];
+    };
   in
   {
     # Hostname
     darwinConfigurations."suisei" = nix-darwin.lib.darwinSystem {
-			system = "aarch64-darwin";
+      inherit system;
       modules = [
         home-manager.darwinModules.home-manager
         configuration
+        overlays
       ] ++ import ./modules;
     };
 

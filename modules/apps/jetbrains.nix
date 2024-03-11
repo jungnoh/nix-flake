@@ -1,7 +1,7 @@
 { pkgs, ... }:
 {
   config = {
-    home.packages = with pkgs; [
+    home.packages = with pkgs.unstable; [
       jetbrains.datagrip
       jetbrains.goland
       jetbrains.idea-ultimate
