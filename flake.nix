@@ -36,15 +36,11 @@
     };
     system = "aarch64-darwin";
     
-    overlays = {config, pkgs, ...}: {
-      config.nixpkgs.overlays = [
-        (final: prev: {
-          unstable = import nixpkgs-unstable {
-            inherit system;
-            config.allowUnfree = true;
-          };
-        })
-      ];
+    overlays = import ./overlays.nix;
+    overlay_module = { config, pkgs, ... }: {
+      nixpkgs.overlays = overlays {
+        inherit config pkgs nixpkgs-unstable;
+      };
     };
   in
   {
@@ -54,7 +50,7 @@
       modules = [
         home-manager.darwinModules.home-manager
         configuration
-        overlays
+        overlay_module
       ] ++ import ./modules;
     };
 
