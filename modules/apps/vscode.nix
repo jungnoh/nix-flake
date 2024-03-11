@@ -1,11 +1,12 @@
 { config, lib, pkgs, ... }:
 {
   config = {
+    environment.systemPackages = with pkgs; [ vscode ];
     home.programs = {
       vscode = {
         enable = true;
         mutableExtensionsDir = false;
-        extensions = with pkgs.vscode-extensions; [
+        extensions = with pkgs.unstable.vscode-extensions; [
           # Language Supports
           golang.go                     # Go
           bbenoist.nix                  # Nix
@@ -22,6 +23,8 @@
           # Copilot
           github.copilot
           # github.copilot-chat
+          # Git
+          eamodio.gitlens
         ];
         userSettings = {
           "window.zoomLevel" = 1;

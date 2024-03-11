@@ -63,5 +63,17 @@ in with lib; {
         };
       };
     };
+
+    system.activationScripts.applications.text = pkgs.lib.mkForce (''
+      echo "setting up ~/Applications/Nix..."
+      rm -rf /Users/jungnoh/Applications/Nix
+      mkdir -p /Users/jungnoh/Applications/Nix
+      chown jungnoh /Users/jungnoh/Applications/Nix
+      find ${config.system.build.applications}/Applications -maxdepth 1 -type l | while read f; do
+        src=$(/usr/bin/stat -f%Y "$f")
+        appname=$(basename "$src")
+        osascript -e "tell app \"Finder\" to make alias file at POSIX file \"/Users/jungnoh/Applications/Nix/\" to POSIX file \"$src\" with properties {name: \"$appname\"}";
+      done
+    '');
   };
 }

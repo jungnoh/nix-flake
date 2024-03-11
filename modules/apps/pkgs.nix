@@ -31,6 +31,7 @@
       rustup
       vault
       asdf-vm
+      argo-rollouts
     ];
   };
 }

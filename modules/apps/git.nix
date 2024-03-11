@@ -17,12 +17,15 @@
 
     home.programs.zsh.shellAliases = {
       git = "LC_ALL=en_US.UTF-8 git";
-      gf = "git fetch";
+      gf = "git fetch -p";
       gco = "git checkout";
       gpl = "git pull";
       gph = "git push";
       gsh = "git stash";
       gsp = "git stash pop";
+      glg = "git log";
+      grb = "git rebase";
+      grbi = "git rebase -i";
     };
 
     home.packages = with pkgs; [
