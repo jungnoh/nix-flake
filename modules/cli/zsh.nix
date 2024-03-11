@@ -13,6 +13,7 @@
       dotDir = ".config/zsh";
       initExtraFirst = ''
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+      . $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh
       '';
       shellAliases = {
         awslogin = "saml2aws login --force --session-duration=43200 --disable-keychain";

@@ -30,6 +30,7 @@
       go
       rustup
       vault
+      asdf-vm
     ];
   };
 }
