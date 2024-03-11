@@ -21,6 +21,9 @@
         tf = "terraform";
         tfa = "terraform apply";
         tfp = "terraform plan";
+        # Kubectl
+        k = "kubectl";
+        kg = "kubectl get";
       };
       zplug = {
         enable = true;

@@ -2,7 +2,7 @@
 {
   config = {
     home.packages = with pkgs; [
-      awscli
+      awscli2
       saml2aws
       btop htop
       chafa
@@ -12,6 +12,7 @@
       imagemagick
       jq
       kubectl
+      kubectx
       kubernetes-helm
       nodejs
       nodePackages.pnpm
