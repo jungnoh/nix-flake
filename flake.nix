@@ -37,9 +37,9 @@
     system = "aarch64-darwin";
     
     overlays = import ./overlays.nix;
-    overlay_module = { config, pkgs, ... }: {
+    overlay_module = { config, pkgs, lib, ... }: {
       nixpkgs.overlays = overlays {
-        inherit config pkgs nixpkgs-unstable;
+        inherit config pkgs nixpkgs-unstable lib;
       };
     };
   in

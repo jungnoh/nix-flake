@@ -32,6 +32,8 @@
       vault
       asdf-vm
       argo-rollouts
+      visualvm
+      terraform-config-inspect
     ];
   };
 }

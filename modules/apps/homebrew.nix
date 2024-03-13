@@ -22,6 +22,7 @@
       "slack"
       "figma"
       "wireshark"
+      "1password"
     ];
   };
 }

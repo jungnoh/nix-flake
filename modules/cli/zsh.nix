@@ -12,8 +12,11 @@
       enable = true;
       dotDir = ".config/zsh";
       initExtraFirst = ''
+      export KUBE_EDITOR=vim
+      export K9S_EDITOR=vim
+      export EDITOR=vim
       [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-      (. $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh 2>/dev/null) || (. $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh 2>/dev/null)
+      (. $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh) || (. $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh)
       '';
       shellAliases = {
         awslogin = "saml2aws login --force --session-duration=43200 --disable-keychain";

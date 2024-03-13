@@ -15,6 +15,7 @@
           hashicorp.terraform           # Terraform
           tamasfe.even-better-toml      # TOML
           redhat.vscode-yaml            # YAML
+          tim-koehler.helm-intellisense # Helm
           # Vim
           vscodevim.vim
           # Theme
