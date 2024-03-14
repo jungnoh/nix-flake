@@ -16,6 +16,7 @@
           tamasfe.even-better-toml      # TOML
           redhat.vscode-yaml            # YAML
           tim-koehler.helm-intellisense # Helm
+          ms-kubernetes-tools.vscode-kubernetes-tools # Kubernetes
           # Vim
           vscodevim.vim
           # Theme
