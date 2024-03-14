@@ -34,6 +34,7 @@
       argo-rollouts
       visualvm
       terraform-config-inspect
+      redis
     ];
   };
 }
