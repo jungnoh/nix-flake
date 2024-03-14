@@ -16,6 +16,7 @@
       export K9S_EDITOR=vim
       export EDITOR=vim
       source ~/.p10k.zsh
+      source ~/.hooks.zsh
       '';
       initExtra = ''
       [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh
@@ -42,4 +43,5 @@
     };
   };
   home.file.".p10k.zsh".text = (builtins.readFile ./p10k.zsh);
+  home.file.".hooks.zsh".text = (builtins.readFile ./hooks.zsh);
 }
