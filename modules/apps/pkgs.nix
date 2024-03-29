@@ -35,6 +35,11 @@
       visualvm
       terraform-config-inspect
       redis
+      istioctl
+      go-migrate
+      colima
+      docker
+      docker-compose
     ];
   };
 }
