@@ -10,6 +10,7 @@
       ffmpeg
       fzf
       imagemagick
+      exiftool
       jq
       kubectl
       kubectx
@@ -40,6 +41,7 @@
       colima
       docker
       docker-compose
+      minikube
     ];
   };
 }
