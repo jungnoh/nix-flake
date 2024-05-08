@@ -24,9 +24,17 @@
           vscode-icons-team.vscode-icons
           # Copilot
           github.copilot
-          # github.copilot-chat
           # Git
           eamodio.gitlens
+          # Markdown
+          yzhang.markdown-all-in-one
+        ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+          {
+            name = "markdown-footnotes";
+            publisher = "bierner";
+            version = "0.1.1";
+            sha256 = "sha256-h/Iyk8CKFr0M5ULXbEbjFsqplnlN7F+ZvnUTy1An5t4=";
+          }
         ];
         userSettings = {
           "window.zoomLevel" = 1;
