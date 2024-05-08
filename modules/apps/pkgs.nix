@@ -42,6 +42,7 @@
       docker
       docker-compose
       minikube
+      lima
     ];
   };
 }
