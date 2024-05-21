@@ -1,7 +1,7 @@
 { config, lib, pkgs, pkgs-unstable, ... }:
 {
   config = {
-    home.packages = with pkgs; [
+    home.packages = (with pkgs; [
       awscli2
       saml2aws
       btop htop
@@ -28,7 +28,6 @@
       yq
       k9s
       grpcurl
-      go
       rustup
       vault
       asdf-vm
@@ -43,6 +42,9 @@
       docker-compose
       minikube
       lima
-    ];
+      nginx
+    ]) ++ (with pkgs.unstable; [
+      go
+    ]);
   };
 }

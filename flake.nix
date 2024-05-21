@@ -15,15 +15,17 @@
   };
   outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-unstable, home-manager, ... }:
   let
-    configuration = { pkgs, ... }: {
+    configuration = { pkgs, lib, config, ... }: {
       nixpkgs.config.allowUnfree = true;
       ## Configs needed for nix-darwin
       
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
-      environment.systemPackages =
-        [ pkgs.vim
-        ];
+      environment = {
+        systemPackages = [ pkgs.vim ];
+        systemPath = [ "/opt/homebrew/bin" ];
+        pathsToLink = [ "/Applications" ];
+      };
       # Auto upgrade nix package and the daemon service.
       services.nix-daemon.enable = true;
       # Set Git commit hash for darwin-version.

@@ -10,7 +10,6 @@
       "librewolf"
       "spotify"
       # Dev tools
-      # "visual-studio-code"
       "podman-desktop"
       "postman"
       # macOS tools
