@@ -42,7 +42,6 @@
       docker-compose
       minikube
       lima
-      nginx
     ]) ++ (with pkgs.unstable; [
       go
     ]);
