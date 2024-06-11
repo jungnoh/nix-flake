@@ -12,6 +12,7 @@
       # Dev tools
       "podman-desktop"
       "postman"
+      "zed"
       # macOS tools
       "fuwari"
       "iina"
