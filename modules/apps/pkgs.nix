@@ -42,6 +42,10 @@
       docker-compose
       minikube
       lima
+      krew
+      kustomize
+      pipx
+      dotnet-sdk_8
     ]) ++ (with pkgs.unstable; [
       go
     ]);

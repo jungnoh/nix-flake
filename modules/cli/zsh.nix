@@ -21,6 +21,10 @@
       initExtra = ''
       [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh
       [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh
+      export PATH=$PATH:~/.cargo/bin
+      export AWS_PROFILE=saml
+      export VAULT_ADDR=https://vault.devsisters.cloud
+      export PATH=$PATH:/Applications/Wireshark.app/Contents/MacOS
       '';
       shellAliases = {
         awslogin = "saml2aws login --force --session-duration=43200 --disable-keychain";
