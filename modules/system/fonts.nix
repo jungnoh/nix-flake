@@ -1,8 +1,7 @@
 { config, lib, pkgs, ... }:
 {
   config = {
-    fonts.fontDir.enable = true;
-    fonts.fonts = with pkgs; [
+    fonts.packages = with pkgs; [
       meslo-lgs-nf
       pretendard
       pretendard-jp

@@ -15,6 +15,7 @@
       kubectl
       kubectx
       kubernetes-helm
+      kustomize
       nodejs
       nodePackages.pnpm
       nodePackages.yarn
