@@ -31,7 +31,6 @@
       grpcurl
       rustup
       vault
-      asdf-vm
       argo-rollouts
       visualvm
       terraform-config-inspect
@@ -47,6 +46,8 @@
       kustomize
       pipx
       dotnet-sdk_8
+      brotli
+      wrangler
     ]) ++ (with pkgs.unstable; [
       go
     ]);

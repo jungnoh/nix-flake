@@ -28,6 +28,10 @@
           eamodio.gitlens
           # Markdown
           yzhang.markdown-all-in-one
+          # ESLint
+          dbaeumer.vscode-eslint
+          # Prettier
+          esbenp.prettier-vscode
         ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
             name = "markdown-footnotes";

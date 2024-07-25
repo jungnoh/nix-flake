@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
 {
   config = {	
+    homebrew.brews = [
+      "asdf"
+    ];
     homebrew.casks = [
       # Basic apps
       "google-chrome"

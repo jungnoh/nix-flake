@@ -25,6 +25,17 @@
       export AWS_PROFILE=saml
       export VAULT_ADDR=https://vault.devsisters.cloud
       export PATH=$PATH:/Applications/Wireshark.app/Contents/MacOS
+
+      alias vaultctx=~/.vaultctx/script
+
+      function load_vault_envs() {
+        export VAULT_ADDR=$(vaultctx get-addr)
+      }
+
+      typeset -a precmd_functions
+      precmd_functions+=(load_vault_envs)
+
+      . $(brew --prefix asdf)/libexec/asdf.sh
       '';
       shellAliases = {
         awslogin = "saml2aws login --force --session-duration=43200 --disable-keychain";
