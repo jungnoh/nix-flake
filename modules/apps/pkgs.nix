@@ -2,6 +2,7 @@
 {
   config = {
     home.packages = (with pkgs; [
+      libiconv
       awscli2
       saml2aws
       btop htop
@@ -50,6 +51,7 @@
       wrangler
       azure-cli
       google-cloud-sdk 
+      darwin.apple_sdk.frameworks.Security
     ]) ++ (with pkgs.unstable; [
       go
     ]);

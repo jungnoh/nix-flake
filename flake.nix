@@ -3,13 +3,13 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.05-darwin";
-		nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+	  nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
     nix-darwin.url = "github:LnL7/nix-darwin/master";
     nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
-    
-		home-manager.url = "github:nix-community/home-manager/release-24.05";
-		home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
+
+  	home-manager.url = "github:nix-community/home-manager/release-24.05";
+	  home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
     nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
@@ -18,7 +18,7 @@
     configuration = { pkgs, lib, config, ... }: {
       nixpkgs.config.allowUnfree = true;
       ## Configs needed for nix-darwin
-      
+
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment = {
@@ -51,7 +51,7 @@
       };
     };
     system = "aarch64-darwin";
-    
+
     overlays = import ./overlays.nix;
     overlay_module = { config, pkgs, lib, ... }: {
       nixpkgs.overlays = overlays {
@@ -61,7 +61,7 @@
   in
   {
     # Hostname
-    darwinConfigurations."suisei" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."imac-junghoonnoh" = nix-darwin.lib.darwinSystem {
       inherit system;
       modules = [
         home-manager.darwinModules.home-manager
@@ -71,6 +71,6 @@
     };
 
     # Expose the package set, including overlays, for convenience.
-    darwinPackages = self.darwinConfigurations."suisei".pkgs;
+    darwinPackages = self.darwinConfigurations."imac-junghoonnoh".pkgs;
   };
 }
