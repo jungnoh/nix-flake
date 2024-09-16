@@ -48,6 +48,7 @@
       dotnet-sdk_8
       brotli
       wrangler
+      azure-cli
     ]) ++ (with pkgs.unstable; [
       go
     ]);
