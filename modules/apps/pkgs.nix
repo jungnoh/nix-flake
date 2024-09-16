@@ -49,6 +49,7 @@
       brotli
       wrangler
       azure-cli
+      google-cloud-sdk 
     ]) ++ (with pkgs.unstable; [
       go
     ]);
