@@ -3,6 +3,7 @@
   config = {	
     homebrew.brews = [
       "asdf"
+      "kwctl"
     ];
     homebrew.casks = [
       # Basic apps

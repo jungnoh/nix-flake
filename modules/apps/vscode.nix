@@ -32,6 +32,8 @@
           dbaeumer.vscode-eslint
           # Prettier
           esbenp.prettier-vscode
+          # Protobuf
+          zxh404.vscode-proto3
         ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
             name = "markdown-footnotes";
