@@ -25,6 +25,7 @@
       export AWS_PROFILE=saml
       export VAULT_ADDR=https://vault.devsisters.cloud
       export PATH=$PATH:/Applications/Wireshark.app/Contents/MacOS
+      export PATH=$HOME/.istioctl/bin:$PATH
 
       alias vaultctx=~/.vaultctx/script
 
