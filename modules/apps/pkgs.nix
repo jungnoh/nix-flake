@@ -53,7 +53,6 @@
       darwin.apple_sdk.frameworks.Security
     ]) ++ (with pkgs.unstable; [
       go
-      istioctl
     ]);
   };
 }
