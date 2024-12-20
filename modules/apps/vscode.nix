@@ -34,6 +34,8 @@
           esbenp.prettier-vscode
           # Protobuf
           zxh404.vscode-proto3
+          # Tailwind CSS
+          bradlc.vscode-tailwindcss
         ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
             name = "markdown-footnotes";
