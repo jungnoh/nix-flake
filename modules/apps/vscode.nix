@@ -36,6 +36,8 @@
           zxh404.vscode-proto3
           # Tailwind CSS
           bradlc.vscode-tailwindcss
+          # Deno
+          denoland.vscode-deno
         ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
             name = "markdown-footnotes";
