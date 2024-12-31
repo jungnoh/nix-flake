@@ -11,10 +11,8 @@
       "iterm2"
       "notion"
       "telegram"
-      "librewolf"
       "spotify"
       # Dev tools
-      "podman-desktop"
       "postman"
       # macOS tools
       "fuwari"
