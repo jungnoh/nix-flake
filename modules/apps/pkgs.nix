@@ -45,12 +45,12 @@
       krew
       kustomize
       pipx
-      dotnet-sdk_8
       brotli
       wrangler
       azure-cli
       google-cloud-sdk 
       darwin.apple_sdk.frameworks.Security
+      dotnet-sdk_9
     ]) ++ (with pkgs.unstable; [
       go
       deno

@@ -61,16 +61,26 @@
   in
   {
     # Hostname
-    darwinConfigurations."imac-junghoonnoh" = nix-darwin.lib.darwinSystem {
-      inherit system;
-      modules = [
-        home-manager.darwinModules.home-manager
-        configuration
-        overlay_module
-      ] ++ import ./modules;
+    darwinConfigurations = {
+      "imac-junghoonnoh" = nix-darwin.lib.darwinSystem {
+        inherit system;
+        modules = [
+          home-manager.darwinModules.home-manager
+          configuration
+          overlay_module
+        ] ++ import ./modules;
+      };
+      "suisei" = nix-darwin.lib.darwinSystem {
+        inherit system;
+        modules = [
+          home-manager.darwinModules.home-manager
+          configuration
+          overlay_module
+        ] ++ import ./modules;
+      };
     };
 
     # Expose the package set, including overlays, for convenience.
-    darwinPackages = self.darwinConfigurations."imac-junghoonnoh".pkgs;
+  #   darwinPackages = self.darwinConfigurations."imac-junghoonnoh".pkgs;
   };
 }
