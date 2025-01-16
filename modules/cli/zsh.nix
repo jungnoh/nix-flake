@@ -1,4 +1,21 @@
 { config, lib, pkgs, ... }:
+let
+  kubectlAliasRepo = pkgs.fetchFromGitHub {
+    owner = "ahmetb";
+    repo = "kubectl-aliases";
+    rev = "ac5bfb00a1b351e7d5183d4a8f325bb3b235c1bd";
+    sha256 = "sha256-X2E0n/U8uzZ/JAsYIvPjnEQLri8A7nveMmbkOFSxO5s=";
+  };
+  kubectlAlias = "${kubectlAliasRepo}/.kubectl_aliases";
+
+  tfAliasRepo = pkgs.fetchFromGitHub {
+    owner = "zer0beat";
+    repo = "terraform-aliases";
+    rev = "d290b425b3db59266cea4e40dc630fcc6b3bf624";
+    sha256 = "sha256-rXU8UpseQgqsljOfHBcd84aoRL82TT7cfbRmaJQULk8=";
+  };
+  tfAlias = "${tfAliasRepo}/.terraform_aliases";
+in
 {
   home.programs = {
     thefuck = {
@@ -18,20 +35,25 @@
       enableZshIntegration = true;
     };
     ripgrep = { enable = true; };
+
     zsh = {
       enable = true;
+      autosuggestion = {
+        enable = true;
+      };
+      enableCompletion = true;
       dotDir = ".config/zsh";
 
       initExtraFirst = ''
-        export KUBE_EDITOR=vim
-        export K9S_EDITOR=vim
-        export EDITOR=vim
         source ~/.p10k.zsh
       '';
       initExtra = ''
-        [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh
-        [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh
+        # [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh
+        # [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh
         export PATH=$PATH:/Applications/Wireshark.app/Contents/MacOS:$HOME/.dotnet/tools:$HOME/.istioctl/bin:$HOME/.cargo/bin
+
+        source ${kubectlAlias}
+        source ${tfAlias}
 
         function load_vault_envs() {
           export VAULT_ADDR=$(vaultctx get-addr)
@@ -43,19 +65,19 @@
       shellAliases = {
         awslogin = "saml2aws login --force --session-duration=43200 --disable-keychain";
         vaultlogin = "vault login -method=oidc";
-        # Terraform
-        tf = "terraform";
-        tfa = "terraform apply";
-        tfp = "terraform plan";
-        # Kubectl
-        k = "kubectl";
-        kg = "kubectl get";
+
         # Tools
         cat = "bat --style=plain";
         vaultctx = "~/.vaultctx/script";
       };
       sessionVariables = {
         AWS_PROFILE = "saml";
+        KUBE_EDITOR = "vim";
+        K9S_EDITOR = "vim";
+        EDITOR = "vim";
+
+        # See https://stackoverflow.com/q/74895147
+        DOTNET_ROOT = "${pkgs.unstable.dotnet-sdk_9}/share/dotnet";
       };
 
       plugins = [

@@ -1,6 +1,6 @@
 { config, lib, pkgs, pkgs-unstable, ... }:
 let
-  toolPkgs = with pkgs.unstable; [
+  toolPkgs = (with pkgs.unstable; [
     # Kubernetes
     kubectl
     krew
@@ -16,11 +16,13 @@ let
     lima
     docker
     docker-compose
+    dive
+  ]) ++ (with pkgs; [
     # Databases
     redis
     # Cloud
     vault
-  ];
+  ]);
   cliPkgs = with pkgs.unstable; [
     # Tools
     btop
@@ -38,16 +40,17 @@ let
     wget
     grpcurl
     mtr
+    dogdns
     # Other
     pv
     brotli
   ];
   languagePkgs = with pkgs.unstable; [
     # Node and others
+    deno
     nodejs
     nodePackages.pnpm
     nodePackages.yarn
-    deno
     # Rust
     rustup
     # Python
