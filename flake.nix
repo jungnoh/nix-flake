@@ -50,7 +50,6 @@
           };
         };
       };
-      system = "aarch64-darwin";
 
       overlays = import ./overlays.nix;
       overlay_module = { config, pkgs, lib, ... }: {
@@ -63,7 +62,7 @@
       # Hostname
       darwinConfigurations = {
         "imac-junghoonnoh" = nix-darwin.lib.darwinSystem {
-          inherit system;
+          system = "aarch64-darwin";
           modules = [
             home-manager.darwinModules.home-manager
             configuration
@@ -71,7 +70,7 @@
           ] ++ import ./modules;
         };
         "suisei" = nix-darwin.lib.darwinSystem {
-          inherit system;
+          system = "aarch64-darwin";
           modules = [
             home-manager.darwinModules.home-manager
             configuration

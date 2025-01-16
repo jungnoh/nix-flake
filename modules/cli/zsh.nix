@@ -15,6 +15,13 @@ let
     sha256 = "sha256-rXU8UpseQgqsljOfHBcd84aoRL82TT7cfbRmaJQULk8=";
   };
   tfAlias = "${tfAliasRepo}/.terraform_aliases";
+
+  extraPaths = [
+    "/Applications/Wireshark.app/Contents/MacOS"
+    "$HOME/.dotnet/tools"
+    "$HOME/.istioctl/bin"
+    "$HOME/.cargo/bin"
+  ];
 in
 {
   home.programs = {
@@ -48,9 +55,11 @@ in
         source ~/.p10k.zsh
       '';
       initExtra = ''
-        # [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh
-        # [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh
-        export PATH=$PATH:/Applications/Wireshark.app/Contents/MacOS:$HOME/.dotnet/tools:$HOME/.istioctl/bin:$HOME/.cargo/bin
+        source "${pkgs.asdf-vm}/share/asdf-vm/asdf.sh"
+        autoload -Uz bashcompinit && bashcompinit
+        source "${pkgs.asdf-vm}/share/asdf-vm/completions/asdf.bash"
+
+        export PATH=$PATH:${lib.strings.concatStringsSep ":" extraPaths}
 
         source ${kubectlAlias}
         source ${tfAlias}

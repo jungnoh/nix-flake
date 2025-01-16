@@ -17,6 +17,8 @@ let
     docker
     docker-compose
     dive
+    # Packages
+    asdf-vm
   ]) ++ (with pkgs; [
     # Databases
     redis
