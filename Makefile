@@ -1,3 +1,5 @@
+fmt:
+	nix fmt
 update:
 	nix flake update
 apply:

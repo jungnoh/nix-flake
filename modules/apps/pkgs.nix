@@ -1,59 +1,86 @@
 { config, lib, pkgs, pkgs-unstable, ... }:
+let
+  toolPkgs = with pkgs.unstable; [
+    # Kubernetes
+    kubectl
+    krew
+    kubectx
+    kubernetes-helm
+    kustomize
+    k9s
+    # Kubernetes Ecosystem
+    argo-rollouts
+    minikube
+    # Containers
+    colima
+    lima
+    docker
+    docker-compose
+    # Databases
+    redis
+    # Cloud
+    vault
+  ];
+  cliPkgs = with pkgs.unstable; [
+    # Tools
+    btop
+    htop
+    fd
+    tmux
+    # Serialization
+    jq
+    yq
+    # Media
+    ffmpeg
+    imagemagick
+    exiftool
+    # Network
+    wget
+    grpcurl
+    mtr
+    # Other
+    pv
+    brotli
+  ];
+  languagePkgs = with pkgs.unstable; [
+    # Node and others
+    nodejs
+    nodePackages.pnpm
+    nodePackages.yarn
+    deno
+    # Rust
+    rustup
+    # Python
+    python3
+    virtualenv
+    pipx
+    # Go
+    go
+    go-migrate
+    # .NET
+    dotnet-sdk_9
+    # Java
+    visualvm
+  ];
+  cloudSdkPkgs = with pkgs.unstable; [
+    # AWS
+    awscli2
+    saml2aws
+    # Azure
+    google-cloud-sdk
+    # GCP
+    azure-cli
+    # Cloudflare
+    wrangler
+  ];
+  libPkgs = with pkgs; [
+    libiconv
+    darwin.apple_sdk.frameworks.Security
+  ];
+in
 {
   config = {
     home.packages = (with pkgs; [
-      libiconv
-      awscli2
-      saml2aws
-      btop htop
-      chafa
-      fd
-      ffmpeg
-      fzf
-      imagemagick
-      exiftool
-      jq
-      kubectl
-      kubectx
-      kubernetes-helm
-      kustomize
-      nodejs
-      nodePackages.pnpm
-      nodePackages.yarn
-      python311
-      pv
-      ripgrep
-      thefuck
-      tmux
-      virtualenv
-      wget
-      yq
-      k9s
-      grpcurl
-      rustup
-      vault
-      argo-rollouts
-      visualvm
-      terraform-config-inspect
-      redis
-      go-migrate
-      colima
-      docker
-      docker-compose
-      minikube
-      lima
-      krew
-      kustomize
-      pipx
-      brotli
-      wrangler
-      azure-cli
-      google-cloud-sdk 
-      darwin.apple_sdk.frameworks.Security
-      dotnet-sdk_9
-    ]) ++ (with pkgs.unstable; [
-      go
-      deno
-    ]);
+    ]) ++ cliPkgs ++ toolPkgs ++ cloudSdkPkgs ++ languagePkgs;
   };
 }

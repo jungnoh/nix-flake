@@ -4,39 +4,41 @@
     thefuck = {
       enable = true;
     };
+    bat = {
+      enable = true;
+      extraPackages = with pkgs.bat-extras; [
+        batdiff
+        batman
+        batgrep
+        batwatch
+      ];
+    };
     fzf = {
       enable = true;
       enableZshIntegration = true;
     };
+    ripgrep = { enable = true; };
     zsh = {
       enable = true;
       dotDir = ".config/zsh";
+
       initExtraFirst = ''
-      export KUBE_EDITOR=vim
-      export K9S_EDITOR=vim
-      export EDITOR=vim
-      source ~/.p10k.zsh
-      source ~/.hooks.zsh
+        export KUBE_EDITOR=vim
+        export K9S_EDITOR=vim
+        export EDITOR=vim
+        source ~/.p10k.zsh
       '';
       initExtra = ''
-      [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh
-      [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh
-      export PATH=$PATH:~/.cargo/bin
-      export AWS_PROFILE=saml
-      export VAULT_ADDR=https://vault.devsisters.cloud
-      export PATH=$PATH:/Applications/Wireshark.app/Contents/MacOS
-      export PATH=$HOME/.istioctl/bin:$PATH
+        [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/asdf.sh
+        [[ ! -f $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh ]] || source $(dirname $(dirname $(readlink -f $(which asdf))))/share/asdf-vm/asdf.sh
+        export PATH=$PATH:/Applications/Wireshark.app/Contents/MacOS:$HOME/.dotnet/tools:$HOME/.istioctl/bin:$HOME/.cargo/bin
 
-      alias vaultctx=~/.vaultctx/script
+        function load_vault_envs() {
+          export VAULT_ADDR=$(vaultctx get-addr)
+        }
 
-      function load_vault_envs() {
-        export VAULT_ADDR=$(vaultctx get-addr)
-      }
-
-      typeset -a precmd_functions
-      precmd_functions+=(load_vault_envs)
-
-      . $(brew --prefix asdf)/libexec/asdf.sh
+        typeset -a precmd_functions
+        precmd_functions+=(load_vault_envs)
       '';
       shellAliases = {
         awslogin = "saml2aws login --force --session-duration=43200 --disable-keychain";
@@ -48,7 +50,14 @@
         # Kubectl
         k = "kubectl";
         kg = "kubectl get";
+        # Tools
+        cat = "bat --style=plain";
+        vaultctx = "~/.vaultctx/script";
       };
+      sessionVariables = {
+        AWS_PROFILE = "saml";
+      };
+
       plugins = [
         {
           name = "powerlevel10k";
@@ -59,5 +68,4 @@
     };
   };
   home.file.".p10k.zsh".text = (builtins.readFile ./p10k.zsh);
-  home.file.".hooks.zsh".text = (builtins.readFile ./hooks.zsh);
 }

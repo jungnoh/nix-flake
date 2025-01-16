@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 {
-  home.packages = with pkgs; [direnv];
+  home.packages = with pkgs; [ direnv ];
   home.programs.direnv = {
     enable = true;
     enableZshIntegration = true;

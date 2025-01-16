@@ -10,13 +10,13 @@ with lib; {
         else
           (toString v));
 
-      default = {};
+      default = { };
       description = "Global environment variables";
     };
   };
 
   config = {
-    env.PATH = ["$PATH"];
+    env.PATH = [ "$PATH" ];
 
     # Writing Environments
     environment.extraInit = concatStringsSep "\n"

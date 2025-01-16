@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 {
-  config = {	
+  config = {
     homebrew.brews = [
       "asdf"
       "kwctl"
