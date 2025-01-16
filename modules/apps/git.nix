@@ -1,5 +1,12 @@
 { config, options, lib, pkgs, ... }:
-{
+let 
+  gitAliasRepo = pkgs.fetchFromGitHub {
+    owner = "GitAlias";
+    repo = "gitalias";
+    rev = "b56365b13a318b544ecb0df112bbbd12c4e61bce";
+    sha256 = "sha256-CdjSugU06nOiRBWx/CrLKlLRUi3OQWAuhe/pV+BgRb8=";
+  };
+in {
   config = {
     home.programs.git = {
       enable = true;
@@ -13,19 +20,13 @@
         rerere.enabled = "true";
         core.editor = "vim";
       };
+      includes = [
+        { path = "${gitAliasRepo}/gitalias.txt"; }
+      ];
     };
 
     home.programs.zsh.shellAliases = {
       git = "LC_ALL=en_US.UTF-8 git";
-      gf = "git fetch -p";
-      gco = "git checkout";
-      gpl = "git pull";
-      gph = "git push";
-      gsh = "git stash";
-      gsp = "git stash pop";
-      glg = "git log";
-      grb = "git rebase";
-      grbi = "git rebase -i";
     };
 
     home.packages = with pkgs; [

@@ -96,6 +96,11 @@ in
           file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
         }
       ];
+
+      oh-my-zsh = {
+        enable = true;
+        plugins = ["git"];
+      };
     };
   };
   home.file.".p10k.zsh".text = (builtins.readFile ./p10k.zsh);
