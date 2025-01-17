@@ -42,6 +42,9 @@ in
       enableZshIntegration = true;
     };
     ripgrep = { enable = true; };
+    eza = { enable = true; };
+    zoxide = { enable = true; };
+    navi = { enable = true; };
 
     zsh = {
       enable = true;
@@ -77,6 +80,7 @@ in
 
         # Tools
         cat = "bat --style=plain";
+        cd = "z";
         vaultctx = "~/.vaultctx/script";
       };
       sessionVariables = {
@@ -99,7 +103,7 @@ in
 
       oh-my-zsh = {
         enable = true;
-        plugins = ["git"];
+        plugins = [ "git" ];
       };
     };
   };

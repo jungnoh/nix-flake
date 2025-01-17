@@ -1,12 +1,13 @@
 { config, options, lib, pkgs, ... }:
-let 
+let
   gitAliasRepo = pkgs.fetchFromGitHub {
     owner = "GitAlias";
     repo = "gitalias";
     rev = "b56365b13a318b544ecb0df112bbbd12c4e61bce";
     sha256 = "sha256-CdjSugU06nOiRBWx/CrLKlLRUi3OQWAuhe/pV+BgRb8=";
   };
-in {
+in
+{
   config = {
     home.programs.git = {
       enable = true;
