@@ -25,5 +25,13 @@
       "wireshark"
       "1password"
     ];
+    homebrew.masApps = {
+      "KakaoTalk" = 869223134;
+      "EasyRes" = 688211836;
+      "Magnet" = 441258766;
+      "Amphetemine" = 937984704;
+      "Red" = 1491764008;
+      "한컴오피스 한글 Viewer" = 416746898;
+    };
   };
 }
