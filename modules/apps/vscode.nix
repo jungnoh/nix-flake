@@ -45,6 +45,13 @@
             version = "0.1.1";
             sha256 = "sha256-h/Iyk8CKFr0M5ULXbEbjFsqplnlN7F+ZvnUTy1An5t4=";
           }
+        ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
+          {
+            name = "prisma";
+            publisher = "Prisma";
+            version = "6.2.1";
+            sha256 = "sha256-5dQ7K234IAWIP4V91XqlqoQqgmdB45Br/sW2huZlyOQ=";
+          }
         ];
         userSettings = {
           "window.zoomLevel" = 1;

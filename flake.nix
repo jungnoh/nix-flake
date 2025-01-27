@@ -51,6 +51,10 @@
         };
       };
 
+      nix.settings = {
+        "allowed-users" = [ "root" "jungnoh" ];
+      };
+
       overlays = import ./overlays.nix;
       overlay_module = { config, pkgs, lib, ... }: {
         nixpkgs.overlays = overlays {

@@ -31,6 +31,7 @@ let
     htop
     fd
     tmux
+    devenv
     # Serialization
     jq
     yq
@@ -47,6 +48,7 @@ let
     # Other
     pv
     brotli
+    cloc
   ];
   languagePkgs = with pkgs.unstable; [
     # Node and others
