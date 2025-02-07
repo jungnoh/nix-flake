@@ -5,6 +5,7 @@
       meslo-lgs-nf
       pretendard
       pretendard-jp
+      font-awesome
     ];
   };
 }
