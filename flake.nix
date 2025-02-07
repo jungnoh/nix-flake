@@ -71,7 +71,7 @@
             home-manager.darwinModules.home-manager
             configuration
             overlay_module
-          ] ++ import ./modules;
+          ] ++ import ./modules/common.nix;
         };
         "suisei" = nix-darwin.lib.darwinSystem {
           system = "aarch64-darwin";
@@ -79,7 +79,7 @@
             home-manager.darwinModules.home-manager
             configuration
             overlay_module
-          ] ++ import ./modules;
+          ] ++ import ./modules/common.nix ++ import ./modules/personal.nix;
         };
       };
 
