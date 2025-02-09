@@ -29,6 +29,7 @@ let
     # Tools
     btop
     htop
+    mactop
     fd
     tmux
     devenv
@@ -49,6 +50,7 @@ let
     pv
     brotli
     cloc
+    ollama
   ];
   languagePkgs = with pkgs.unstable; [
     # Node and others
