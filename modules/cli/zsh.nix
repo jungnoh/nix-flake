@@ -66,13 +66,6 @@ in
 
         source ${kubectlAlias}
         source ${tfAlias}
-
-        function load_vault_envs() {
-          export VAULT_ADDR=$(vaultctx get-addr)
-        }
-
-        typeset -a precmd_functions
-        precmd_functions+=(load_vault_envs)
       '';
       shellAliases = {
         awslogin = "saml2aws login --force --session-duration=43200 --disable-keychain";
@@ -81,7 +74,6 @@ in
         # Tools
         cat = "bat --style=plain";
         cd = "z";
-        vaultctx = "~/.vaultctx/script";
       };
       sessionVariables = {
         AWS_PROFILE = "saml";
