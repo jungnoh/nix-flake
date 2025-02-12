@@ -1,11 +1,11 @@
 { config, lib, pkgs, ... }:
 {
   config = {
-    homebrew.brews = [
+    homebrew.casks = [
       "tailscale"
     ];
     home.programs.zsh.shellAliases = {
-        tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
+      tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
     };
   };
 }
