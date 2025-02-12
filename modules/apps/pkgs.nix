@@ -80,8 +80,6 @@ let
     google-cloud-sdk
     # GCP
     azure-cli
-    # Cloudflare
-    wrangler
   ];
   libPkgs = with pkgs; [
     libiconv

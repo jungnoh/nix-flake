@@ -8,7 +8,6 @@
       jetbrains.pycharm-professional
       jetbrains.rust-rover
       jetbrains.rider
-      jetbrains.webstorm
     ];
   };
 }

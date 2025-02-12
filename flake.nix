@@ -73,7 +73,17 @@
             overlay_module
           ] ++ import ./modules/common.nix;
         };
+        # Macbook Pro
         "suisei" = nix-darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [
+            home-manager.darwinModules.home-manager
+            configuration
+            overlay_module
+          ] ++ import ./modules/common.nix ++ import ./modules/personal.nix;
+        };
+        # Home Mac Mini
+        "koyori" = nix-darwin.lib.darwinSystem {
           system = "aarch64-darwin";
           modules = [
             home-manager.darwinModules.home-manager
