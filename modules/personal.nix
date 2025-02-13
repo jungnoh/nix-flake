@@ -1,3 +1,3 @@
 [
-  ./apps/tailscale.nix
+  ./apps/personal.nix
 ]
