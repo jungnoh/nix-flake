@@ -38,6 +38,8 @@
           bradlc.vscode-tailwindcss
           # Deno
           denoland.vscode-deno
+          # C/C++ & Toolchains
+          ms-vscode.cpptools-extension-pack
         ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
             name = "markdown-footnotes";

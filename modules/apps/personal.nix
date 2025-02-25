@@ -3,6 +3,7 @@
   config = {
     home.packages = with pkgs.unstable; [
       anki-bin
+      cmake
     ];
     homebrew.casks = [
       "tailscale"
