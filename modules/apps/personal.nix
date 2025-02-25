@@ -4,6 +4,7 @@
     home.packages = with pkgs.unstable; [
       anki-bin
       cmake
+      jetbrains.clion
     ];
     homebrew.casks = [
       "tailscale"

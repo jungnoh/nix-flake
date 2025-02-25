@@ -40,6 +40,7 @@
           denoland.vscode-deno
           # C/C++ & Toolchains
           ms-vscode.cpptools-extension-pack
+          ms-vscode.cmake-tools
         ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           {
             name = "markdown-footnotes";
