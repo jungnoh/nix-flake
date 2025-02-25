@@ -12,6 +12,7 @@
       "notion"
       "telegram"
       "spotify"
+      "obsidian"
       # Dev tools
       "postman"
       # macOS tools
