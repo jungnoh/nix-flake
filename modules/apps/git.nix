@@ -19,7 +19,23 @@ in
         pull.ff = "only";
         push.autoSetupRemote = "true";
         rerere.enabled = "true";
+        rerere.autoupdate = "true";
         core.editor = "vim";
+        # https://news.hada.io/topic?id=19441
+        column.ui = "auto";
+        branch.sort = "-committerdate";
+        tag.sort = "version:refname";
+        init.defaultBranch = "main";
+        diff.algorithm = "histogram";
+        diff.colorMoved = "plain";
+        diff.mnemonicPrefix = "true";
+        diff.renames = "true";
+        push.default = "simple";
+        push.followTags = "true";
+        fetch.prune = "true";
+        fetch.pruneTags = "true";
+        fetch.all = "true";
+        help.autocorrect = "prompt";
       };
       includes = [
         { path = "${gitAliasRepo}/gitalias.txt"; }
