@@ -71,6 +71,9 @@ let
     dotnet-sdk_9
     # Java
     visualvm
+    # Scala
+    scala
+    scala-cli
   ];
   cloudSdkPkgs = with pkgs.unstable; [
     # AWS
