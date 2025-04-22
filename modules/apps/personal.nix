@@ -5,6 +5,7 @@
       anki-bin
       cmake
       jetbrains.clion
+      mullvad-vpn
     ];
     homebrew.casks = [
       "tailscale"

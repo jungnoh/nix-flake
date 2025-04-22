@@ -68,7 +68,8 @@ let
     go
     go-migrate
     # .NET
-    dotnet-sdk_9
+    # dotnet-sdk_9
+    dotnetCorePackages.dotnet_8.sdk
     # Java
     visualvm
     # Scala
