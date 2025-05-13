@@ -60,6 +60,7 @@
           "window.zoomLevel" = 1;
           "workbench.colorTheme" = "Gruvbox Dark Hard";
           "workbench.iconTheme" = "vscode-icons";
+          "rust-analyzer.procMacro.enable" = true;
         };
       };
     };
