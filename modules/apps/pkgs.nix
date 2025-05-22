@@ -19,6 +19,7 @@ let
     dive
     # Packages
     asdf-vm
+    protobuf
   ]) ++ (with pkgs; [
     # Databases
     redis
@@ -60,6 +61,7 @@ let
     nodePackages.yarn
     # Rust
     rustup
+    cargo-binstall
     # Python
     python3
     virtualenv

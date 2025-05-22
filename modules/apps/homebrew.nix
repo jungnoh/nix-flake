@@ -4,6 +4,7 @@
     homebrew.brews = [
       "asdf"
       "kwctl"
+      "icu4c"
     ];
     homebrew.casks = [
       # Basic apps

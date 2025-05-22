@@ -23,7 +23,10 @@
         # $ nix-env -qaP | grep wget
         environment = {
           systemPackages = [ pkgs.vim ];
-          systemPath = [ "/opt/homebrew/bin" ];
+          systemPath = [
+            "/opt/homebrew/bin"
+            "~/go/bin"
+          ];
           pathsToLink = [ "/Applications" ];
         };
         # Auto upgrade nix package and the daemon service.
