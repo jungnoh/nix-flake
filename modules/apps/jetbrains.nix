@@ -5,8 +5,6 @@
       jetbrains.datagrip
       jetbrains.goland
       jetbrains.idea-ultimate
-      jetbrains.pycharm-professional
-      jetbrains.rust-rover
       jetbrains.rider
     ];
   };

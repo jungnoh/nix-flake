@@ -9,14 +9,12 @@ let
     kustomize
     k9s
     # Kubernetes Ecosystem
-    argo-rollouts
     minikube
     # Containers
     colima
     lima
     docker
     docker-compose
-    dive
     # Packages
     asdf-vm
     protobuf
@@ -51,7 +49,6 @@ let
     pv
     brotli
     cloc
-    ollama
   ];
   languagePkgs = with pkgs.unstable; [
     # Node and others
@@ -70,13 +67,9 @@ let
     go
     go-migrate
     # .NET
-    # dotnet-sdk_9
-    dotnetCorePackages.dotnet_8.sdk
+    dotnet-sdk_9
     # Java
     visualvm
-    # Scala
-    scala
-    scala-cli
   ];
   cloudSdkPkgs = with pkgs.unstable; [
     # AWS
