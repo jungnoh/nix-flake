@@ -68,8 +68,6 @@ let
     go-migrate
     # .NET
     dotnet-sdk_9
-    # Java
-    visualvm
   ];
   cloudSdkPkgs = with pkgs.unstable; [
     # AWS

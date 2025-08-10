@@ -7,7 +7,7 @@
       jetbrains.clion
     ];
     homebrew.casks = [
-      "tailscale"
+      "tailscale-app"
       "losslesscut"
     ];
     home.programs.zsh.shellAliases = {

@@ -4,8 +4,8 @@
     environment.systemPackages = with pkgs; [ vscode ];
     home.programs = {
       vscode = {
-        enable = true;
-        mutableExtensionsDir = false;
+        enable = false;
+        mutableExtensionsDir = true;
         extensions = with pkgs.unstable.vscode-extensions; [
           # Language Supports
           golang.go # Go

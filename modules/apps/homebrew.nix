@@ -24,7 +24,7 @@
       # For work
       "slack"
       "figma"
-      "wireshark"
+      "wireshark-app"
       "1password"
     ];
     homebrew.masApps = {
