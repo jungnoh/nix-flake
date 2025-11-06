@@ -3,8 +3,7 @@
   config = {
     home.packages = with pkgs.unstable; [
       anki-bin
-      cmake
-      jetbrains.clion
+      typst
     ];
     homebrew.casks = [
       "tailscale-app"

@@ -9,7 +9,6 @@
   # 03: Apps
   ./apps/homebrew.nix
   ./apps/pkgs.nix
-  ./apps/vscode.nix
   ./apps/git.nix
   ./apps/jetbrains.nix
   # 03: CLI

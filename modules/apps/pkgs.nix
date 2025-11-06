@@ -63,6 +63,7 @@ let
     python3
     virtualenv
     pipx
+    uv
     # Go
     go
     go-migrate
