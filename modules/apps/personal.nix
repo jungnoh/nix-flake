@@ -4,6 +4,7 @@
     home.packages = with pkgs.unstable; [
       anki-bin
       typst
+      font-awesome
     ];
     homebrew.casks = [
       "tailscale-app"
