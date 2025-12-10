@@ -20,9 +20,7 @@
         cask_args require_sha: true
       '';
 
-      taps = [
-        "homebrew/services"
-      ];
+      taps = [];
     };
 
     env.HOMEBREW_NO_ANAYTICS = "1";
