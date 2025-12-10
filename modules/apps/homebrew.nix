@@ -15,11 +15,11 @@
       "spotify"
       "obsidian"
       # Dev tools
-      "postman"
+      "cursor"
+      "insomnia"
       # macOS tools
       "fuwari"
       "iina"
-      "insomnia"
       "maccy"
       # For work
       "slack"

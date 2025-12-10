@@ -1,6 +1,8 @@
 { config, lib, pkgs, pkgs-unstable, ... }:
 let
   toolPkgs = (with pkgs.unstable; [
+    # Development Tools
+    claude-code
     # Kubernetes
     kubectl
     krew
