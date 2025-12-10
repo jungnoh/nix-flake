@@ -94,6 +94,15 @@
             overlay_module
           ] ++ import ./modules/common.nix ++ import ./modules/personal.nix;
         };
+	# Personal Macbook Pro
+	"shigureui" = nix-darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [
+            home-manager.darwinModules.home-manager
+            configuration
+            overlay_module
+          ] ++ import ./modules/common.nix ++ import ./modules/personal.nix;
+        };
       };
 
       formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixpkgs-fmt;
