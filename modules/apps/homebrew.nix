@@ -14,6 +14,7 @@
       "telegram"
       "spotify"
       "obsidian"
+      "claude"
       # Dev tools
       "cursor"
       "insomnia"
