@@ -3,6 +3,7 @@ let
   toolPkgs = (with pkgs.unstable; [
     # Development Tools
     claude-code
+    gemini-cli-bin
     # Kubernetes
     kubectl
     krew
