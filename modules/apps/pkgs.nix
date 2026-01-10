@@ -46,7 +46,6 @@ let
     wget
     grpcurl
     mtr
-    dogdns
     aria2
     # Other
     pv

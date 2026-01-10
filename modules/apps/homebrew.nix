@@ -19,6 +19,7 @@
       # Dev tools
       "cursor"
       "insomnia"
+      "db-browser-for-sqlite"
       # macOS tools
       "fuwari"
       "iina"
