@@ -31,7 +31,6 @@ let
     # Tools
     btop
     htop
-    mactop
     fd
     tmux
     devenv
