@@ -24,6 +24,7 @@
       "fuwari"
       "iina"
       "maccy"
+      "betterdisplay"
       # For work
       "slack"
       "figma"
