@@ -50,17 +50,17 @@
           # Macbook Pro
           "suisei" = {
             hostname = "suisei";
-            profiles = [ "common" "work" ];
+            profiles = [ "work" ];
           };
           # Home Mac Mini
           "koyori" = {
             hostname = "koyori";
-            profiles = [ "common" "personal" ];
+            profiles = [ "personal" ];
           };
           # Personal Macbook Pro
           "shigureui" = {
             hostname = "shigureui";
-            profiles = [ "common" "personal" ];
+            profiles = [ "personal" ];
           };
         };
       homeConfigurations = linuxConfigurations;

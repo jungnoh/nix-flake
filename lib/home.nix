@@ -1,6 +1,6 @@
 { pkgs, lib, config, options, ... }:
 let
-  user = "jungnoh";
+  username = "jungnoh";
 in
 with lib; {
   options = with types; {
@@ -39,9 +39,9 @@ with lib; {
 
   config = {
     programs.zsh.enable = true;
-    users.users.${user} = {
-      name = user;
-      home = "/Users/${user}";
+    users.users.${username} = {
+      name = username;
+      home = "/Users/${username}";
       shell = pkgs.zsh;
     };
 
@@ -51,8 +51,9 @@ with lib; {
       useGlobalPkgs = true;
       extraSpecialArgs = { inherit inputs; };
 
-      users.${user} = {
+      users.${username} = {
         home = {
+          homeDirectory = "/Users/${username}";
           file = mkAliasDefinitions options.home.file;
           packages = mkAliasDefinitions options.home.packages;
           stateVersion = "25.11";

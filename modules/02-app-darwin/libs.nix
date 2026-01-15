@@ -1,8 +1,7 @@
-{ config, lib, pkgs, pkgs-unstable, ... }:
+{ config, lib, pkgs, ... }:
 let
-  darwinPkgs = with pkgs-unstable; [
+  darwinPkgs = with pkgs.unstable; [
     libiconv
-    darwin.apple_sdk.frameworks.Security
   ];
 in
 {
