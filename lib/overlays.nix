@@ -1,6 +1,4 @@
-{ config, pkgs, nixpkgs-unstable, lib, ... }:
-let system = "aarch64-darwin";
-in
+{ config, pkgs, nixpkgs-unstable, lib, system, ... }:
 [
   (final: prev: {
     unstable = import nixpkgs-unstable {

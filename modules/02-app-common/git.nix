@@ -11,15 +11,21 @@ in
   config = {
     home.programs.git = {
       enable = true;
-      userName = "Junghoon Noh";
-      userEmail = "jungnoh.dev@gmail.com";
-      extraConfig = {
-        checkout.defaultRemote = "origin";
+      settings = {
+        user = {
+          name = "Junghoon Noh";
+          email = "jungnoh.dev@gmail.com";
+        };
+        checkout = {
+          defaultRemote = "origin";
+        };
+        rerere = {
+          enabled = "true";
+          autoupdate = "true";
+        };
         pager.diff = "delta --plus-style 'syntax #205820'";
         pull.ff = "only";
         push.autoSetupRemote = "true";
-        rerere.enabled = "true";
-        rerere.autoupdate = "true";
         core.editor = "vim";
         # https://news.hada.io/topic?id=19441
         column.ui = "auto";

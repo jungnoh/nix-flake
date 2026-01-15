@@ -55,7 +55,7 @@ with lib; {
         home = {
           file = mkAliasDefinitions options.home.file;
           packages = mkAliasDefinitions options.home.packages;
-          stateVersion = "23.11";
+          stateVersion = "25.11";
         };
         programs = mkAliasDefinitions options.home.programs;
         services = mkAliasDefinitions options.home.services;

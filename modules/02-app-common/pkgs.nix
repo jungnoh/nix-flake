@@ -3,7 +3,6 @@ let
   toolPkgs = (with pkgs.unstable; [
     # Development Tools
     claude-code
-    gemini-cli-bin
     # Kubernetes
     kubectl
     krew
@@ -80,14 +79,9 @@ let
     # GCP
     azure-cli
   ];
-  libPkgs = with pkgs; [
-    libiconv
-    darwin.apple_sdk.frameworks.Security
-  ];
 in
 {
   config = {
-    home.packages = (with pkgs; [
-    ]) ++ cliPkgs ++ toolPkgs ++ cloudSdkPkgs ++ languagePkgs;
+    home.packages = cliPkgs ++ toolPkgs ++ cloudSdkPkgs ++ languagePkgs;
   };
 }

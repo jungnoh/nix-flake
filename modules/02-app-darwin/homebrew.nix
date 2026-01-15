@@ -16,6 +16,7 @@
       "obsidian"
       "claude"
       "discord"
+      "1password"
       # Dev tools
       "cursor"
       "insomnia"
@@ -29,7 +30,6 @@
       "slack"
       "figma"
       "wireshark-app"
-      "1password"
     ];
     homebrew.masApps = {
       "KakaoTalk" = 869223134;

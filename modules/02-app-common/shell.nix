@@ -17,7 +17,6 @@ let
   tfAlias = "${tfAliasRepo}/.terraform_aliases";
 
   extraPaths = [
-    "/Applications/Wireshark.app/Contents/MacOS"
     "$HOME/.dotnet/tools"
     "$HOME/.istioctl/bin"
     "$HOME/.cargo/bin"
@@ -25,9 +24,7 @@ let
 in
 {
   home.programs = {
-    thefuck = {
-      enable = true;
-    };
+    pay-respects = { enable = true; };
     bat = {
       enable = true;
       extraPackages = with pkgs.bat-extras; [
@@ -37,10 +34,7 @@ in
         batwatch
       ];
     };
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-    };
+    fzf = { enable = true; enableZshIntegration = true; };
     ripgrep = { enable = true; };
     eza = { enable = true; };
     zoxide = { enable = true; };
@@ -52,12 +46,10 @@ in
         enable = true;
       };
       enableCompletion = true;
-      dotDir = ".config/zsh";
+      # dotDir = "${homeDir}/.config/zsh";
 
-      initExtraFirst = ''
+      initContent = ''
         source ~/.p10k.zsh
-      '';
-      initExtra = ''
         source "${pkgs.asdf-vm}/share/asdf-vm/asdf.sh"
         autoload -Uz bashcompinit && bashcompinit
         source "${pkgs.asdf-vm}/share/asdf-vm/completions/asdf.bash"
@@ -67,6 +59,7 @@ in
         source ${kubectlAlias}
         source ${tfAlias}
       '';
+
       shellAliases = {
         awslogin = "saml2aws login --force --session-duration=43200 --disable-keychain";
         vaultlogin = "vault login -method=oidc";
