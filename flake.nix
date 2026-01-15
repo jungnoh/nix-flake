@@ -2,18 +2,17 @@
   description = "My nix-darwin configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-24.11-darwin";
+    nixpkgs-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs-linux.url = "github:NixOS/nixpkgs/nixpkgs-25.11-linux";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
 
-    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-24.11";
-    nix-darwin.inputs.nixpkgs.follows = "nixpkgs";
+    nix-darwin.url = "github:LnL7/nix-darwin/nix-darwin-25.11";
+    nix-darwin.inputs.nixpkgs.follows = "nixpkgs-unstable";
 
-    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs-unstable";
-
-    nix-vscode-extensions.url = "github:nix-community/nix-vscode-extensions";
   };
-  outputs = inputs@{ self, nix-darwin, nixpkgs, nixpkgs-unstable, home-manager, ... }:
+  outputs = inputs@{ self, home-manager, nixpkgs-darwin, nixpkgs-linux, nixpkgs-unstable, nix-darwin, ... }:
     let
       configuration = { pkgs, lib, config, ... }: {
         nixpkgs.config.allowUnfree = true;
