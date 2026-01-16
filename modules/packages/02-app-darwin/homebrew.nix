@@ -6,31 +6,15 @@
 }:
 {
   config = {
-    homebrew.brews = [
-      "asdf"
-      "kwctl"
-      "icu4c"
-    ];
     homebrew.casks = [
       # Basic apps
-      "google-chrome"
-      "iterm2"
-      "notion"
-      "telegram"
-      "spotify"
-      "obsidian"
       "claude"
-      "discord"
       "1password"
       # Dev tools
       "cursor"
       "insomnia"
       "db-browser-for-sqlite"
       # macOS tools
-      "fuwari"
-      "iina"
-      "maccy"
-      "betterdisplay"
       # For work
       "slack"
       "figma"

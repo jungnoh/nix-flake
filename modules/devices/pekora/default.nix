@@ -5,8 +5,9 @@
   ...
 }@inputs:
 let
+  hostname = "pekora";
   host = import ../mkHost.nix {
-    inherit inputs;
+    inherit hostname inputs;
 
     system = "aarch64-darwin";
     system_modules = [
@@ -17,7 +18,7 @@ let
 
 in
 {
-  darwinConfigurations."pekora" = nix-darwin.lib.darwinSystem {
+  darwinConfigurations."${hostname}" = nix-darwin.lib.darwinSystem {
     inherit (host) system modules specialArgs;
   };
 }

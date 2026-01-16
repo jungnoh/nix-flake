@@ -1,20 +1,23 @@
 { nixpkgs, nixpkgs-unstable, ... }@inputs:
 let
-
+  hostname = "tomori";
   host = import ../mkHost.nix {
-    inherit inputs;
+    inherit hostname inputs;
 
     system = "x86_64-linux";
     system_modules = [
       ./configuration.nix
       ./hardware.nix
     ];
-    features = [ "personal" ];
+    features = [
+      "personal"
+      "desktop"
+    ];
   };
 
 in
 {
-  nixosConfigurations."tomori" = nixpkgs.lib.nixosSystem {
+  nixosConfigurations."${hostname}" = nixpkgs.lib.nixosSystem {
     inherit (host) system modules specialArgs;
   };
 }

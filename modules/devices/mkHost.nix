@@ -1,6 +1,7 @@
 {
   inputs,
   system,
+  hostname,
   features,
   system_modules ? [ ],
   username ? "jungnoh",
@@ -17,26 +18,24 @@ let
     "x86_64-linux"
   ];
 
+  # Context for me to use, will be passed via specialArgs
+  ctx = {
+    inherit
+      isDarwin
+      isLinux
+      username
+      hostname
+      ;
+  };
+
   homeManagerKey = if isDarwin then "darwinModules" else "nixosModules";
   homeManager = home-manager.${homeManagerKey}.home-manager;
-
-  mkPackages =
-    if isDarwin then
-      (import ../packages/00-root/darwin.nix)
-    else
-      (import ../packages/00-root/linux.nix);
 
   modules =
     ((import ../base) { inherit nixpkgs-unstable; })
     ++ system_modules
     ++ [ homeManager ]
-    ++ (mkPackages { profiles = features; });
-
-  # Context for me to use, will be passed via specialArgs
-  ctx = {
-    inherit isDarwin isLinux username;
-  };
-
+    ++ (import ../packages { inherit features ctx; });
 in
 {
   inherit system modules;

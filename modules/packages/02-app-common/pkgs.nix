@@ -9,13 +9,7 @@ let
     (with pkgs.unstable; [
       # Development Tools
       claude-code
-      # Kubernetes
-      kubectl
-      krew
-      kubectx
-      kubernetes-helm
-      kustomize
-      k9s
+
       # Kubernetes Ecosystem
       minikube
       # Containers
@@ -35,25 +29,12 @@ let
     ]);
   cliPkgs = with pkgs.unstable; [
     # Tools
-    btop
-    htop
-    fd
-    tmux
     devenv
-    # Serialization
-    jq
-    yq
     # Media
     ffmpeg
     imagemagick
     exiftool
-    # Network
-    wget
-    grpcurl
-    mtr
-    aria2
     # Other
-    pv
     brotli
     cloc
   ];
@@ -66,29 +47,15 @@ let
     # Rust
     rustup
     cargo-binstall
-    # Python
-    python3
-    virtualenv
-    pipx
-    uv
     # Go
     go
     go-migrate
     # .NET
     dotnet-sdk_9
   ];
-  cloudSdkPkgs = with pkgs.unstable; [
-    # AWS
-    awscli2
-    saml2aws
-    # Azure
-    google-cloud-sdk
-    # GCP
-    azure-cli
-  ];
 in
 {
   config = {
-    home.packages = cliPkgs ++ toolPkgs ++ cloudSdkPkgs ++ languagePkgs;
+    home.packages = cliPkgs ++ toolPkgs ++ languagePkgs;
   };
 }
