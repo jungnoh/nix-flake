@@ -12,6 +12,8 @@ let
     features = [
       "personal"
       "desktop"
+      "dev-env"
+      "work" # Just for testing
     ];
   };
 

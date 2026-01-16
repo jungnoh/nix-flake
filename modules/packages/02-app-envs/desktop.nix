@@ -14,9 +14,6 @@ in
 
   }
   // (mkIf isDarwin {
-    homebrew.brews = [
-      "asdf"
-    ];
     homebrew.casks = [
       "notion"
       "telegram"
@@ -24,6 +21,7 @@ in
       "obsidian"
       "1password"
       # macOS Only
+      "claude" # Claude Code is installed at dev-env.nix
       "iterm2"
       "fuwari"
       "betterdisplay"
