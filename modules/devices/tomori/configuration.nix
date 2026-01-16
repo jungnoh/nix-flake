@@ -2,8 +2,15 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-
+{
+  config,
+  pkgs,
+  ctx,
+  ...
+}:
+let
+  inherit (ctx) username;
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -13,11 +20,6 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  nix.settings.experimental-features = [
-    "nix-command"
-    "flakes"
-  ];
 
   networking.hostName = "tomori"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -84,9 +86,9 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.jungnoh = {
+  users.users.${username} = {
     isNormalUser = true;
-    description = "jungnoh";
+    description = username;
     extraGroups = [
       "networkmanager"
       "wheel"
@@ -99,9 +101,6 @@
 
   # Install firefox.
   programs.firefox.enable = true;
-
-  # Allow unfree packages
-  nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

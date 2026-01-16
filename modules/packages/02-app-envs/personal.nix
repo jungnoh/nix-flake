@@ -2,7 +2,7 @@
   config,
   lib,
   pkgs,
-  isDarwin,
+  ctx,
   ...
 }:
 {
@@ -14,7 +14,7 @@
     rclone
   ];
 }
-// lib.optionalAttrs isDarwin {
+// lib.optionalAttrs ctx.isDarwin {
   homebrew.casks = [
     "tailscale-app"
     "losslesscut"

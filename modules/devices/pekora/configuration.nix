@@ -2,11 +2,13 @@
   pkgs,
   lib,
   config,
-  username,
+  ctx,
   ...
 }@inputs:
+let
+  inherit (ctx) username;
+in
 {
-  nixpkgs.config.allowUnfree = true;
   environment = {
     systemPackages = [ pkgs.vim ];
     systemPath = [

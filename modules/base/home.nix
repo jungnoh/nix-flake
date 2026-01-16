@@ -3,10 +3,11 @@
   lib,
   config,
   options,
+  ctx,
   ...
 }:
 let
-  username = "jungnoh";
+  inherit (ctx) username;
 in
 with lib;
 {

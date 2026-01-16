@@ -32,6 +32,11 @@ let
     ++ [ homeManager ]
     ++ (mkPackages { profiles = features; });
 
+  # Context for me to use, will be passed via specialArgs
+  ctx = {
+    inherit isDarwin isLinux username;
+  };
+
 in
 {
   inherit system modules;
@@ -39,9 +44,7 @@ in
     inherit
       inputs
       system
-      isDarwin
-      isLinux
-      username
+      ctx
       ;
   };
 }
