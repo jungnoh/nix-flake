@@ -1,6 +1,6 @@
 # pekora
 
-<img src="../../docs/imgs/pekora.webp" width="120" />
+<img src="../../../docs/imgs/pekora.webp" width="120" />
 
 Personal macbook
 - Platform: Darwin

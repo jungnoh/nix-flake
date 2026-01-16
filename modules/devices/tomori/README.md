@@ -1,6 +1,6 @@
 # tomori
 
-<img src="../../docs/imgs/tomori.webp" width="200" />
+<img src="../../../docs/imgs/tomori.webp" width="200" />
 
 Desktop for development
 - Platform: NixOS

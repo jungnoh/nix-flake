@@ -62,8 +62,7 @@ inputs.nix-darwin.lib.darwinSystem {
     inputs.home-manager.darwinModules.home-manager
     configuration
     overlay_module
-    (import ./home.nix)
-    (import ./envs.nix)
+    (import ../base)
   ]
   ++ import ../modules/00-root/darwin.nix { inherit profiles; };
 }
