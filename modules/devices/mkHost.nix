@@ -3,6 +3,7 @@
   system,
   hostname,
   features,
+  languages ? [ ],
   system_modules ? [ ],
   username ? "jungnoh",
 }:
@@ -35,7 +36,7 @@ let
     ((import ../base) { inherit nixpkgs-unstable; })
     ++ system_modules
     ++ [ homeManager ]
-    ++ (import ../packages { inherit features ctx; });
+    ++ (import ../packages { inherit features ctx languages; });
 in
 {
   inherit system modules;

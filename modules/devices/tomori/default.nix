@@ -13,7 +13,12 @@ let
       "personal"
       "desktop"
       "dev-env"
-      "work" # Just for testing
+    ];
+    languages = [
+      "rust"
+      "golang"
+      "dotnet"
+      "node"
     ];
   };
 

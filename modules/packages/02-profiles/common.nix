@@ -8,7 +8,9 @@
 }:
 {
   config = {
-    home.packages = with pkgs.unstable; [
+    environment.systemPackages = with pkgs.unstable; [
+      vim
+      nano
       # Tools
       btop
       htop
@@ -31,5 +33,13 @@
       pipx
       uv
     ];
+    home.programs.direnv = {
+      enable = true;
+      enableZshIntegration = true;
+      nix-direnv.enable = true;
+      config = {
+        global.load_dotenv = true;
+      };
+    };
   };
 }

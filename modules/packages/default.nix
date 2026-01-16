@@ -1,4 +1,8 @@
-{ features, ctx }:
+{
+  features,
+  languages,
+  ctx,
+}:
 let
   inherit (ctx) isDarwin isLinux;
 
@@ -20,13 +24,20 @@ let
       ./02-profiles/desktop-basic.nix
     ];
     dev-env = [
+      ./02-profiles/containers.nix
       ./02-profiles/dev-env.nix
       ./02-profiles/dev-env-cloud.nix
+      ./02-profiles/dev-env-database.nix
     ];
+    containers = [ ./02-profiles/containers.nix ];
     personal = [ ./02-profiles/personal.nix ];
     work = [ ./02-profiles/work.nix ];
   };
 
   featureModules = builtins.concatMap (p: featuresModuleMap."${p}") features;
+
+  languageModules = [
+    (import ./03-apps/languages { inherit languages; })
+  ];
 in
-commonModules ++ featureModules
+commonModules ++ featureModules ++ languageModules

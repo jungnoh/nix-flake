@@ -1,5 +1,6 @@
 # Common applications that are used in a desktop environment
 {
+  config,
   lib,
   pkgs,
   ctx,
@@ -13,6 +14,8 @@ in
   config = {
     home.packages = with pkgs.unstable; [
       jetbrains-toolbox
+      brotli
+      cloc
     ];
   }
   // (mkIf isDarwin {
@@ -28,9 +31,11 @@ in
   })
   // (mkIf isLinux {
     home.packages = with pkgs.unstable; [
+      asdf-vm
       sqlitebrowser
       code-cursor
       insomnia
     ];
   });
 }
+// (import ../03-apps/git { inherit config lib pkgs; })

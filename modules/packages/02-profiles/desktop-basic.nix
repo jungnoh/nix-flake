@@ -10,25 +10,24 @@ let
   inherit (lib) mkIf;
 in
 {
-  config = {
-
-  }
-  // (mkIf isDarwin {
-    homebrew.casks = [
-      "google-chrome"
-      # macOS Only
-      "iterm2"
-      "fuwari"
-      "betterdisplay"
-    ];
-    homebrew.masApps = {
-      "Magnet" = 441258766;
-      "Amphetemine" = 937984704;
-    };
-  })
-  // (mkIf isLinux {
-    home.packages = with pkgs.unstable; [
-      google-chrome
-    ];
-  });
+  config =
+    { }
+    // (mkIf isDarwin {
+      homebrew.casks = [
+        "google-chrome"
+        # macOS Only
+        "iterm2"
+        "fuwari"
+        "betterdisplay"
+      ];
+      homebrew.masApps = {
+        "Magnet" = 441258766;
+        "Amphetemine" = 937984704;
+      };
+    })
+    // (mkIf isLinux {
+      home.packages = with pkgs.unstable; [
+        google-chrome
+      ];
+    });
 }

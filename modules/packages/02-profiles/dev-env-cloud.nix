@@ -15,6 +15,7 @@
       kubernetes-helm
       kustomize
       k9s
+      minikube
       # AWS
       awscli2
       saml2aws
@@ -22,6 +23,8 @@
       google-cloud-sdk
       # Azure
       azure-cli
+      # Other stuff
+      vault
     ];
   };
 }
