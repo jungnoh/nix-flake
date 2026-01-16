@@ -80,7 +80,14 @@ in
   # Install firefox.
   programs.firefox.enable = true;
 
-  programs.vscode.enable = true;
+  programs.vscode = {
+    enable = true;
+    extensions = with pkgs.vscode-extensions; [
+      bbenoist.nix
+      vscodevim.vim
+      yzhang.markdown-all-in-one
+    ];
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

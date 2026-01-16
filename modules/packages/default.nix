@@ -16,7 +16,7 @@ let
 
   commonModules =
     (if isDarwin then (listNixFiles ./01-system/darwin) else (listNixFiles ./01-system/linux))
-    ++ (listNixFiles ./02-app-common);
+    ++ [ ./03-apps/zsh ];
 
   featuresModuleMap = {
     desktop = [

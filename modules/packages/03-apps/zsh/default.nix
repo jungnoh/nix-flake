@@ -20,12 +20,6 @@ let
     sha256 = "sha256-rXU8UpseQgqsljOfHBcd84aoRL82TT7cfbRmaJQULk8=";
   };
   tfAlias = "${tfAliasRepo}/.terraform_aliases";
-
-  extraPaths = [
-    "$HOME/.dotnet/tools"
-    "$HOME/.istioctl/bin"
-    "$HOME/.cargo/bin"
-  ];
 in
 {
   home.programs = {
@@ -68,32 +62,18 @@ in
 
       initContent = ''
         source ~/.p10k.zsh
-        source "${pkgs.asdf-vm}/share/asdf-vm/asdf.sh"
         autoload -Uz bashcompinit && bashcompinit
-        source "${pkgs.asdf-vm}/share/asdf-vm/completions/asdf.bash"
-
-        export PATH=$PATH:${lib.strings.concatStringsSep ":" extraPaths}
 
         source ${kubectlAlias}
         source ${tfAlias}
       '';
 
       shellAliases = {
-        awslogin = "saml2aws login --force --session-duration=43200 --disable-keychain";
-        vaultlogin = "vault login -method=oidc";
-
-        # Tools
         cat = "bat --style=plain";
-        cd = "z";
       };
-      sessionVariables = {
-        AWS_PROFILE = "saml";
-        KUBE_EDITOR = "vim";
-        K9S_EDITOR = "vim";
-        EDITOR = "vim";
 
-        # See https://stackoverflow.com/q/74895147
-        DOTNET_ROOT = "${pkgs.unstable.dotnet-sdk_9}/share/dotnet";
+      sessionVariables = {
+        EDITOR = "vim";
       };
 
       plugins = [

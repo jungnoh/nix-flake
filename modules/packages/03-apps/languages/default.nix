@@ -11,6 +11,9 @@ let
       rustup
       cargo-binstall
     ];
+    home.sessionPath = [
+      "$HOME/.cargo/bin"
+    ];
   };
   cfgGo = {
     home.packages = with pkgs.unstable; [
@@ -21,6 +24,13 @@ let
   cfgDotnet = {
     home.packages = with pkgs.unstable; [
       dotnet-sdk_9
+    ];
+    home.sessionVariables = {
+      # See https://stackoverflow.com/q/74895147
+      DOTNET_ROOT = "${pkgs.unstable.dotnet-sdk_9}/share/dotnet";
+    };
+    home.sessionPath = [
+      "$HOME/.dotnet/tools"
     ];
   };
   cfgNode = {

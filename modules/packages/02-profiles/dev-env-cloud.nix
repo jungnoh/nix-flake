@@ -15,6 +15,7 @@
       kubernetes-helm
       kustomize
       k9s
+      istioctl
       minikube
       # AWS
       awscli2
@@ -23,8 +24,14 @@
       google-cloud-sdk
       # Azure
       azure-cli
-      # Other stuff
-      vault
+    ];
+    home.sessionVariables = {
+      AWS_PROFILE = "saml";
+      KUBE_EDITOR = "vim";
+      K9S_EDITOR = "vim";
+    };
+    home.sessionPath = [
+      "$HOME/.istioctl/bin"
     ];
   };
 }
