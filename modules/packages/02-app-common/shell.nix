@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   kubectlAliasRepo = pkgs.fetchFromGitHub {
     owner = "ahmetb";
@@ -24,7 +29,9 @@ let
 in
 {
   home.programs = {
-    pay-respects = { enable = true; };
+    pay-respects = {
+      enable = true;
+    };
     bat = {
       enable = true;
       extraPackages = with pkgs.bat-extras; [
@@ -34,11 +41,22 @@ in
         batwatch
       ];
     };
-    fzf = { enable = true; enableZshIntegration = true; };
-    ripgrep = { enable = true; };
-    eza = { enable = true; };
-    zoxide = { enable = true; };
-    navi = { enable = true; };
+    fzf = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+    ripgrep = {
+      enable = true;
+    };
+    eza = {
+      enable = true;
+    };
+    zoxide = {
+      enable = true;
+    };
+    navi = {
+      enable = true;
+    };
 
     zsh = {
       enable = true;

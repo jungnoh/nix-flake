@@ -1,4 +1,10 @@
-{ config, options, lib, pkgs, ... }:
+{
+  config,
+  options,
+  lib,
+  pkgs,
+  ...
+}:
 let
   gitAliasRepo = pkgs.fetchFromGitHub {
     owner = "GitAlias";

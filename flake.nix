@@ -11,6 +11,11 @@
     home-manager.url = "github:nix-community/home-manager/release-25.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = { ... }@inputs:
-    (import ./modules/devices) inputs;
+  outputs =
+    { nixpkgs, flake-utils, ... }@inputs:
+    (import ./modules/devices) inputs
+    // {
+      formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+    };
 }

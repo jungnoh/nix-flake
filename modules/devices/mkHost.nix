@@ -1,24 +1,47 @@
-{ inputs, system, system_modules, features }:
+{
+  inputs,
+  system,
+  features,
+  system_modules ? [ ],
+  username ? "jungnoh",
+}:
 let
-  isDarwin = builtins.elem system ["aarch64-darwin" "x86_64-darwin"];
-  isLinux = builtins.elem system ["aarch64-linux" "x86_64-linux"];
-
   inherit (inputs) home-manager nixpkgs-unstable;
 
-  modules = 
+  isDarwin = builtins.elem system [
+    "aarch64-darwin"
+    "x86_64-darwin"
+  ];
+  isLinux = builtins.elem system [
+    "aarch64-linux"
+    "x86_64-linux"
+  ];
+
+  homeManagerKey = if isDarwin then "darwinModules" else "nixosModules";
+  homeManager = home-manager.${homeManagerKey}.home-manager;
+
+  mkPackages =
+    if isDarwin then
+      (import ../packages/00-root/darwin.nix)
+    else
+      (import ../packages/00-root/linux.nix);
+
+  modules =
     ((import ../base) { inherit nixpkgs-unstable; })
     ++ system_modules
-    ++ [
-      (if isDarwin
-        then home-manager.darwinModules.home-manager 
-        else home-manager.nixosModules.home-manager
-      )
-    ] ++
-    (import ../packages/00-root/linux.nix { profiles = features; });
+    ++ [ homeManager ]
+    ++ (mkPackages { profiles = features; });
 
-in {
+in
+{
   inherit system modules;
   specialArgs = {
-    inherit inputs system isDarwin isLinux;
+    inherit
+      inputs
+      system
+      isDarwin
+      isLinux
+      username
+      ;
   };
 }

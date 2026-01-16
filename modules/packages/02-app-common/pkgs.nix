@@ -1,31 +1,38 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
-  toolPkgs = (with pkgs.unstable; [
-    # Development Tools
-    claude-code
-    # Kubernetes
-    kubectl
-    krew
-    kubectx
-    kubernetes-helm
-    kustomize
-    k9s
-    # Kubernetes Ecosystem
-    minikube
-    # Containers
-    colima
-    lima
-    docker
-    docker-compose
-    # Packages
-    asdf-vm
-    protobuf
-  ]) ++ (with pkgs; [
-    # Databases
-    redis
-    # Cloud
-    vault
-  ]);
+  toolPkgs =
+    (with pkgs.unstable; [
+      # Development Tools
+      claude-code
+      # Kubernetes
+      kubectl
+      krew
+      kubectx
+      kubernetes-helm
+      kustomize
+      k9s
+      # Kubernetes Ecosystem
+      minikube
+      # Containers
+      colima
+      lima
+      docker
+      docker-compose
+      # Packages
+      asdf-vm
+      protobuf
+    ])
+    ++ (with pkgs; [
+      # Databases
+      redis
+      # Cloud
+      vault
+    ]);
   cliPkgs = with pkgs.unstable; [
     # Tools
     btop

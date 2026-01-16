@@ -1,4 +1,10 @@
-{ config, lib, pkgs, isDarwin, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  isDarwin,
+  ...
+}:
 {
   home.packages = with pkgs.unstable; [
     anki-bin
@@ -7,7 +13,8 @@
     font-awesome
     rclone
   ];
-} // lib.optionalAttrs isDarwin {
+}
+// lib.optionalAttrs isDarwin {
   homebrew.casks = [
     "tailscale-app"
     "losslesscut"

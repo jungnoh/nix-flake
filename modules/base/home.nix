@@ -1,8 +1,15 @@
-{ pkgs, lib, config, options, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  options,
+  ...
+}:
 let
   username = "jungnoh";
 in
-with lib; {
+with lib;
+{
   options = with types; {
     home = {
       file = mkOption {
