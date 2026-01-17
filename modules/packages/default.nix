@@ -15,7 +15,17 @@ let
     );
 
   commonModules =
-    (if isDarwin then (listNixFiles ./01-system/darwin) else (listNixFiles ./01-system/linux))
+    (
+      if isDarwin then
+        (listNixFiles ./01-system/darwin)
+      else
+        [
+          ./01-system/linux/common.nix
+          # TODO: Filter desktop-only configs by profile
+          ./01-system/linux/i18n.nix
+          ./01-system/linux/kde.nix
+        ]
+    )
     ++ [ ./03-apps/zsh ];
 
   featuresModuleMap = {
@@ -28,6 +38,7 @@ let
       ./02-profiles/dev-env.nix
       ./02-profiles/dev-env-cloud.nix
       ./02-profiles/dev-env-database.nix
+      ./03-apps/git
     ];
     containers = [ ./02-profiles/containers.nix ];
     personal = [ ./02-profiles/personal.nix ];

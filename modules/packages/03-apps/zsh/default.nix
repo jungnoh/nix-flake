@@ -2,6 +2,7 @@
   config,
   lib,
   pkgs,
+  ctx,
   ...
 }:
 let
@@ -22,6 +23,7 @@ let
   tfAlias = "${tfAliasRepo}/.terraform_aliases";
 in
 {
+  users.defaultUserShell = pkgs.unstable.zsh;
   home.programs = {
     pay-respects = {
       enable = true;

@@ -10,6 +10,7 @@
 }:
 let
   inherit (ctx) username;
+  wallpaper = ./wallpaper.jpg;
 in
 {
   imports = [
@@ -30,12 +31,6 @@ in
 
   # Enable networking
   networking.networkmanager.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "kr";
-    variant = "";
-  };
 
   # Enable CUPS to print documents.
   services.printing.enable = false;
@@ -69,14 +64,25 @@ in
     ];
   };
 
-  programs.vscode = {
-    enable = true;
-    extensions = with pkgs.vscode-extensions; [
-      bbenoist.nix
-      vscodevim.vim
-      yzhang.markdown-all-in-one
-    ];
+  services = {
+    xrdp = {
+      defaultWindowManager = "startplasma-x11";
+      enable = true;
+      openFirewall = true;
+    };
+
+    xserver = {
+      enable = true;
+
+      # Configure keymap in X11
+      xkb = {
+        layout = "kr";
+        variant = "";
+      };
+    };
   };
+
+  home.programs.plasma.workspace.wallpaper = builtins.toString wallpaper;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

@@ -7,35 +7,35 @@
   ...
 }:
 let
-  inherit (ctx) isDarwin isLinux;
-  inherit (lib) mkIf;
+  inherit (ctx) onlyDarwin onlyLinux;
 in
 {
-  config = {
-    home.packages = with pkgs.unstable; [
-      jetbrains-toolbox
-      brotli
-      cloc
-    ];
-  }
-  // (mkIf isDarwin {
-    homebrew.brews = [
-      "asdf"
-      "claude-code"
-    ];
-    homebrew.casks = [
-      "cursor"
-      "db-browser-for-sqlite"
-      "insomnia"
-    ];
-  })
-  // (mkIf isLinux {
-    home.packages = with pkgs.unstable; [
-      asdf-vm
-      sqlitebrowser
-      code-cursor
-      insomnia
-    ];
-  });
+  config = lib.mkMerge [
+    {
+      home.packages = with pkgs.unstable; [
+        jetbrains-toolbox
+        brotli
+        cloc
+      ];
+    }
+    (onlyDarwin {
+      homebrew.brews = [
+        "asdf"
+        "claude-code"
+      ];
+      homebrew.casks = [
+        "cursor"
+        "db-browser-for-sqlite"
+        "insomnia"
+      ];
+    })
+    (onlyLinux {
+      home.packages = with pkgs.unstable; [
+        asdf-vm
+        sqlitebrowser
+        code-cursor
+        insomnia
+      ];
+    })
+  ];
 }
-// (import ../03-apps/git { inherit config lib pkgs; })

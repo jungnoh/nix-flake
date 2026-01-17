@@ -51,6 +51,12 @@ with lib;
         description = "Session variables";
       };
 
+      sharedModules = mkOption {
+        # type = listOf ;
+        default = [ ];
+        description = "Shared Modules";
+      };
+
       packages = mkOption {
         type = listOf package;
         default = [ ];
@@ -75,6 +81,7 @@ with lib;
     home-manager = {
       useUserPackages = true;
       useGlobalPkgs = true;
+      sharedModules = mkAliasDefinitions options.home.sharedModules;
       extraSpecialArgs = { inherit inputs; };
 
       users.${username} = {
