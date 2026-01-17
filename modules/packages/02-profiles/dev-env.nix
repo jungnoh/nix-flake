@@ -7,8 +7,7 @@
   ...
 }:
 let
-  inherit (ctx) isDarwin isLinux;
-  inherit (lib) mkIf;
+  inherit (ctx) onlyDarwin onlyLinux;
 in
 {
   config = {
@@ -18,7 +17,7 @@ in
       cloc
     ];
   }
-  // (mkIf isDarwin {
+  // onlyDarwin {
     homebrew.brews = [
       "asdf"
       "claude-code"
@@ -28,14 +27,14 @@ in
       "db-browser-for-sqlite"
       "insomnia"
     ];
-  })
-  // (mkIf isLinux {
+  }
+  // onlyLinux {
     home.packages = with pkgs.unstable; [
       asdf-vm
       sqlitebrowser
       code-cursor
       insomnia
     ];
-  });
+  };
 }
 // (import ../03-apps/git { inherit config lib pkgs; })

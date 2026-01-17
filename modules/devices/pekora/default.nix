@@ -17,7 +17,6 @@ let
       "personal"
       "desktop"
       "dev-env"
-      "work"
     ];
     languages = [
       "rust"

@@ -6,13 +6,11 @@
   ...
 }:
 let
-  inherit (ctx) isDarwin isLinux;
-  inherit (lib) mkIf;
+  inherit (ctx) onlyDarwin onlyLinux;
 in
 {
   config =
-    { }
-    // (mkIf isDarwin {
+    onlyDarwin {
       homebrew.casks = [
         "notion"
         "telegram"
@@ -30,13 +28,13 @@ in
         "한컴오피스 한글 Viewer" = 416746898;
         "Windows App" = 1295203466;
       };
-    })
-    // (mkIf isLinux {
+    }
+    // onlyLinux {
       home.packages = with pkgs.unstable; [
         telegram-desktop
         spotify
         obsidian
         _1password-gui
       ];
-    });
+    };
 }

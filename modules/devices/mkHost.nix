@@ -19,11 +19,16 @@ let
     "x86_64-linux"
   ];
 
+  onlyDarwin = { ... }@inputs: (if isDarwin then inputs else { });
+  onlyLinux = { ... }@inputs: (if isLinux then inputs else { });
+
   # Context for me to use, will be passed via specialArgs
   ctx = {
     inherit
       isDarwin
       isLinux
+      onlyDarwin
+      onlyLinux
       username
       hostname
       ;

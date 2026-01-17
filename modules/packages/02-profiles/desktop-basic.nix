@@ -6,13 +6,11 @@
   ...
 }:
 let
-  inherit (ctx) isDarwin isLinux;
-  inherit (lib) mkIf;
+  inherit (ctx) onlyDarwin onlyLinux;
 in
 {
   config =
-    { }
-    // (mkIf isDarwin {
+    onlyDarwin {
       homebrew.casks = [
         "google-chrome"
         # macOS Only
@@ -24,16 +22,11 @@ in
         "Magnet" = 441258766;
         "Amphetemine" = 937984704;
       };
-    })
-    // (
-      if isLinux then
-        {
-          programs.firefox.enable = true;
-          home.packages = with pkgs.unstable; [
-            google-chrome
-          ];
-        }
-      else
-        { }
-    );
+    }
+    // onlyLinux {
+      programs.firefox.enable = true;
+      home.packages = with pkgs.unstable; [
+        google-chrome
+      ];
+    };
 }

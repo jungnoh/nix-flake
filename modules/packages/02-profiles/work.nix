@@ -6,8 +6,7 @@
   ...
 }:
 let
-  inherit (ctx) isDarwin isLinux;
-  inherit (lib) mkIf;
+  inherit (ctx) onlyDarwin onlyLinux;
 in
 {
   # TODO: Wireguard
@@ -20,13 +19,13 @@ in
       vaultlogin = "vault login -method=oidc";
     };
   }
-  // mkIf isDarwin {
+  // onlyDarwin {
     homebrew.casks = [
       "slack"
       "figma"
     ];
   }
-  // mkIf isLinux {
+  // onlyLinux {
     home.packages = with pkgs.unstable; [
       slack
     ];

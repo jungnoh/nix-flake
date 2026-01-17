@@ -6,8 +6,7 @@
   ...
 }:
 let
-  inherit (ctx) isDarwin isLinux;
-  inherit (lib) mkIf;
+  inherit (ctx) onlyDarwin onlyLinux;
 in
 {
   config = {
@@ -19,7 +18,7 @@ in
       rclone
     ];
   }
-  // mkIf isDarwin {
+  // onlyDarwin {
     homebrew.casks = [
       "discord"
       "tailscale-app"
@@ -31,7 +30,7 @@ in
       tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
     };
   }
-  // mkIf isLinux {
+  // onlyLinux {
     home.packages = with pkgs.unstable; [
       discord
     ];
