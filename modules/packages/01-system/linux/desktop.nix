@@ -1,7 +1,4 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
-
+# See https://nixos.wiki/wiki/KDE
 {
   config,
   pkgs,
@@ -11,12 +8,21 @@
 let
   inherit (ctx) username;
 in
+#
 {
-  # Enable the X11 windowing system.
-  # You can disable this if you're only using the Wayland session.
   services.xserver.enable = true;
-
-  # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
+
+  environment.plasma6.excludePackages = with pkgs; [
+    kdePackages.elisa
+    kdePackages.kdepim-runtime
+    kdePackages.kmahjongg
+    kdePackages.kmines
+    kdePackages.konversation
+    kdePackages.kpat
+    kdePackages.ksudoku
+    kdePackages.ktorrent
+    mpv
+  ];
 }

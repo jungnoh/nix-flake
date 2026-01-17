@@ -25,10 +25,15 @@ in
         "Amphetemine" = 937984704;
       };
     })
-    // (mkIf isLinux {
-      programs.firefox.enable = true;
-      home.packages = with pkgs.unstable; [
-        google-chrome
-      ];
-    });
+    // (
+      if isLinux then
+        {
+          programs.firefox.enable = true;
+          home.packages = with pkgs.unstable; [
+            google-chrome
+          ];
+        }
+      else
+        { }
+    );
 }

@@ -13,7 +13,18 @@ let
     system_modules = [
       ./configuration.nix
     ];
-    features = [ "personal" ];
+    features = [
+      "personal"
+      "desktop"
+      "dev-env"
+      "work"
+    ];
+    languages = [
+      "rust"
+      "golang"
+      "dotnet"
+      "node"
+    ];
   };
 
 in
