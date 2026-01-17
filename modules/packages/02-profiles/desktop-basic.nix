@@ -26,6 +26,7 @@ in
       };
     })
     // (mkIf isLinux {
+      programs.firefox.enable = true;
       home.packages = with pkgs.unstable; [
         google-chrome
       ];
