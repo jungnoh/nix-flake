@@ -3,10 +3,12 @@
   config,
   pkgs,
   ctx,
+  inputs,
   ...
 }:
 let
   inherit (ctx) username;
+  inherit (inputs) plasma-manager;
 in
 #
 {
