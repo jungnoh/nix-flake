@@ -18,7 +18,6 @@ in
     ./hardware.nix
   ];
 
-
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -84,7 +83,7 @@ in
   };
 
   home.programs.plasma.workspace.wallpaper = builtins.toString wallpaper;
-  
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
