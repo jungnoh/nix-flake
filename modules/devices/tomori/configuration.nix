@@ -10,12 +10,14 @@
 }:
 let
   inherit (ctx) username;
+  wallpaper = ./wallpaper.jpg;
 in
 {
   imports = [
     # Include the results of the hardware scan.
     ./hardware.nix
   ];
+
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -63,15 +65,6 @@ in
     ];
   };
 
-  programs.vscode = {
-    enable = true;
-    extensions = with pkgs.vscode-extensions; [
-      bbenoist.nix
-      vscodevim.vim
-      yzhang.markdown-all-in-one
-    ];
-  };
-
   services = {
     xrdp = {
       defaultWindowManager = "startplasma-x11";
@@ -90,6 +83,8 @@ in
     };
   };
 
+  home.programs.plasma.workspace.wallpaper = builtins.toString wallpaper;
+  
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;

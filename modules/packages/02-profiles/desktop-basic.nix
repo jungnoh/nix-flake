@@ -9,8 +9,8 @@ let
   inherit (ctx) onlyDarwin onlyLinux;
 in
 {
-  config =
-    onlyDarwin {
+  config = lib.mkMerge [
+    (onlyDarwin {
       homebrew.casks = [
         "google-chrome"
         # macOS Only
@@ -22,11 +22,12 @@ in
         "Magnet" = 441258766;
         "Amphetemine" = 937984704;
       };
-    }
-    // onlyLinux {
+    })
+    (onlyLinux {
       programs.firefox.enable = true;
       home.packages = with pkgs.unstable; [
         google-chrome
       ];
-    };
+    })
+  ];
 }

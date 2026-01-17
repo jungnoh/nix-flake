@@ -39,8 +39,8 @@ let
 
   modules =
     ((import ../base) { inherit nixpkgs-unstable; })
-    ++ system_modules
     ++ [ homeManager ]
+    ++ system_modules
     ++ (import ../packages { inherit features ctx languages; });
 in
 {

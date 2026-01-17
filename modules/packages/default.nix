@@ -28,6 +28,7 @@ let
       ./02-profiles/dev-env.nix
       ./02-profiles/dev-env-cloud.nix
       ./02-profiles/dev-env-database.nix
+      ./03-apps/git
     ];
     containers = [ ./02-profiles/containers.nix ];
     personal = [ ./02-profiles/personal.nix ];
