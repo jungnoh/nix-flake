@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 {
   config = {
     # Initialize Homebrew Casks
@@ -20,10 +25,10 @@
         cask_args require_sha: true
       '';
 
-      taps = [];
+      taps = [ ];
     };
 
-    env.HOMEBREW_NO_ANAYTICS = "1";
-    env.PATH = [ "/opt/homebrew/bin" ];
+    environment.variables.HOMEBREW_NO_ANALYTICS = "1";
+    environment.systemPath = [ "/opt/homebrew/bin" ];
   };
 }

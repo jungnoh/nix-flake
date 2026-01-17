@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 let
   kubectlAliasRepo = pkgs.fetchFromGitHub {
     owner = "ahmetb";
@@ -15,17 +20,10 @@ let
     sha256 = "sha256-rXU8UpseQgqsljOfHBcd84aoRL82TT7cfbRmaJQULk8=";
   };
   tfAlias = "${tfAliasRepo}/.terraform_aliases";
-
-  extraPaths = [
-    "/Applications/Wireshark.app/Contents/MacOS"
-    "$HOME/.dotnet/tools"
-    "$HOME/.istioctl/bin"
-    "$HOME/.cargo/bin"
-  ];
 in
 {
   home.programs = {
-    thefuck = {
+    pay-respects = {
       enable = true;
     };
     bat = {
@@ -41,10 +39,18 @@ in
       enable = true;
       enableZshIntegration = true;
     };
-    ripgrep = { enable = true; };
-    eza = { enable = true; };
-    zoxide = { enable = true; };
-    navi = { enable = true; };
+    ripgrep = {
+      enable = true;
+    };
+    eza = {
+      enable = true;
+    };
+    zoxide = {
+      enable = true;
+    };
+    navi = {
+      enable = true;
+    };
 
     zsh = {
       enable = true;
@@ -52,37 +58,22 @@ in
         enable = true;
       };
       enableCompletion = true;
-      dotDir = ".config/zsh";
+      # dotDir = "${homeDir}/.config/zsh";
 
-      initExtraFirst = ''
+      initContent = ''
         source ~/.p10k.zsh
-      '';
-      initExtra = ''
-        source "${pkgs.asdf-vm}/share/asdf-vm/asdf.sh"
         autoload -Uz bashcompinit && bashcompinit
-        source "${pkgs.asdf-vm}/share/asdf-vm/completions/asdf.bash"
-
-        export PATH=$PATH:${lib.strings.concatStringsSep ":" extraPaths}
 
         source ${kubectlAlias}
         source ${tfAlias}
       '';
+
       shellAliases = {
-        awslogin = "saml2aws login --force --session-duration=43200 --disable-keychain";
-        vaultlogin = "vault login -method=oidc";
-
-        # Tools
         cat = "bat --style=plain";
-        cd = "z";
       };
-      sessionVariables = {
-        AWS_PROFILE = "saml";
-        KUBE_EDITOR = "vim";
-        K9S_EDITOR = "vim";
-        EDITOR = "vim";
 
-        # See https://stackoverflow.com/q/74895147
-        DOTNET_ROOT = "${pkgs.unstable.dotnet-sdk_9}/share/dotnet";
+      sessionVariables = {
+        EDITOR = "vim";
       };
 
       plugins = [

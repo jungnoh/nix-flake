@@ -1,8 +1,18 @@
-{ pkgs, lib, config, options, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  options,
+  ctx,
+  ...
+}:
 let
-  user = "jungnoh";
+  inherit (ctx) username isDarwin;
+
+  homeDir = if isDarwin then "/Users/${username}" else "/home/${username}";
 in
-with lib; {
+with lib;
+{
   options = with types; {
     home = {
       file = mkOption {
@@ -23,6 +33,24 @@ with lib; {
         description = "Home-manager provided user services";
       };
 
+      shellAliases = mkOption {
+        type = attrs;
+        default = { };
+        description = "Shell aliases";
+      };
+
+      sessionPath = mkOption {
+        type = listOf str;
+        default = [ ];
+        description = "Session paths";
+      };
+
+      sessionVariables = mkOption {
+        type = attrs;
+        default = { };
+        description = "Session variables";
+      };
+
       packages = mkOption {
         type = listOf package;
         default = [ ];
@@ -38,11 +66,9 @@ with lib; {
   };
 
   config = {
-    programs.zsh.enable = true;
-    users.users.${user} = {
-      name = user;
-      home = "/Users/${user}";
-      shell = pkgs.zsh;
+    users.users.${username} = {
+      name = username;
+      home = homeDir;
     };
 
     # Initialize Home
@@ -51,11 +77,15 @@ with lib; {
       useGlobalPkgs = true;
       extraSpecialArgs = { inherit inputs; };
 
-      users.${user} = {
+      users.${username} = {
         home = {
+          homeDirectory = homeDir;
           file = mkAliasDefinitions options.home.file;
           packages = mkAliasDefinitions options.home.packages;
-          stateVersion = "23.11";
+          shellAliases = mkAliasDefinitions options.home.shellAliases;
+          sessionPath = mkAliasDefinitions options.home.sessionPath;
+          sessionVariables = mkAliasDefinitions options.home.sessionVariables;
+          stateVersion = "25.11";
         };
         programs = mkAliasDefinitions options.home.programs;
         services = mkAliasDefinitions options.home.services;
