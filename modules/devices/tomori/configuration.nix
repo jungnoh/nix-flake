@@ -32,6 +32,10 @@ in
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Enable WOL
+  networking.interfaces.enp5s0.wakeOnLan.enable = true;
+  networking.firewall.allowedUDPPorts = [ 9 ];
+
   # Enable CUPS to print documents.
   services.printing.enable = false;
 
