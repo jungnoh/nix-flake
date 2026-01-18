@@ -26,7 +26,10 @@ let
           ./01-system/linux/kde.nix
         ]
     )
-    ++ [ ./03-apps/zsh ];
+    ++ [
+      ./02-profiles/common.nix
+      ./03-apps/zsh
+    ];
 
   featuresModuleMap = {
     desktop = [
