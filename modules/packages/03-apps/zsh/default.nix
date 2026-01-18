@@ -29,9 +29,6 @@ lib.mkMerge [
   })
   {
     home.programs = {
-      pay-respects = {
-        enable = true;
-      };
       bat = {
         enable = true;
         extraPackages = with pkgs.bat-extras; [
@@ -50,9 +47,11 @@ lib.mkMerge [
       };
       eza = {
         enable = true;
+        enableZshIntegration = true;
       };
       zoxide = {
         enable = true;
+        enableZshIntegration = true;
       };
       navi = {
         enable = true;
@@ -64,18 +63,50 @@ lib.mkMerge [
           enable = true;
         };
         enableCompletion = true;
-        # dotDir = "${homeDir}/.config/zsh";
 
-        initContent = ''
-          source ~/.p10k.zsh
-          autoload -Uz bashcompinit && bashcompinit
+        initContent = lib.mkMerge [
+          # Enable instant prompt at the very start (before anything else)
+          (lib.mkBefore ''
+            if [[ -r "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh" ]]; then
+              source "''${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-''${(%):-%n}.zsh"
+            fi
+          '')
+          ''
+            source ~/.p10k.zsh
 
-          source ${kubectlAlias}
-          source ${tfAlias}
-        '';
+            # Lazy-load kubectl aliases (only loaded on first kubectl invocation)
+            function kubectl() {
+              unfunction kubectl
+              source ${kubectlAlias}
+              kubectl "$@"
+            }
+
+            # Lazy-load terraform aliases (only loaded on first tf invocation)
+            function terraform() {
+              unfunction terraform
+              source ${tfAlias}
+              terraform "$@"
+            }
+            alias tf='terraform'
+          ''
+        ];
 
         shellAliases = {
           cat = "bat --style=plain";
+          # Common git aliases (replacing oh-my-zsh git plugin)
+          g = "git";
+          ga = "git add";
+          gaa = "git add --all";
+          gb = "git branch";
+          gc = "git commit";
+          gcm = "git commit -m";
+          gco = "git checkout";
+          gd = "git diff";
+          gf = "git fetch";
+          gl = "git pull";
+          gp = "git push";
+          gst = "git status";
+          glg = "git log --oneline --decorate --graph";
         };
 
         sessionVariables = {
@@ -89,11 +120,6 @@ lib.mkMerge [
             file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
           }
         ];
-
-        oh-my-zsh = {
-          enable = true;
-          plugins = [ "git" ];
-        };
       };
     };
     home.file.".p10k.zsh".text = (builtins.readFile ./p10k.zsh);
