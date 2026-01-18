@@ -7,6 +7,8 @@ let
     ./soyo
     # Home Desktop
     ./tomori
+    # VM Host Desktop
+    ./anon
   ];
   recursiveMerge =
     with builtins;
