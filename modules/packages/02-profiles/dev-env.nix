@@ -21,9 +21,9 @@ in
     (onlyDarwin {
       homebrew.brews = [
         "asdf"
-        "claude-code"
       ];
       homebrew.casks = [
+        "claude-code"
         "cursor"
         "db-browser-for-sqlite"
         "insomnia"

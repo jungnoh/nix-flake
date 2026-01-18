@@ -6,6 +6,7 @@
   ...
 }:
 let
+  inherit (ctx) onlyLinux;
   kubectlAliasRepo = pkgs.fetchFromGitHub {
     owner = "ahmetb";
     repo = "kubectl-aliases";
@@ -22,75 +23,79 @@ let
   };
   tfAlias = "${tfAliasRepo}/.terraform_aliases";
 in
-{
-  users.defaultUserShell = pkgs.unstable.zsh;
-  home.programs = {
-    pay-respects = {
-      enable = true;
-    };
-    bat = {
-      enable = true;
-      extraPackages = with pkgs.bat-extras; [
-        batdiff
-        batman
-        batgrep
-        batwatch
-      ];
-    };
-    fzf = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-    ripgrep = {
-      enable = true;
-    };
-    eza = {
-      enable = true;
-    };
-    zoxide = {
-      enable = true;
-    };
-    navi = {
-      enable = true;
-    };
-
-    zsh = {
-      enable = true;
-      autosuggestion = {
+lib.mkMerge [
+  (onlyLinux {
+    users.defaultUserShell = pkgs.unstable.zsh;
+  })
+  {
+    home.programs = {
+      pay-respects = {
         enable = true;
       };
-      enableCompletion = true;
-      # dotDir = "${homeDir}/.config/zsh";
-
-      initContent = ''
-        source ~/.p10k.zsh
-        autoload -Uz bashcompinit && bashcompinit
-
-        source ${kubectlAlias}
-        source ${tfAlias}
-      '';
-
-      shellAliases = {
-        cat = "bat --style=plain";
-      };
-
-      sessionVariables = {
-        EDITOR = "vim";
-      };
-
-      plugins = [
-        {
-          name = "powerlevel10k";
-          src = pkgs.zsh-powerlevel10k;
-          file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-        }
-      ];
-
-      oh-my-zsh = {
+      bat = {
         enable = true;
-        plugins = [ "git" ];
+        extraPackages = with pkgs.bat-extras; [
+          batdiff
+          batman
+          batgrep
+          batwatch
+        ];
+      };
+      fzf = {
+        enable = true;
+        enableZshIntegration = true;
+      };
+      ripgrep = {
+        enable = true;
+      };
+      eza = {
+        enable = true;
+      };
+      zoxide = {
+        enable = true;
+      };
+      navi = {
+        enable = true;
+      };
+
+      zsh = {
+        enable = true;
+        autosuggestion = {
+          enable = true;
+        };
+        enableCompletion = true;
+        # dotDir = "${homeDir}/.config/zsh";
+
+        initContent = ''
+          source ~/.p10k.zsh
+          autoload -Uz bashcompinit && bashcompinit
+
+          source ${kubectlAlias}
+          source ${tfAlias}
+        '';
+
+        shellAliases = {
+          cat = "bat --style=plain";
+        };
+
+        sessionVariables = {
+          EDITOR = "vim";
+        };
+
+        plugins = [
+          {
+            name = "powerlevel10k";
+            src = pkgs.zsh-powerlevel10k;
+            file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+          }
+        ];
+
+        oh-my-zsh = {
+          enable = true;
+          plugins = [ "git" ];
+        };
       };
     };
-  };
-  home.file.".p10k.zsh".text = (builtins.readFile ./p10k.zsh);
-}
+    home.file.".p10k.zsh".text = (builtins.readFile ./p10k.zsh);
+  }
+]
