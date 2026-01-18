@@ -39,6 +39,7 @@ let
       ./02-profiles/dev-env-cloud.nix
       ./02-profiles/dev-env-database.nix
       ./03-apps/git
+      ./03-apps/vscode
     ];
     containers = [ ./02-profiles/containers.nix ];
     personal = [ ./02-profiles/personal.nix ];
