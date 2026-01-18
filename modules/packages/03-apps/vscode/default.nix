@@ -43,7 +43,6 @@ in
           editorconfig.editorconfig
           vscodevim.vim
           christian-kohler.path-intellisense
-          oderwat.indent-rainbow
           # Themes
           dracula-theme.theme-dracula
           pkief.material-icon-theme

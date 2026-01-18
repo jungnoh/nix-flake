@@ -1,0 +1,56 @@
+#!/bin/bash
+set -e
+
+apply() {
+    case "$(uname)" in
+        Darwin)
+            nix-channel --update darwin
+            sudo nix run nix-darwin -- switch --flake .
+            ;;
+        Linux)
+            sudo nixos-rebuild switch --flake .
+            ;;
+        *)
+            echo "Unsupported OS: $(uname)"
+            exit 1
+            ;;
+    esac
+}
+
+gc() {
+    case "$(uname)" in
+        Darwin)
+            sudo nix-collect-garbage -d
+            ;;
+        Linux)
+            sudo nix-collect-garbage -d
+            sudo nixos-rebuild boot --flake .
+            ;;
+        *)
+            echo "Unsupported OS: $(uname)"
+            exit 1
+            ;;
+    esac
+}
+
+case "$1" in
+    fmt)
+        nix fmt
+        ;;
+    update)
+        nix flake update
+        ;;
+    apply)
+        apply
+        ;;
+    dry-run)
+        nix run nix-darwin -- switch --dry-run --flake .
+        ;;
+    gc)
+        gc
+        ;;
+    *)
+        echo "Usage: $0 {fmt|update|apply|gc}"
+        exit 1
+        ;;
+esac
