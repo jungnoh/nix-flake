@@ -14,14 +14,24 @@ let
 in
 {
   imports = [
-    # Include the results of the hardware scan.
     ./hardware.nix
+    ../../packages/03-apps/vscode
   ];
 
-  boot.loader.grub.enable = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.grub.efiInstallAsRemovable = true;
-  boot.loader.grub.device = "nodev";
+  # virt-manager
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
+
+  environment.systemPackages = with pkgs; [
+    dnsmasq
+  ];
+
+  boot.loader.grub = {
+    enable = true;
+    efiSupport = true;
+    efiInstallAsRemovable = true;
+    device = "nodev";
+  };
 
   networking.hostName = "anon"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -34,7 +44,7 @@ in
   networking.networkmanager.enable = true;
 
   # Enable WOL
-  networking.interfaces.enp5s0.wakeOnLan.enable = true;
+  networking.interfaces.enp24s0.wakeOnLan.enable = true;
   networking.firewall.allowedUDPPorts = [ 9 ];
 
   # Enable CUPS to print documents.
@@ -56,9 +66,6 @@ in
     #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${username} = {
     isNormalUser = true;
@@ -66,6 +73,7 @@ in
     extraGroups = [
       "networkmanager"
       "wheel"
+      "libvirtd"
     ];
   };
 
@@ -99,12 +107,6 @@ in
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

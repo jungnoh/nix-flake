@@ -27,6 +27,8 @@ in
       programs.firefox.enable = true;
       home.packages = with pkgs.unstable; [
         google-chrome
+        parted
+        kdePackages.partitionmanager
       ];
     })
   ];
