@@ -4,11 +4,12 @@
   hostname,
   features,
   languages ? [ ],
+  disko_modules ? [ ],
   system_modules ? [ ],
   username ? "jungnoh",
 }:
 let
-  inherit (inputs) home-manager nixpkgs-unstable;
+  inherit (inputs) home-manager nixpkgs-unstable disko;
 
   isDarwin = builtins.elem system [
     "aarch64-darwin"
@@ -36,6 +37,15 @@ let
 
   homeManagerKey = if isDarwin then "darwinModules" else "nixosModules";
   homeManager = home-manager.${homeManagerKey}.home-manager;
+
+  diskoModules =
+    if builtins.length disko_modules > 0 then
+      [
+        disko.nixosModules.disko
+      ]
+      ++ disko_modules
+    else
+      [ ];
 
   modules =
     ((import ../base) { inherit nixpkgs-unstable; })

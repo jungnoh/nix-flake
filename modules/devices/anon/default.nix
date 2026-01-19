@@ -9,10 +9,13 @@ let
       ./configuration.nix
       ./hardware.nix
     ];
+    disko_modules = [
+      ./disko-config.nix
+    ];
     features = [
       "desktop-basic"
     ];
-    languages = [];
+    languages = [ ];
   };
 
 in

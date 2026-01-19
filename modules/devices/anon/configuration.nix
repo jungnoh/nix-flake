@@ -19,6 +19,17 @@ in
   ];
 
   # Bootloader.
+  boot = {
+    supportedFilesystems = [ "btrfs" ];
+    loader = {
+      efi.canTouchEfiVariables = true;
+      grub = {
+        enable = true;
+        device = "nodev";
+        efiSupport = true;
+      };
+    };
+  };
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
