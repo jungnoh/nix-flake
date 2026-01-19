@@ -18,20 +18,10 @@ in
     ./hardware.nix
   ];
 
-  # Bootloader.
-  boot = {
-    supportedFilesystems = [ "btrfs" ];
-    loader = {
-      efi.canTouchEfiVariables = true;
-      grub = {
-        enable = true;
-        device = "nodev";
-        efiSupport = true;
-      };
-    };
-  };
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.grub.efiInstallAsRemovable = true;
+  boot.loader.grub.device = "nodev";
 
   networking.hostName = "anon"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
