@@ -21,7 +21,7 @@ in
   system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
   # Used for backwards compatibility, please read the changelog before changing.
   # $ darwin-rebuild changelog
-  system.stateVersion = 5;
+  system.stateVersion = 4;
   system.primaryUser = username;
 
   security.pam.services.sudo_local.touchIdAuth = true;
