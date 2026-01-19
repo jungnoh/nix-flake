@@ -24,6 +24,14 @@ in
 
   environment.systemPackages = with pkgs; [
     dnsmasq
+    (pkgs.writeShellScriptBin "mount-data" ''
+      sudo cryptsetup open /dev/disk/by-partlabel/disk-data-data cryptdata
+      sudo mount /dev/mapper/cryptdata /mnt/data
+    '')
+    (pkgs.writeShellScriptBin "umount-data" ''
+      sudo umount /mnt/data
+      sudo cryptsetup close cryptdata
+    '')
   ];
 
   boot.loader.grub = {

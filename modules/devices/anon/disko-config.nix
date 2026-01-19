@@ -64,6 +64,32 @@
           };
         };
       };
+      data = {
+        type = "disk";
+        device = "/dev/nvme1n1";
+        content = {
+          type = "gpt";
+          partitions = {
+            data = {
+              size = "100%";
+              content = {
+                type = "luks";
+                name = "cryptdata";
+                askPassword = true;
+                settings = {
+                  allowDiscards = true;
+                };
+                content = {
+                  type = "filesystem";
+                  format = "ext4";
+                  mountpoint = "/mnt/data";
+                  mountOptions = [ "noauto" ];
+                };
+              };
+            };
+          };
+        };
+      };
     };
   };
 }
