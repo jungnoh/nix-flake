@@ -41,13 +41,6 @@ in
         obsidian
         _1password-gui
       ];
-      home.programs.plasma.pinnedApplications = [
-        "applications:firefox.desktop"
-        "applications:discord.desktop"
-        "applications:spotify.desktop"
-        "applications:telegram.desktop"
-        "applications:cursor-url-handler.desktop"
-      ];
     })
   ];
 }

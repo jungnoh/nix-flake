@@ -49,6 +49,7 @@ let
 
   modules =
     ((import ../base) { inherit nixpkgs-unstable; })
+    ++ diskoModules
     ++ [ homeManager ]
     ++ system_modules
     ++ (import ../packages { inherit features ctx languages; });

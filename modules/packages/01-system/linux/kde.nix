@@ -1,5 +1,6 @@
 # See https://nixos.wiki/wiki/KDE
 {
+  lib,
   config,
   pkgs,
   ctx,
@@ -29,14 +30,6 @@ in
   ];
 
   home.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
-
-  home.programs.plasma.pinnedApplications = lib.mkOption {
-    description = "Applications to pin to the bottom panel";
-    default = [
-      "applications:org.kde.dolphin.desktop"
-      "applications:org.kde.konsole.desktop"
-    ];
-  };
 
   home.programs.plasma = {
     enable = true;
@@ -97,7 +90,10 @@ in
         widgets = [
           {
             iconTasks = {
-              launchers = lib.mkAliasDefinitions config.home.programs.plasma.pinnedApplications;
+              launchers = [
+                "applications:org.kde.dolphin.desktop"
+                "applications:org.kde.konsole.desktop"
+              ];
             };
           }
         ];
