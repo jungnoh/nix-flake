@@ -28,6 +28,7 @@ let
     )
     ++ [
       ./02-profiles/common.nix
+      ./03-apps/git
       ./03-apps/zsh
     ];
 
@@ -36,12 +37,14 @@ let
       ./02-profiles/desktop.nix
       ./02-profiles/desktop-basic.nix
     ];
+    desktop-basic = [
+      ./02-profiles/desktop-basic.nix
+    ];
     dev-env = [
       ./02-profiles/containers.nix
       ./02-profiles/dev-env.nix
       ./02-profiles/dev-env-cloud.nix
       ./02-profiles/dev-env-database.nix
-      ./03-apps/git
       ./03-apps/vscode
     ];
     containers = [ ./02-profiles/containers.nix ];

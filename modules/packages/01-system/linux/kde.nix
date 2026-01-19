@@ -1,5 +1,6 @@
 # See https://nixos.wiki/wiki/KDE
 {
+  lib,
   config,
   pkgs,
   ctx,
@@ -92,11 +93,6 @@ in
               launchers = [
                 "applications:org.kde.dolphin.desktop"
                 "applications:org.kde.konsole.desktop"
-                "applications:firefox.desktop"
-                "applications:discord.desktop"
-                "applications:spotify.desktop"
-                "applications:telegram.desktop"
-                "applications:cursor-url-handler.desktop"
               ];
             };
           }
