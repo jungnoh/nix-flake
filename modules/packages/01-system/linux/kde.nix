@@ -30,6 +30,14 @@ in
 
   home.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
 
+  home.programs.plasma.pinnedApplications = lib.mkOption {
+    description = "Applications to pin to the bottom panel";
+    default = [
+      "applications:org.kde.dolphin.desktop"
+      "applications:org.kde.konsole.desktop"
+    ];
+  };
+
   home.programs.plasma = {
     enable = true;
     powerdevil.AC = {
@@ -89,15 +97,7 @@ in
         widgets = [
           {
             iconTasks = {
-              launchers = [
-                "applications:org.kde.dolphin.desktop"
-                "applications:org.kde.konsole.desktop"
-                "applications:firefox.desktop"
-                "applications:discord.desktop"
-                "applications:spotify.desktop"
-                "applications:telegram.desktop"
-                "applications:cursor-url-handler.desktop"
-              ];
+              launchers = lib.mkAliasDefinitions config.home.programs.plasma.pinnedApplications;
             };
           }
         ];
