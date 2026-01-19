@@ -23,8 +23,6 @@
               content = {
                 type = "luks";
                 name = "crypted";
-                # disable settings.keyFile if you want to use interactive password entry
-                # passwordFile = "/tmp/secret.key"; # Interactive
                 settings = {
                   allowDiscards = true;
                 };
@@ -76,6 +74,7 @@
                 type = "luks";
                 name = "cryptdata";
                 askPassword = true;
+                initrdUnlock = false; 
                 settings = {
                   allowDiscards = true;
                 };

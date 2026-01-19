@@ -28,7 +28,6 @@ in
       home.packages = with pkgs.unstable; [
         google-chrome
         parted
-        kdePackages.partitionmanager
       ];
     })
   ];
