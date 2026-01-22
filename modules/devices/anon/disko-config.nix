@@ -74,7 +74,7 @@
                 type = "luks";
                 name = "cryptdata";
                 askPassword = true;
-                initrdUnlock = false; 
+                initrdUnlock = false;
                 settings = {
                   allowDiscards = true;
                 };
