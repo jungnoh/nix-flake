@@ -23,7 +23,6 @@ in
     (onlyDarwin {
       homebrew.casks = [
         "slack"
-        "figma"
       ];
     })
     (onlyLinux {
