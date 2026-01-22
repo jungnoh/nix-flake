@@ -13,15 +13,13 @@ in
   config = lib.mkMerge [
     {
       home.packages = with pkgs.unstable; [
+        asdf-vm
         jetbrains-toolbox
         brotli
         cloc
       ];
     }
     (onlyDarwin {
-      homebrew.brews = [
-        "asdf"
-      ];
       homebrew.casks = [
         "claude-code"
         "cursor"
@@ -31,7 +29,6 @@ in
     })
     (onlyLinux {
       home.packages = with pkgs.unstable; [
-        asdf-vm
         sqlitebrowser
         code-cursor
         insomnia

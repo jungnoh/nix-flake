@@ -74,6 +74,9 @@ lib.mkMerge [
           ''
             source ~/.p10k.zsh
 
+            # asdf
+            export PATH="''${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH"
+
             # Lazy-load kubectl aliases (only loaded on first kubectl invocation)
             function kubectl() {
               unfunction kubectl
