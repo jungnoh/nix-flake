@@ -35,8 +35,7 @@ in
     enable = true;
     powerdevil.AC = {
       autoSuspend.action = "nothing";
-      dimDisplay.enable = true;
-      dimDisplay.idleTimeout = 60;
+      dimDisplay.enable = false;
       powerButtonAction = "nothing";
       powerProfile = "performance";
       turnOffDisplay.idleTimeout = "never";
