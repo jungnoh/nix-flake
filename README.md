@@ -1,7 +1,7 @@
 ## Setup
 
 1. `nix shell nixpkgs#nh`
-2. `nh os switch .` or `nh os darwin .` depending on platform
+2. `nh os switch .` or `nh darwin switch .` depending on platform
 
 
 ## References

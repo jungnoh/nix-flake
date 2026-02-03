@@ -17,6 +17,7 @@ in
         jetbrains-toolbox
         brotli
         cloc
+        nil
       ];
     }
     (onlyDarwin {
