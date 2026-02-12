@@ -18,10 +18,6 @@ in
     ../../packages/03-apps/vscode
   ];
 
-  # virt-manager
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
-
   environment.systemPackages = with pkgs; [
     dnsmasq
     (pkgs.writeShellScriptBin "mount-data" ''

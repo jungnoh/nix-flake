@@ -13,6 +13,7 @@ let
       "personal"
       "desktop"
       "dev-env"
+      "containers"
     ];
     languages = [
       "rust"

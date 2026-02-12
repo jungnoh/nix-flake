@@ -7,12 +7,15 @@
   ...
 }:
 {
-  config = {
-    home.packages = with pkgs.unstable; [
-      colima
-      lima
-      docker
-      docker-compose
-    ];
-  };
+  home.packages = with pkgs.unstable; [
+    colima
+    lima
+    docker
+    docker-compose
+    virtio-win
+  ];
+
+  # virt-manager
+  virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
 }
