@@ -17,6 +17,7 @@ let
       "personal"
       "desktop"
       "dev-env"
+      "work" # Temporary
     ];
     languages = [
       "rust"
