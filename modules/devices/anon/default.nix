@@ -5,6 +5,7 @@ let
     inherit hostname inputs;
 
     system = "x86_64-linux";
+    username = "user";
     system_modules = [
       ./configuration.nix
       ./hardware.nix
