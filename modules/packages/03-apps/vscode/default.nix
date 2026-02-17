@@ -47,9 +47,6 @@ in
           dracula-theme.theme-dracula
           pkief.material-icon-theme
           teabyii.ayu
-          # AI Agents
-          # anthropic.claude-code - Hash mismatch
-          kilocode.kilo-code
           # Markdown
           yzhang.markdown-all-in-one
           # Nix

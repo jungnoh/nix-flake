@@ -18,11 +18,12 @@ in
         brotli
         cloc
         nil
+        opencode
+        claude-code
       ];
     }
     (onlyDarwin {
       homebrew.casks = [
-        "claude-code"
         "cursor"
         "db-browser-for-sqlite"
         "insomnia"
@@ -30,8 +31,8 @@ in
     })
     (onlyLinux {
       home.packages = with pkgs.unstable; [
-        sqlitebrowser
         code-cursor
+        sqlitebrowser
         insomnia
       ];
     })
