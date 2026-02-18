@@ -14,6 +14,7 @@ let
       "desktop"
       "dev-env"
       "containers"
+      "kde"
     ];
     languages = [
       "rust"

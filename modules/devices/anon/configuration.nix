@@ -20,6 +20,8 @@ in
 
   environment.systemPackages = with pkgs; [
     dnsmasq
+    psmisc
+    xdriinfo
     (pkgs.writeShellScriptBin "mount-data" ''
       sudo cryptsetup open /dev/disk/by-partlabel/disk-data-data cryptdata
       sudo mount /dev/mapper/cryptdata /mnt/data
@@ -38,17 +40,12 @@ in
   };
 
   networking.hostName = "anon"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
 
   # Enable WOL
-  networking.interfaces.enp24s0.wakeOnLan.enable = true;
+  networking.interfaces.enp4s0.wakeOnLan.enable = true;
   networking.firewall.allowedUDPPorts = [ 9 ];
 
   # Enable CUPS to print documents.
@@ -80,18 +77,51 @@ in
       "networkmanager"
       "wheel"
       "libvirtd"
+      "video"
+      "render"
     ];
   };
+  users.users.xrdp.extraGroups = [
+    "video"
+    "render"
+  ];
 
   services = {
     xrdp = {
-      defaultWindowManager = "startplasma-x11";
       enable = true;
       openFirewall = true;
+      defaultWindowManager = "xfce4-session";
+      extraConfDirCommands = ''
+              ORIG_CONF=$(grep -A1 'param=-config' $out/sesman.ini | tail -1 | sed 's/param=//')
+              cp "$ORIG_CONF" $out/xorg.conf
+
+              substituteInPlace $out/xorg.conf \
+                --replace 'Load "fb"' 'Load "fb"
+                Load "dri3"'
+
+              cat >> $out/xorg.conf <<EOF
+
+              Section "ServerFlags"
+                Option "AutoAddGPU" "false"
+                Option "AutoBindGPU" "false"
+              EndSection
+        EOF
+
+              substituteInPlace $out/sesman.ini \
+                --replace "$ORIG_CONF" '/etc/xrdp/xorg.conf' \
+                --replace 'param=.xorgxrdp.%s.log' 'param=.xorgxrdp.%s.log
+                param=-seat
+                param=seat-xrdp'
+      '';
     };
 
+    displayManager.defaultSession = "xfce";
     xserver = {
-      enable = true;
+      enable = false;
+      desktopManager = {
+        xterm.enable = false;
+        xfce.enable = true;
+      };
 
       # Configure keymap in X11
       xkb = {
@@ -100,6 +130,36 @@ in
       };
     };
   };
+
+  services.udev.extraRules = ''
+    # Attach the GPU and its renderD node to seat-xrdp
+    SUBSYSTEM=="drm", KERNEL=="card1",       TAG+="seat", ENV{ID_SEAT}="seat-xrdp", TAG+="uaccess"
+    SUBSYSTEM=="drm", KERNEL=="renderD128",  TAG+="seat", ENV{ID_SEAT}="seat-xrdp", TAG+="uaccess"
+
+    # Also attach the PCI device itself so logind recognises the seat as having a master device
+    # Replace with your actual PCI path from step 1
+    SUBSYSTEMS=="pci", KERNEL=="0000:06:00.0", TAG+="seat", ENV{ID_SEAT}="seat-xrdp"
+  '';
+
+  security.pam.services.xrdp-sesman = {
+    text = ''
+      auth      requisite    pam_nologin.so
+      auth      include      login
+      account   include      login
+      password  include      login
+
+      # Set XDG_SEAT before pam_systemd runs so the session is created on seat-xrdp
+      session   required     pam_env.so envfile=/etc/xrdp/xrdp-seat.env
+      session   required     pam_loginuid.so
+      session   required     ${pkgs.systemd}/lib/security/pam_systemd.so
+      session   include      login
+    '';
+  };
+
+  environment.etc."xrdp/xrdp-seat.env".text = ''
+    XDG_SEAT=seat-xrdp
+    XDG_SESSION_TYPE=x11
+  '';
 
   # virt-manager
   virtualisation.libvirtd.enable = true;

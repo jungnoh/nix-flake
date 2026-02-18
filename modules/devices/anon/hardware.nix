@@ -15,28 +15,25 @@
   ];
 
   boot.initrd.availableKernelModules = [
-    "nvme"
     "xhci_pci"
     "ahci"
-    "usbhid"
+    "nvme"
     "usb_storage"
+    "usbhid"
     "sd_mod"
     "cryptd"
   ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.kernelModules = [
+    "kvm-amd"
+    "amdgpu"
+  ];
   boot.extraModulePackages = [ ];
-
   systemd.tpm2.enable = false;
-
-  swapDevices = [ ];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 
   hardware.graphics.enable = true;
-  hardware.nvidia.open = false;
-  services.xserver.videoDrivers = [ "nvidia" ];
-  hardware.nvidia.modesetting.enable = true;
-  boot.blacklistedKernelModules = [ "nvidiafb" ];
+  hardware.graphics.enable32Bit = true;
 }
