@@ -100,35 +100,25 @@ in
       openFirewall = true;
       defaultWindowManager = "xfce4-session";
       extraConfDirCommands = ''
-              ORIG_CONF=$(grep -A1 'param=-config' $out/sesman.ini | tail -1 | sed 's/param=//')
-              cp "$ORIG_CONF" $out/xorg.conf
+          ORIG_CONF=$(grep -A1 'param=-config' $out/sesman.ini | tail -1 | sed 's/param=//')
+          cp "$ORIG_CONF" $out/xorg.conf
 
-              substituteInPlace $out/xorg.conf \
-                --replace 'Load "fb"' 'Load "fb"
-              Load "dri3"
-              Load "glamoregl"' \
-                --replace 'Section "Device"' 'Section "Device"
-              Option "TearFree" "true"
-              Option "UseGlamor" "true"
-              BusID "PCI:06:00.0"'
+          substituteInPlace $out/xorg.conf \
+            --replace 'Load "fb"' 'Load "fb"
+          Load "dri3"
+          Load "glamoregl"' \
+            --replace 'Section "Device"' 'Section "Device"
+          Option "UseGlamor" "true"'
 
-              cat >> $out/xorg.conf <<EOF
+          substituteInPlace $out/sesman.ini \
+            --replace "$ORIG_CONF" '/etc/xrdp/xorg.conf' \
+            --replace 'param=.xorgxrdp.%s.log' 'param=.xorgxrdp.%s.log
+        param=-seat
+        param=seat-xrdp' \
+            --replace '[Xorg]' '[Xorg]
+        param=${xorgWrapper}'
 
-              Section "ServerFlags"
-                Option "AutoAddGPU" "false"
-                Option "AutoBindGPU" "false"
-              EndSection
-        EOF
-
-              substituteInPlace $out/sesman.ini \
-                --replace "$ORIG_CONF" '/etc/xrdp/xorg.conf' \
-                --replace 'param=.xorgxrdp.%s.log' 'param=.xorgxrdp.%s.log
-            param=-seat
-            param=seat-xrdp' \
-                --replace '[Xorg]' '[Xorg]
-            param=${xorgWrapper}'
-
-              sed -i '/param=.*xorg-server.*bin\/Xorg/d' $out/sesman.ini
+          sed -i '/param=.*xorg-server.*bin\/Xorg/d' $out/sesman.ini
       '';
     };
 
