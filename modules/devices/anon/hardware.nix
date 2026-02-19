@@ -48,12 +48,11 @@
     enable32Bit = true;
     extraPackages = with pkgs; [
       mesa
-      mesa.drivers
       rocmPackages.clr.icd
     ];
   };
   environment.variables = {
-    LIBGL_DRIVERS_PATH = "${pkgs.mesa.drivers}/lib/dri";
-    LIBVA_DRIVERS_PATH = "${pkgs.mesa.drivers}/lib/dri";
+    LIBGL_DRIVERS_PATH = "${pkgs.mesa}/lib/dri";
+    LIBVA_DRIVERS_PATH = "${pkgs.mesa}/lib/dri";
   };
 }

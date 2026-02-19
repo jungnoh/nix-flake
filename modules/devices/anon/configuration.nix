@@ -10,7 +10,7 @@
 }:
 let
   inherit (ctx) username;
-  mesaDriversPath = "${pkgs.mesa.drivers}/lib/dri";
+  mesaDriversPath = "${pkgs.mesa}/lib/dri";
   xorgWrapper = pkgs.writeShellScript "xorg-xrdp-wrapper" ''
     export LIBGL_DRIVERS_PATH=${mesaDriversPath}
     export LIBVA_DRIVERS_PATH=${mesaDriversPath}
