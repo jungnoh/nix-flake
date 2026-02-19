@@ -21,9 +21,7 @@ let
       else
         [
           ./01-system/linux/common.nix
-          # TODO: Filter desktop-only configs by profile
           ./01-system/linux/i18n.nix
-          ./01-system/linux/kde.nix
         ]
     )
     ++ [
