@@ -42,7 +42,8 @@
             buildInputs = [
               final.xorg.xorgserver
               final.libdrm
-              final.mesa # provides gbm and egl
+              final.mesa # provides mesa drivers
+              final.libgbm # contains mesa-libgbm
               final.libepoxy # provides epoxy
             ];
 

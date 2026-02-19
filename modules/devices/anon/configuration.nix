@@ -109,6 +109,7 @@ in
               Load "glamoregl"' \
                 --replace 'Section "Device"' 'Section "Device"
               Option "TearFree" "true"
+              Option "UseGlamor" "true"
               BusID "PCI:06:00.0"'
 
               cat >> $out/xorg.conf <<EOF
