@@ -99,7 +99,14 @@ in
       enable = true;
       openFirewall = true;
       defaultWindowManager = "xfce4-session";
+      package = pkgs.xrdp.overrideAttrs (old: {
+        buildInputs = old.buildInputs ++ [ pkgs.x264 ];
+        configureFlags = (old.configureFlags or [ ]) ++ [ "--enable-x264" ];
+      });
       extraConfDirCommands = ''
+          # Enable h264
+          sed -i '/\[Xorg\]/a codec_id=20' $out/xrdp.ini
+
           ORIG_CONF=$(grep -A1 'param=-config' $out/sesman.ini | tail -1 | sed 's/param=//')
           cp "$ORIG_CONF" $out/xorg.conf
 
