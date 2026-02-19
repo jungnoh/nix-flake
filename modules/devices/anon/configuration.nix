@@ -10,7 +10,13 @@
 }:
 let
   inherit (ctx) username;
-  wallpaper = ./wallpaper.jpg;
+  mesaDriversPath = "${pkgs.mesa.drivers}/lib/dri";
+  xorgWrapper = pkgs.writeShellScript "xorg-xrdp-wrapper" ''
+    export LIBGL_DRIVERS_PATH=${mesaDriversPath}
+    export LIBVA_DRIVERS_PATH=${mesaDriversPath}
+    export EGL_PLATFORM=drm
+    exec ${pkgs.xorg.xorgserver}/bin/Xorg "$@"
+  '';
 in
 {
   imports = [
@@ -22,6 +28,8 @@ in
     dnsmasq
     psmisc
     xdriinfo
+    xorg.xdpyinfo
+    bintools
     (pkgs.writeShellScriptBin "mount-data" ''
       sudo cryptsetup open /dev/disk/by-partlabel/disk-data-data cryptdata
       sudo mount /dev/mapper/cryptdata /mnt/data
@@ -97,7 +105,11 @@ in
 
               substituteInPlace $out/xorg.conf \
                 --replace 'Load "fb"' 'Load "fb"
-                Load "dri3"'
+              Load "dri3"
+              Load "glamoregl"' \
+                --replace 'Section "Device"' 'Section "Device"
+              Option "TearFree" "true"
+              BusID "PCI:06:00.0"'
 
               cat >> $out/xorg.conf <<EOF
 
@@ -110,8 +122,12 @@ in
               substituteInPlace $out/sesman.ini \
                 --replace "$ORIG_CONF" '/etc/xrdp/xorg.conf' \
                 --replace 'param=.xorgxrdp.%s.log' 'param=.xorgxrdp.%s.log
-                param=-seat
-                param=seat-xrdp'
+            param=-seat
+            param=seat-xrdp' \
+                --replace '[Xorg]' '[Xorg]
+            param=${xorgWrapper}'
+
+              sed -i '/param=.*xorg-server.*bin\/Xorg/d' $out/sesman.ini
       '';
     };
 

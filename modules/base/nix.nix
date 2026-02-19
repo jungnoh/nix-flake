@@ -13,5 +13,21 @@
         config.allowUnfree = true;
       };
     })
+    (final: prev: {
+      xrdp = prev.xrdp.overrideAttrs (old: {
+        buildInputs = old.buildInputs ++ [
+          final.mesa
+          final.libdrm
+          final.libepoxy
+          final.xorg.xorgserver
+        ];
+        preConfigure = (old.preConfigure or "") + ''
+          autoreconf -fi
+        '';
+        configureFlags = (old.configureFlags or [ ]) ++ [
+          "--enable-glamor"
+        ];
+      });
+    })
   ];
 }
