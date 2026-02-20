@@ -53,7 +53,7 @@ in
   networking.networkmanager.enable = true;
 
   # Enable WOL
-  networking.interfaces.enp4s0.wakeOnLan.enable = true;
+  networking.interfaces.enp5s0.wakeOnLan.enable = true;
   networking.firewall.allowedUDPPorts = [ 9 ];
 
   # Enable CUPS to print documents.
@@ -179,11 +179,6 @@ in
   virtualisation.libvirtd.enable = true;
   programs.virt-manager = {
     enable = true;
-    qemu = {
-      package = pkgs.qemu_kvm;
-      runAsRoot = true;
-      swtpm.enable = true;
-    };
   };
 
   # Some programs need SUID wrappers, can be configured further or are

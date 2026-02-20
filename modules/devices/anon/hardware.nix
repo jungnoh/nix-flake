@@ -33,9 +33,10 @@
   ];
   boot.kernelParams = [
     "amd_iommu=on"
-    # TODO: Check PCI ID and set
-    # "vfio-pci.ids=1002:67b0,1002:aac8,144d:a80a"
+    "iommu=pt"
+    "vfio-pci.ids=10de:1c03,10de:10f1"
   ];
+  boot.extraModprobeConfig = "options vfio-pci ids=10de:1c03,10de:10f1";
   boot.extraModulePackages = [ ];
   systemd.tpm2.enable = false;
 
