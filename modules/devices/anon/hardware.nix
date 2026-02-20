@@ -15,6 +15,9 @@
   ];
 
   boot.initrd.availableKernelModules = [
+    "vfio"
+    "vfio_pci"
+    "vfio_iommu_type1"
     "xhci_pci"
     "ahci"
     "nvme"
@@ -27,6 +30,11 @@
   boot.kernelModules = [
     "kvm-amd"
     "amdgpu"
+  ];
+  boot.kernelParams = [
+    "amd_iommu=on"
+    # TODO: Check PCI ID and set
+    # "vfio-pci.ids=1002:67b0,1002:aac8,144d:a80a"
   ];
   boot.extraModulePackages = [ ];
   systemd.tpm2.enable = false;

@@ -177,7 +177,14 @@ in
 
   # virt-manager
   virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
+  programs.virt-manager = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      runAsRoot = true;
+      swtpm.enable = true;
+    };
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
