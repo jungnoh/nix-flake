@@ -61,10 +61,11 @@ in
           # TS/etc.
           dbaeumer.vscode-eslint
           bradlc.vscode-tailwindcss
+          tamasfe.even-better-toml
         ];
         userSettings = {
           "window.commandCenter" = true;
-          "workbench.colorTheme" = "Ayu Dark Bordered";
+          "workbench.colorTheme" = "Monokai Dimmed";
           "vim.handleKeys" = vimHandleKeys;
         }
         // smallTabOptions;
