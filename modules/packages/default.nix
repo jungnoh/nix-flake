@@ -48,6 +48,7 @@ let
     containers = [ ./02-profiles/containers.nix ];
     personal = [ ./02-profiles/personal.nix ];
     work = [ ./02-profiles/work.nix ];
+    kde = [ ./02-profiles/kde.nix ];
   };
 
   featureModules = builtins.concatMap (p: featuresModuleMap."${p}") features;
