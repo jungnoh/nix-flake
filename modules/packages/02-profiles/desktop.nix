@@ -10,11 +10,6 @@ let
 in
 {
   config = lib.mkMerge [
-    {
-      home.packages = with pkgs.unstable; [
-        remmina
-      ];
-    }
     (onlyDarwin {
       homebrew.casks = [
         "notion"
@@ -39,6 +34,7 @@ in
         telegram-desktop
         spotify
         obsidian
+        remmina
         _1password-gui
       ];
     })
