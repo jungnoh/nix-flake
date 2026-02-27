@@ -35,6 +35,7 @@ in
         spotify
         obsidian
         remmina
+        mpv 
         _1password-gui
       ];
     })
