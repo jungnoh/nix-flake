@@ -20,6 +20,29 @@ let
       "vim_mode == literal"
       "vim_mode == insert"
     ];
+    "ctrl-w" = [
+      "vim_mode == literal"
+      "vim_mode == insert"
+      "Picker > Editor"
+      "((VimControl && !menu) || (!Editor && !Terminal))"
+    ];
+    "ctrl-c" = [
+      "vim_mode == visual"
+      "vim_mode == literal"
+      "vim_mode == insert"
+      "vim_mode == replace"
+      "vim_mode == operator"
+      "vim_mode == waiting"
+      "GitCommit > ((Editor && VimControl) && vim_mode == normal)"
+      "((vim_mode == helix_normal) || vim_mode == helix_select) && !menu"
+    ];
+    "ctrl-v" = [
+      "vim_mode == literal"
+      "vim_mode == insert"
+      "vim_mode == replace"
+      "vim_mode == waiting"
+      "(VimControl && !menu)"
+    ];
   };
 
   keysToRemoveGrouped = builtins.groupBy (pair: pair.context) (
@@ -141,6 +164,12 @@ in
         sqlitebrowser
         insomnia
       ];
+      programs.nix-ld = {
+        enable = true;
+        libraries = with pkgs.unstable; [
+          openssl_3
+        ];
+      };
     })
   ];
 }
