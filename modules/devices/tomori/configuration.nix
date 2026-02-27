@@ -114,11 +114,4 @@ in
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
-
-  environment.systemPackages = with pkgs.unstable; [
-    # support both 32-bit and 64-bit applications
-    wineWowPackages.stable
-    # winetricks (all versions)
-    winetricks
-  ];
 }

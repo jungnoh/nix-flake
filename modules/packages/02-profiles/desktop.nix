@@ -28,14 +28,20 @@ in
         "한컴오피스 한글 Viewer" = 416746898;
         "Windows App" = 1295203466;
       };
+      home.packages = with pkgs.unstable; [
+        nixd
+      ];
     })
     (onlyLinux {
+      environment.systemPackages = with pkgs.unstable; [
+        nixd
+      ];
       home.packages = with pkgs.unstable; [
         telegram-desktop
         spotify
         obsidian
         remmina
-        mpv 
+        mpv
         _1password-gui
       ];
     })

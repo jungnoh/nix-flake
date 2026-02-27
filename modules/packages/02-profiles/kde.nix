@@ -72,7 +72,6 @@ in
           {
             systemTray = {
               items.hidden = [
-                "chrome_status_icon_1" # Cursor
                 "spotify-client"
                 "org.kde.plasma.clipboard"
                 "org.kde.plasma.mediacontroller"
