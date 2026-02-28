@@ -15,6 +15,7 @@ let
       "dev-env"
       "containers"
       "kde"
+      "games"
     ];
     languages = [
       "rust"

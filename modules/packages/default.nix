@@ -49,6 +49,7 @@ let
     personal = [ ./02-profiles/personal.nix ];
     work = [ ./02-profiles/work.nix ];
     kde = [ ./02-profiles/kde.nix ];
+    games = [ ./02-profiles/games.nix ];
   };
 
   featureModules = builtins.concatMap (p: featuresModuleMap."${p}") features;
