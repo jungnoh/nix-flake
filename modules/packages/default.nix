@@ -4,11 +4,11 @@
   ctx,
 }:
 let
-  inherit (ctx) isDarwin isLinux;
+  inherit (ctx) isDarwin;
 
   listNixFiles =
     path:
-    builtins.map (file: "${path}/${file}") (
+    map (file: "${path}/${file}") (
       builtins.filter (file: builtins.match ".*\\.nix$" file != null) (
         builtins.attrNames (builtins.readDir path)
       )
@@ -43,7 +43,7 @@ let
       ./02-profiles/dev-env.nix
       ./02-profiles/dev-env-cloud.nix
       ./02-profiles/dev-env-database.nix
-      ./03-apps/vscode
+      ./03-apps/zed
     ];
     containers = [ ./02-profiles/containers.nix ];
     personal = [ ./02-profiles/personal.nix ];
