@@ -3,6 +3,8 @@ let
   devices = [
     # Personal Macbook
     ./pekora
+    # Personal Mac Mini
+    ./suisei
     # Personal CI Machine
     ./soyo
     # Home Desktop
