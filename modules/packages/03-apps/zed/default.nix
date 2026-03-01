@@ -1,11 +1,13 @@
 # Common applications that are used in a desktop environment
 {
+  pkgs,
   ...
 }:
 {
   config = {
     home.programs.zed-editor = {
       enable = true;
+      package = pkgs.unstable.zed-editor;
       extensions = [
         "nix"
         "toml"
