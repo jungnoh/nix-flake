@@ -2,61 +2,6 @@
 {
   ...
 }:
-let
-  keysToRemove = {
-    "ctrl-b" = [
-      "(VimControl && !menu)"
-      "vim_mode == literal"
-    ];
-    "ctrl-f" = [
-      "(VimControl && !menu)"
-      "vim_mode == literal"
-    ];
-    "ctrl-s" = [
-      "vim_mode == literal"
-      "vim_mode == insert"
-    ];
-    "ctrl-w" = [
-      "vim_mode == literal"
-      "vim_mode == insert"
-      "Picker > Editor"
-      "((VimControl && !menu) || (!Editor && !Terminal))"
-    ];
-    "ctrl-c" = [
-      "vim_mode == visual"
-      "vim_mode == literal"
-      "vim_mode == insert"
-      "vim_mode == replace"
-      "vim_mode == operator"
-      "vim_mode == waiting"
-      "GitCommit > ((Editor && VimControl) && vim_mode == normal)"
-      "((vim_mode == helix_normal) || vim_mode == helix_select) && !menu"
-    ];
-    "ctrl-v" = [
-      "vim_mode == literal"
-      "vim_mode == insert"
-      "vim_mode == replace"
-      "vim_mode == waiting"
-      "(VimControl && !menu)"
-    ];
-  };
-
-  keysToRemoveGrouped = builtins.groupBy (pair: pair.context) (
-    builtins.concatMap (key: map (context: { inherit context key; }) keysToRemove.${key}) (
-      builtins.attrNames keysToRemove
-    )
-  );
-  keysToRemoveFinal = map (context: {
-    inherit context;
-    bindings = builtins.listToAttrs (
-      map (p: {
-        name = p.key;
-        value = null;
-      }) keysToRemoveGrouped.${context}
-    );
-  }) (builtins.attrNames keysToRemoveGrouped);
-
-in
 {
   config = {
     home.programs.zed-editor = {
@@ -118,21 +63,20 @@ in
         # Tell Zed to use direnv and direnv can use a flake.nix environment
         load_direnv = "shell_hook";
       };
-      userKeymaps = keysToRemoveFinal ++ [
+      userKeymaps = [
+        # https://zed.dev/docs/vim#restoring-common-text-editing-and-zed-keybindings
         {
-          context = "(VimControl && !menu)";
+          context = "Editor && !menu";
           bindings = {
-            "ctrl-b" = null;
-          };
-        }
-        {
-          context = "vim_mode == literal";
-          bindings = {
-            "ctrl-b" = null;
-          };
-        }
-        {
-          bindings = {
+            "ctrl-f" = "buffer_search::Deploy";
+            "ctrl-c" = "editor::Copy";
+            "ctrl-x" = "editor::Cut";
+            "ctrl-v" = "editor::Paste";
+            "ctrl-a" = "editor::SelectAll";
+            "ctrl-y" = "editor::Undo";
+            "ctrl-t" = "project_symbols::Toggle";
+            "ctrl-o" = "workspace::Open";
+            "ctrl-s" = "workspace::Save";
             "ctrl-b" = "workspace::ToggleLeftDock";
           };
         }
