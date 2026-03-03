@@ -1,7 +1,4 @@
 {
-  pkgs,
-  lib,
-  config,
   ...
 }:
 {
@@ -9,7 +6,7 @@
     # Initialize Homebrew Casks
     homebrew = {
       enable = true;
-      brewPrefix = "/opt/homebrew/bin";
+      prefix = "/opt/homebrew";
       onActivation = {
         autoUpdate = true;
         cleanup = "zap";
@@ -18,7 +15,6 @@
 
       global = {
         brewfile = true;
-        lockfiles = true;
       };
 
       extraConfig = ''

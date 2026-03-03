@@ -17,12 +17,12 @@ in
         typst
         font-awesome
         rclone
+        discord
+        slack
       ];
     }
     (onlyDarwin {
       homebrew.casks = [
-        "discord"
-        "slack"
         "tailscale-app"
         "losslesscut"
         "mullvad-vpn"
@@ -32,10 +32,6 @@ in
       };
     })
     (onlyLinux {
-      home.packages = with pkgs.unstable; [
-        discord
-        slack
-      ];
       services.mullvad-vpn = {
         enable = true;
         package = pkgs.unstable.mullvad-vpn;

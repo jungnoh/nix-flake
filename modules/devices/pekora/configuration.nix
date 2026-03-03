@@ -12,7 +12,6 @@ in
   environment = {
     systemPackages = [ pkgs.vim ];
     systemPath = [
-      "/opt/homebrew/bin"
       "~/go/bin"
     ];
     pathsToLink = [ "/Applications" ];

@@ -21,8 +21,8 @@ in
       ];
     }
     (onlyDarwin {
-      homebrew.casks = [
-        "utm"
+      home.packages = with pkgs.unstable; [
+        utm
       ];
     })
     (onlyLinux {

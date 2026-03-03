@@ -10,13 +10,18 @@ let
 in
 {
   config = lib.mkMerge [
+    {
+      home.packages = with pkgs.unstable; [
+        google-chrome
+      ];
+    }
     (onlyDarwin {
+      home.packages = with pkgs.unstable; [
+        betterdisplay
+        iterm2
+      ];
       homebrew.casks = [
-        "google-chrome"
-        # macOS Only
-        "iterm2"
         "fuwari"
-        "betterdisplay"
       ];
       homebrew.masApps = {
         "Magnet" = 441258766;
@@ -26,7 +31,6 @@ in
     (onlyLinux {
       programs.firefox.enable = true;
       home.packages = with pkgs.unstable; [
-        google-chrome
         parted
       ];
     })
