@@ -7,7 +7,7 @@
 }:
 let
   cfgRust = {
-    home.packages = with pkgs.unstable; [
+    home.packages = with pkgs; [
       rustup
       cargo-binstall
     ];
@@ -16,25 +16,25 @@ let
     ];
   };
   cfgGo = {
-    home.packages = with pkgs.unstable; [
+    home.packages = with pkgs; [
       go
       go-migrate
     ];
   };
   cfgDotnet = {
-    home.packages = with pkgs.unstable; [
+    home.packages = with pkgs; [
       dotnet-sdk_9
     ];
     home.sessionVariables = {
       # See https://stackoverflow.com/q/74895147
-      DOTNET_ROOT = "${pkgs.unstable.dotnet-sdk_9}/share/dotnet";
+      DOTNET_ROOT = "${pkgs.dotnet-sdk_9}/share/dotnet";
     };
     home.sessionPath = [
       "$HOME/.dotnet/tools"
     ];
   };
   cfgNode = {
-    home.packages = with pkgs.unstable; [
+    home.packages = with pkgs; [
       deno
       nodejs
       nodePackages.pnpm

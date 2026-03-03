@@ -12,7 +12,7 @@ in
   # TODO: Wireguard
   config = lib.mkMerge [
     {
-      home.packages = with pkgs.unstable; [
+      home.packages = with pkgs; [
         vault
       ];
       home.shellAliases = {
@@ -26,7 +26,7 @@ in
       ];
     })
     (onlyLinux {
-      home.packages = with pkgs.unstable; [
+      home.packages = with pkgs; [
         slack
       ];
     })

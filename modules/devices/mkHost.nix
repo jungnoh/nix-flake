@@ -9,7 +9,7 @@
   username ? "jungnoh",
 }:
 let
-  inherit (inputs) home-manager nixpkgs-unstable disko;
+  inherit (inputs) home-manager disko;
 
   isDarwin = builtins.elem system [
     "aarch64-darwin"
@@ -48,7 +48,7 @@ let
       [ ];
 
   modules =
-    ((import ../base) { inherit nixpkgs-unstable; })
+    (import ../base)
     ++ diskoModules
     ++ [ homeManager ]
     ++ system_modules

@@ -1,6 +1,4 @@
 {
-  nixpkgs,
-  nixpkgs-unstable,
   nix-darwin,
   ...
 }@inputs:

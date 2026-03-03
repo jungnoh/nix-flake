@@ -13,7 +13,7 @@ in
     {
       home.programs.zed-editor = {
         enable = true;
-        package = pkgs.unstable.zed-editor;
+        package = pkgs.zed-editor;
         extensions = [
           "nix"
           "toml"
@@ -94,7 +94,7 @@ in
     (onlyLinux {
       programs.nix-ld = {
         enable = true;
-        libraries = with pkgs.unstable; [
+        libraries = with pkgs; [
           openssl_3
         ];
       };

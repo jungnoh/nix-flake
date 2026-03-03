@@ -28,15 +28,15 @@ in
         "한컴오피스 한글 Viewer" = 416746898;
         "Windows App" = 1295203466;
       };
-      home.packages = with pkgs.unstable; [
+      home.packages = with pkgs; [
         nixd
       ];
     })
     (onlyLinux {
-      environment.systemPackages = with pkgs.unstable; [
+      environment.systemPackages = with pkgs; [
         nixd
       ];
-      home.packages = with pkgs.unstable; [
+      home.packages = with pkgs; [
         telegram-desktop
         spotify
         obsidian

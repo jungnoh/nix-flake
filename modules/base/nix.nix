@@ -1,5 +1,4 @@
-{ nixpkgs-unstable }:
-{ pkgs, ... }:
+{ ... }:
 {
   nix.settings.experimental-features = [
     "nix-command"
@@ -9,12 +8,6 @@
   nixpkgs.overlays = [
     # Note: Code from https://github.com/NixOS/nixpkgs/blob/nixos-25.11/pkgs/by-name/xr/xrdp/package.nix
     # Updates are needed when the upstream package is updated.
-    (final: prev: {
-      unstable = import nixpkgs-unstable {
-        system = prev.stdenv.hostPlatform.system;
-        config.allowUnfree = true;
-      };
-    })
     (final: prev: {
       xrdp = prev.xrdp.overrideAttrs (
         old:

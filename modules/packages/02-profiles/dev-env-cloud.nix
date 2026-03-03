@@ -7,7 +7,7 @@
 }:
 {
   config = {
-    home.packages = with pkgs.unstable; [
+    home.packages = with pkgs; [
       # Kubernetes
       kubectl
       krew

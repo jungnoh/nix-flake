@@ -13,7 +13,7 @@ in
 {
   config = lib.mkMerge [
     {
-      environment.systemPackages = with pkgs.unstable; [
+      environment.systemPackages = with pkgs; [
         vim
         nano
         # Tools

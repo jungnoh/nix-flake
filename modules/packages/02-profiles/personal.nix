@@ -11,7 +11,7 @@ in
 {
   config = lib.mkMerge [
     {
-      home.packages = with pkgs.unstable; [
+      home.packages = with pkgs; [
         anki-bin
         gemini-cli-bin
         typst
@@ -34,7 +34,7 @@ in
     (onlyLinux {
       services.mullvad-vpn = {
         enable = true;
-        package = pkgs.unstable.mullvad-vpn;
+        package = pkgs.mullvad-vpn;
       };
       services.resolved = {
         enable = true;

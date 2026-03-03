@@ -14,7 +14,7 @@ let
 in
 {
   config = {
-    environment.systemPackages = with pkgs.unstable; [ git ];
+    environment.systemPackages = with pkgs; [ git ];
     home.programs.git = {
       enable = true;
       settings = {

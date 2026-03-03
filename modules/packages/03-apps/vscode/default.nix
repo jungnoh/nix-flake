@@ -38,7 +38,7 @@ in
     home.programs.vscode = {
       enable = true;
       profiles.default = {
-        extensions = with pkgs.unstable.vscode-extensions; [
+        extensions = with pkgs.vscode-extensions; [
           # Basics
           editorconfig.editorconfig
           vscodevim.vim

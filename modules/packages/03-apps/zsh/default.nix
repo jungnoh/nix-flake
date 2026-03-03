@@ -25,7 +25,7 @@ let
 in
 lib.mkMerge [
   (onlyLinux {
-    users.defaultUserShell = pkgs.unstable.zsh;
+    users.defaultUserShell = pkgs.zsh;
   })
   {
     home.programs = {

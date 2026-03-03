@@ -8,7 +8,7 @@
 {
   config = {
     # These are installed as home packages because we need these only for clients
-    home.packages = with pkgs.unstable; [
+    home.packages = with pkgs; [
       redis
       postgresql
       mysql84

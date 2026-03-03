@@ -11,12 +11,12 @@ in
 {
   config = lib.mkMerge [
     {
-      home.packages = with pkgs.unstable; [
+      home.packages = with pkgs; [
         google-chrome
       ];
     }
     (onlyDarwin {
-      home.packages = with pkgs.unstable; [
+      home.packages = with pkgs; [
         betterdisplay
         iterm2
       ];
@@ -30,7 +30,7 @@ in
     })
     (onlyLinux {
       programs.firefox.enable = true;
-      home.packages = with pkgs.unstable; [
+      home.packages = with pkgs; [
         parted
       ];
     })

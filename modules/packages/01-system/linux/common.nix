@@ -4,14 +4,14 @@
 }:
 {
   config = {
-    environment.systemPackages = with pkgs.unstable; [
+    environment.systemPackages = with pkgs; [
       net-tools
       pciutils
       usbutils
       nvme-cli
     ];
 
-    home.packages = with pkgs.unstable; [
+    home.packages = with pkgs; [
       xclip
     ];
 

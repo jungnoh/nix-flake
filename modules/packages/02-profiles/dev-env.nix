@@ -4,7 +4,7 @@
   ...
 }:
 {
-  home.packages = with pkgs.unstable; [
+  home.packages = with pkgs; [
     asdf-vm
     jetbrains-toolbox
     brotli
