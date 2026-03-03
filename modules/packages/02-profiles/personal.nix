@@ -1,5 +1,4 @@
 {
-  config,
   lib,
   pkgs,
   ctx,
@@ -22,9 +21,10 @@ in
       ];
     }
     (onlyDarwin {
+      home.packages = with pkgs; [
+        tailscale-gui
+      ];
       homebrew.casks = [
-        "tailscale-app"
-        "losslesscut"
         "mullvad-vpn"
       ];
       home.programs.zsh.shellAliases = {

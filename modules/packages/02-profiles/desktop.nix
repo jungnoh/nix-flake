@@ -10,18 +10,19 @@ let
 in
 {
   config = lib.mkMerge [
+    {
+      home.packages = with pkgs; [
+        notion-app
+        telegram-desktop
+        spotify
+        obsidian
+        _1password-gui
+      ];
+    }
     (onlyDarwin {
       homebrew.casks = [
-        "notion"
-        "telegram"
-        "spotify"
-        "obsidian"
-        "1password"
-        # macOS Only
-        "claude" # Claude Code is installed at dev-env.nix
-        "iterm2"
-        "fuwari"
-        "betterdisplay"
+        # Claude Code is installed at dev-env.nix
+        "claude"
       ];
       homebrew.masApps = {
         "KakaoTalk" = 869223134;
@@ -37,12 +38,8 @@ in
         nixd
       ];
       home.packages = with pkgs; [
-        telegram-desktop
-        spotify
-        obsidian
         remmina
         mpv
-        _1password-gui
       ];
     })
   ];

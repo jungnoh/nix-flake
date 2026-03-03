@@ -13,9 +13,7 @@
         upgrade = true;
       };
 
-      global = {
-        brewfile = true;
-      };
+      global.brewfile = true;
 
       extraConfig = ''
         cask_args require_sha: true
