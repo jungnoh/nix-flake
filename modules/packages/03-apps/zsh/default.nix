@@ -26,6 +26,7 @@ in
 lib.mkMerge [
   (onlyLinux {
     users.defaultUserShell = pkgs.zsh;
+    programs.zsh.enable = true;
   })
   {
     home.programs = {

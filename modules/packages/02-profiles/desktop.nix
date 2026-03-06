@@ -12,7 +12,6 @@ in
   config = lib.mkMerge [
     {
       home.packages = with pkgs; [
-        notion-app
         telegram-desktop
         spotify
         obsidian
@@ -31,6 +30,7 @@ in
       };
       home.packages = with pkgs; [
         nixd
+        notion-app
       ];
     })
     (onlyLinux {
