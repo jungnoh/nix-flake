@@ -7,9 +7,10 @@
   disko_modules ? [ ],
   system_modules ? [ ],
   username ? "jungnoh",
+  use_agenix ? false,
 }:
 let
-  inherit (inputs) home-manager disko;
+  inherit (inputs) home-manager disko agenix;
 
   isDarwin = builtins.elem system [
     "aarch64-darwin"
@@ -47,9 +48,21 @@ let
     else
       [ ];
 
+  agenixModules =
+    if use_agenix then
+      [
+        agenix.nixosModules.default
+        {
+          environment.systemPackages = [ agenix.packages.${system}.default ];
+        }
+      ]
+    else
+      [ ];
+
   modules =
     (import ../base)
     ++ diskoModules
+    ++ agenixModules
     ++ [ homeManager ]
     ++ system_modules
     ++ (import ../packages { inherit features ctx languages; });
