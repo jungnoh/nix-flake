@@ -16,11 +16,11 @@ in
         telegram-desktop
         spotify
         obsidian
-        _1password-gui
       ];
     }
     (onlyDarwin {
       homebrew.casks = [
+        "1password"
         # Claude Code is installed at dev-env.nix
         "claude"
       ];
@@ -40,6 +40,7 @@ in
       home.packages = with pkgs; [
         remmina
         mpv
+        _1password-gui
       ];
     })
   ];
