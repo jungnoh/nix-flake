@@ -6,6 +6,9 @@ let
   internalPorts = {
     linkwarden = 9001;
   };
+
+  pgdumpall = "${pkgs.postgresql_17}/bin/pg_dumpall";
+  s5cmd = "${pkgs.s5cmd}/bin/s5cmd";
 in
 {
   # Tailscale
@@ -76,6 +79,44 @@ in
     environment = {
       # This is wrong, but works anyway
       NEXTAUTH_URL = "http://localhost:3000/api/v1/auth";
+    };
+  };
+
+  # Linkwarden backup
+  age.secrets.backblaze-key = {
+    file = ../../../secrets/soyo-backblaze.age;
+    owner = "linkwarden";
+  };
+  systemd.timers."linkwarden-backup" = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 3:00:00";
+      Persistent = true;
+      Unit = "linkwarden-backup.service";
+    };
+  };
+  systemd.services."linkwarden-backup" = {
+    script = ''
+      export TDIR=$(${pkgs.mktemp}/bin/mktemp -d)
+      export POSTGRES_PASSWORD=$(< ${config.age.secrets.linkwarden-postgres.path})
+
+      export AWS_ACCESS_KEY_ID=00544cfc0850c450000000003
+      export AWS_SECRET_ACCESS_KEY=$(< ${config.age.secrets.backblaze-key.path})
+      export S3_ENDPOINT_URL=https://s3.us-east-005.backblazeb2.com
+
+      echo "Dumping database"
+      ${pgdumpall} -d 'postgresql://linkwarden@localhost/linkwarden?host=/run/postgresql' --no-role-passwords --inserts > $TDIR/postgres.sql
+      echo "Uploading database dump"
+      ${s5cmd} sync $TDIR/ s3://jungnoh-soyo/linkwarden/db/
+      echo "Uploading data"
+      ${s5cmd} sync /var/lib/linkwarden s3://jungnoh-soyo/linkwarden/data/
+      echo "Cleaning up"
+      rm -rf $TDIR
+      echo "All done!"
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "linkwarden";
     };
   };
 }

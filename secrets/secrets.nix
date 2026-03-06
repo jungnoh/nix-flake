@@ -13,4 +13,6 @@ in
   "soyo-linkwarden-nextauth.age".publicKeys = [ systems.soyo ];
   # Linkwarden POSTGRES_PASSWORD
   "soyo-linkwarden-postgres.age".publicKeys = [ systems.soyo ];
+  # Backblaze B2 for backup
+  "soyo-backblaze.age".publicKeys = [ systems.soyo ];
 }
