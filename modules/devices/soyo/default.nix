@@ -10,6 +10,7 @@ let
     system_modules = [
       ./configuration.nix
       ./hardware.nix
+      ./services.nix
     ];
     disko_modules = [
       ./disko-config.nix

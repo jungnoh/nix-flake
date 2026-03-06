@@ -8,7 +8,9 @@ let
 in
 {
   # GA runner token for jungnoh/pekora-cs
-  "soyo-github-runner-pekora.age".publicKeys = [
-    systems.soyo
-  ];
+  "soyo-github-runner-pekora.age".publicKeys = [ systems.soyo ];
+  # Linkwarden NEXTAUTH_SECRET
+  "soyo-linkwarden-nextauth.age".publicKeys = [ systems.soyo ];
+  # Linkwarden POSTGRES_PASSWORD
+  "soyo-linkwarden-postgres.age".publicKeys = [ systems.soyo ];
 }

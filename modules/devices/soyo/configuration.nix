@@ -37,17 +37,6 @@ in
       ];
     };
 
-    age.secrets.ga-pekora-token.file = ../../../secrets/soyo-github-runner-pekora.age;
-
-    services.github-runners = {
-      pekora = {
-        enable = true;
-        name = "pekora-cs";
-        tokenFile = config.age.secrets.ga-pekora-token.path;
-        url = "https://github.com/jungnoh/pekora-cs";
-      };
-    };
-
     system.stateVersion = "25.11";
   };
 }
