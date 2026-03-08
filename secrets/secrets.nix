@@ -15,4 +15,9 @@ in
   "soyo-linkwarden-postgres.age".publicKeys = [ systems.soyo ];
   # Backblaze B2 for backup
   "soyo-backblaze.age".publicKeys = [ systems.soyo ];
+  # Gemini API
+  "gemini.age".publicKeys = [
+    systems.soyo
+    users.tomori
+  ];
 }

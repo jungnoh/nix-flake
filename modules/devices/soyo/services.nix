@@ -68,6 +68,10 @@ in
     file = ../../../secrets/soyo-linkwarden-postgres.age;
     owner = "linkwarden";
   };
+  age.secrets.linkwarden-gemini = {
+    file = ../../../secrets/gemini.age;
+    owner = "linkwarden";
+  };
   services.linkwarden = {
     enable = true;
     enableRegistration = false;
@@ -75,8 +79,11 @@ in
     secretFiles = {
       POSTGRES_PASSWORD = config.age.secrets.linkwarden-postgres.path;
       NEXTAUTH_SECRET = config.age.secrets.linkwarden-nextauth.path;
+      OPENAI_API_KEY = config.age.secrets.linkwarden-gemini.path;
     };
     environment = {
+      CUSTOM_OPENAI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/";
+      OPENAI_MODEL = "gemini-3.1-flash-lite-preview";
       # This is wrong, but works anyway
       NEXTAUTH_URL = "http://localhost:3000/api/v1/auth";
     };
