@@ -1,10 +1,14 @@
 { pkgs, config, ... }:
 let
+  inherit (pkgs) lib;
+
   externalPorts = {
     linkwarden = 8001;
+    forgejo = 8002;
   };
   internalPorts = {
     linkwarden = 9001;
+    forgejo = 9002;
   };
 
   pgdumpall = "${pkgs.postgresql_17}/bin/pg_dumpall";
@@ -52,9 +56,23 @@ in
         }
       ];
       locations."/" = {
-        proxyPass = "http://localhost:${builtins.toString internalPorts.linkwarden}";
+        proxyPass = "http://localhost:${toString internalPorts.linkwarden}";
         proxyWebsockets = true;
         extraConfig = "proxy_pass_header Authorization;";
+      };
+    };
+    virtualHosts.forgejo = {
+      listen = [
+        {
+          addr = "0.0.0.0";
+          port = externalPorts.forgejo;
+        }
+      ];
+      extraConfig = ''
+        client_max_body_size 512M;
+      '';
+      locations."/" = {
+        proxyPass = "http://localhost:${toString internalPorts.forgejo}";
       };
     };
   };
@@ -90,7 +108,7 @@ in
   };
 
   # Linkwarden backup
-  age.secrets.backblaze-key = {
+  age.secrets.linkwarden-backblaze-key = {
     file = ../../../secrets/soyo-backblaze.age;
     owner = "linkwarden";
   };
@@ -108,7 +126,7 @@ in
       export POSTGRES_PASSWORD=$(< ${config.age.secrets.linkwarden-postgres.path})
 
       export AWS_ACCESS_KEY_ID=00544cfc0850c450000000003
-      export AWS_SECRET_ACCESS_KEY=$(< ${config.age.secrets.backblaze-key.path})
+      export AWS_SECRET_ACCESS_KEY=$(< ${config.age.secrets.linkwarden-backblaze-key.path})
       export S3_ENDPOINT_URL=https://s3.us-east-005.backblazeb2.com
 
       echo "Dumping database"
@@ -124,6 +142,82 @@ in
     serviceConfig = {
       Type = "oneshot";
       User = "linkwarden";
+    };
+  };
+
+  # Forejo: https://wiki.nixos.org/wiki/Forgejo
+  services.forgejo = {
+    enable = true;
+    database.type = "postgres";
+    lfs.enable = true;
+    settings = {
+      server = {
+        SSH_PORT = lib.head config.services.openssh.ports;
+        HTTP_PORT = internalPorts.forgejo;
+      };
+      # You can temporarily allow registration to create an admin user.
+      service.DISABLE_REGISTRATION = true;
+      # Add support for actions, based on act: https://github.com/nektos/act
+      actions = {
+        ENABLED = true;
+        DEFAULT_ACTIONS_URL = "github";
+      };
+      mailer.ENABLED = false;
+    };
+  };
+
+  # Action runner for Forgejo
+  age.secrets.forgejo-runner = {
+    file = ../../../secrets/soyo-forgejo-runner.age;
+    owner = "forgejo";
+  };
+  services.gitea-actions-runner = {
+    package = pkgs.forgejo-runner;
+    instances.default = {
+      enable = true;
+      name = "soyo";
+      url = "http://localhost:${toString internalPorts.forgejo}";
+      tokenFile = config.age.secrets.forgejo-runner.path;
+      labels = [
+        "native:host"
+      ];
+    };
+  };
+
+  # Forgejo backup
+  age.secrets.forgejo-backblaze-key = {
+    file = ../../../secrets/soyo-backblaze.age;
+    owner = "forgejo";
+  };
+  systemd.timers."forgejo-backup" = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 2:00:00";
+      Persistent = true;
+      Unit = "forgejo-backup.service";
+    };
+  };
+  systemd.services."forgejo-backup" = {
+    script = ''
+      export TDIR=$(${pkgs.mktemp}/bin/mktemp -d)
+
+      export AWS_ACCESS_KEY_ID=00544cfc0850c450000000003
+      export AWS_SECRET_ACCESS_KEY=$(< ${config.age.secrets.forgejo-backblaze-key.path})
+      export S3_ENDPOINT_URL=https://s3.us-east-005.backblazeb2.com
+
+      echo "Dumping"
+      cd $TDIR
+      ${pkgs.forgejo-lts}/bin/forgejo dump -c /var/lib/forgejo/custom/conf/app.ini -f forgejo-dump.zip
+      echo "Uploading"
+      ${s5cmd} sync $TDIR/ s3://jungnoh-soyo/forgejo/
+      echo "Cleaning up"
+      cd ~
+      rm -rf $TDIR
+      echo "All done!"
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "forgejo";
     };
   };
 }
