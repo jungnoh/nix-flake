@@ -11,6 +11,9 @@ in
 {
   config = lib.mkMerge [
     {
+      home.packages = with pkgs; [
+        nerd-fonts.jetbrains-mono
+      ];
       home.programs.zed-editor = {
         enable = true;
         package = pkgs.zed-editor;
@@ -32,6 +35,7 @@ in
           "just"
         ];
         userSettings = {
+          buffer_font_family = "JetBrainsMono Nerd Font";
           icon_theme = "Material Icon Theme";
           theme = "Ayu Dark";
           theme_overrides = {
