@@ -1,12 +1,7 @@
 {
-  config,
   pkgs,
-  ctx,
   ...
 }:
-let
-  locale = "en_US";
-in
 {
   # Set your time zone.
   time.timeZone = "Asia/Seoul";

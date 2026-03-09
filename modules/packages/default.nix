@@ -6,29 +6,11 @@
 let
   inherit (ctx) isDarwin;
 
-  listNixFiles =
-    path:
-    map (file: "${path}/${file}") (
-      builtins.filter (file: builtins.match ".*\\.nix$" file != null) (
-        builtins.attrNames (builtins.readDir path)
-      )
-    );
-
-  commonModules =
-    (
-      if isDarwin then
-        (listNixFiles ./01-system/darwin)
-      else
-        [
-          ./01-system/linux/common.nix
-          ./01-system/linux/i18n.nix
-        ]
-    )
-    ++ [
-      ./02-profiles/common.nix
-      ./03-apps/git
-      ./03-apps/zsh
-    ];
+  commonModules = (if isDarwin then (import ./01-system/darwin) else ./01-system/linux) ++ [
+    ./02-profiles/common.nix
+    ./03-apps/git
+    ./03-apps/zsh
+  ];
 
   featuresModuleMap = {
     desktop = [
