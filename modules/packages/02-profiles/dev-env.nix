@@ -14,5 +14,6 @@
     claude-code
     sqlitebrowser
     insomnia
+    just
   ];
 }

@@ -24,6 +24,7 @@ in
         # Serialization
         jq
         yq
+        tomlq
         # Network
         curl
         wget
