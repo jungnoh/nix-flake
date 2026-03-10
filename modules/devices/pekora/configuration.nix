@@ -36,4 +36,6 @@ in
       show-recents = false; # disable recent apps
     };
   };
+
+  homebrew.casks = [ "utm" ];
 }

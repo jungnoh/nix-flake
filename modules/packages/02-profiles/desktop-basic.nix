@@ -14,11 +14,15 @@ in
       home.packages = with pkgs; [
         google-chrome
       ];
+      home.configFile."ghostty/config".source = pkgs.writeText "ghostty-config" ''
+        auto-update = "off"
+        theme = "adventure"
+      '';
     }
     (onlyDarwin {
       home.packages = with pkgs; [
         betterdisplay
-        iterm2
+        ghostty-bin
       ];
       homebrew.casks = [
         "fuwari"
@@ -32,6 +36,7 @@ in
       programs.firefox.enable = true;
       home.packages = with pkgs; [
         parted
+        ghostty
       ];
     })
   ];
