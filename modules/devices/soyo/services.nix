@@ -166,24 +166,6 @@ in
     };
   };
 
-  # Action runner for Forgejo
-  age.secrets.forgejo-runner = {
-    file = ../../../secrets/soyo-forgejo-runner.age;
-    owner = "forgejo";
-  };
-  services.gitea-actions-runner = {
-    package = pkgs.forgejo-runner;
-    instances.default = {
-      enable = true;
-      name = "soyo";
-      url = "http://localhost:${toString internalPorts.forgejo}";
-      tokenFile = config.age.secrets.forgejo-runner.path;
-      labels = [
-        "native:host"
-      ];
-    };
-  };
-
   # Forgejo backup
   age.secrets.forgejo-backblaze-key = {
     file = ../../../secrets/soyo-backblaze.age;
