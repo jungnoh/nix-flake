@@ -1,9 +1,15 @@
 {
   pkgs,
+  ctx,
   ...
 }:
+let
+  inherit (ctx) hostname;
+in
 {
   config = {
+    networking.hostName = hostname;
+
     environment.systemPackages = with pkgs; [
       net-tools
       pciutils

@@ -47,8 +47,6 @@ in
     device = "nodev";
   };
 
-  networking.hostName = "anon"; # Define your hostname.
-
   # Enable networking
   networking.networkmanager.enable = true;
 

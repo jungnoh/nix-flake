@@ -17,6 +17,7 @@ in
       home.configFile."ghostty/config".source = pkgs.writeText "ghostty-config" ''
         auto-update = "off"
         theme = "adventure"
+        shell-integration-features = "ssh-env"
       '';
     }
     (onlyDarwin {
