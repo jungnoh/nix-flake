@@ -18,6 +18,7 @@ in
   networking.networkmanager.enable = true;
   networking.wireless.enable = true;
   networking.hostName = hostname;
+  networking.networkmanager.wifi.powersave = false;
 
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
