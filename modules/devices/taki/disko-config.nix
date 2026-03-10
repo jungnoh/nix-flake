@@ -1,7 +1,7 @@
 {
   disko.devices = {
     disk = {
-      my-disk = {
+      os = {
         device = "/dev/nvme0n1";
         type = "disk";
         content = {
@@ -28,6 +28,23 @@
                 type = "filesystem";
                 format = "btrfs";
                 mountpoint = "/";
+              };
+            };
+          };
+        };
+      };
+      data = {
+        device = "/dev/sda";
+        type = "disk";
+        content = {
+          type = "gpt";
+          partitions = {
+            data = {
+              size = "100%";
+              content = {
+                type = "filesystem";
+                format = "btrfs";
+                mountpoint = "/mnt/data";
               };
             };
           };

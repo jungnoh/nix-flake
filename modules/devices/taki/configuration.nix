@@ -31,6 +31,7 @@ in
   users.users.${username} = {
     isNormalUser = true;
     description = username;
+    initialPassword = "mygo";
     extraGroups = [
       "networkmanager"
       "wheel"

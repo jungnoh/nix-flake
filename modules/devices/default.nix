@@ -9,6 +9,7 @@ let
     ./soyo
     # Home Desktop
     ./tomori
+    ./taki
     # VM Host Desktop
     ./anon
   ];
