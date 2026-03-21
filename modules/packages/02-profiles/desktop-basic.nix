@@ -11,9 +11,6 @@ in
 {
   config = lib.mkMerge [
     {
-      home.packages = with pkgs; [
-        google-chrome
-      ];
       home.configFile."ghostty/config".source = pkgs.writeText "ghostty-config" ''
         auto-update = "off"
         theme = "adventure"
@@ -27,6 +24,7 @@ in
       ];
       homebrew.casks = [
         "fuwari"
+        "google-chrome"
       ];
       homebrew.masApps = {
         "Magnet" = 441258766;
@@ -36,6 +34,7 @@ in
     (onlyLinux {
       programs.firefox.enable = true;
       home.packages = with pkgs; [
+        google-chrome
         parted
         ghostty
       ];

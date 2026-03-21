@@ -37,5 +37,8 @@ in
     };
   };
 
-  homebrew.casks = [ "utm" ];
+  homebrew.casks = [
+    "utm"
+    "winbox"
+  ];
 }
