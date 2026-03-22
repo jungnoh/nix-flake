@@ -31,6 +31,7 @@ in
       home.packages = with pkgs; [
         nixd
         notion-app
+        iina
       ];
     })
     (onlyLinux {
