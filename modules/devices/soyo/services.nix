@@ -11,7 +11,7 @@ let
     forgejo = 9002;
   };
 
-  pgdumpall = "${pkgs.postgresql_17}/bin/pg_dumpall";
+  pgdump = "${pkgs.postgresql_17}/bin/pg_dump";
   s5cmd = "${pkgs.s5cmd}/bin/s5cmd";
 in
 {
@@ -123,14 +123,14 @@ in
   systemd.services."linkwarden-backup" = {
     script = ''
       export TDIR=$(${pkgs.mktemp}/bin/mktemp -d)
-      export POSTGRES_PASSWORD=$(< ${config.age.secrets.linkwarden-postgres.path})
+      export PGPASSWORD=$(< ${config.age.secrets.linkwarden-postgres.path})
 
       export AWS_ACCESS_KEY_ID=00544cfc0850c450000000003
       export AWS_SECRET_ACCESS_KEY=$(< ${config.age.secrets.linkwarden-backblaze-key.path})
       export S3_ENDPOINT_URL=https://s3.us-east-005.backblazeb2.com
 
       echo "Dumping database"
-      ${pgdumpall} -d 'postgresql://linkwarden@localhost/linkwarden?host=/run/postgresql' --no-role-passwords --inserts > $TDIR/postgres.sql
+      ${pgdump} -h /run/postgresql -U linkwarden -d linkwarden --inserts > $TDIR/postgres.sql
       echo "Uploading database dump"
       ${s5cmd} sync $TDIR/ s3://jungnoh-soyo/linkwarden/db/
       echo "Uploading data"
