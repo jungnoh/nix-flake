@@ -11,8 +11,9 @@ in
 {
   config = lib.mkMerge [
     {
-      home.packages = with pkgs; [
+      fonts.packages = with pkgs; [
         nerd-fonts.jetbrains-mono
+        nerd-fonts.inconsolata
       ];
       home.programs.zed-editor = {
         enable = true;
@@ -35,7 +36,8 @@ in
           "just"
         ];
         userSettings = {
-          buffer_font_family = "JetBrainsMono Nerd Font";
+          buffer_font_family = "Inconsolata Nerd Font";
+          buffer_font_size = 16.0;
           icon_theme = "Material Icon Theme";
           theme = "Ayu Dark";
           theme_overrides = {

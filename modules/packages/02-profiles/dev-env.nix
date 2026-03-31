@@ -15,5 +15,6 @@
     sqlitebrowser
     insomnia
     just
+    bun
   ];
 }
