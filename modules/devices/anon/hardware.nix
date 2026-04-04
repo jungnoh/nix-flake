@@ -22,23 +22,17 @@
     "usbhid"
     "sd_mod"
     "cryptd"
+    "igc"
   ];
   boot.initrd.kernelModules = [
-    "vfio"
-    "vfio_pci"
-    "vfio_iommu_type1"
     "amdgpu"
   ];
   boot.kernelModules = [
     "kvm-amd"
     "amdgpu"
+    "br_netfilter"
   ];
-  boot.kernelParams = [
-    "amd_iommu=on"
-    "iommu=pt"
-    "vfio-pci.ids=10de:1c03,10de:10f1"
-  ];
-  boot.extraModprobeConfig = "options vfio-pci ids=10de:1c03,10de:10f1";
+  boot.kernelParams = [ "amd_iommu=off" ];
   boot.extraModulePackages = [ ];
   systemd.tpm2.enable = false;
 

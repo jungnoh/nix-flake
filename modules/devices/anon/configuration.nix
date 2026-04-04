@@ -17,6 +17,12 @@ let
     export EGL_PLATFORM=drm
     exec ${pkgs.xorg.xorgserver}/bin/Xorg "$@"
   '';
+
+  defaultNIC = "enp5s0";
+  vmNIC = "enp3s0";
+  vmSubnet = "192.168.122.0/24";
+
+  ipRoute2 = "${pkgs.iproute2}/bin/ip";
 in
 {
   imports = [
@@ -53,6 +59,101 @@ in
   # Enable WOL
   networking.interfaces.enp5s0.wakeOnLan.enable = true;
   networking.firewall.allowedUDPPorts = [ 9 ];
+
+  # Use different NICs for VM / everything else
+  networking.iproute2 = {
+    enable = true;
+    rttablesExtraConfig = "200 vm_traffic";
+  };
+  networking.networkmanager.dispatcherScripts = [
+    {
+      type = "basic";
+      source = pkgs.writeShellScript "vm-routing" ''
+        INTERFACE=$1
+        ACTION=$2
+
+        # Only act when VM iface or virbr0 comes up
+        if [ "$INTERFACE" = "${vmNIC}" ]; then
+          if [ "$ACTION" = "up" ] || [ "$ACTION" = "dhcp4-change" ]; then
+            VM_NIC_IP=$(echo "$IP4_ADDRESS_0" | cut -d'/' -f1)
+            ${ipRoute2} route replace default via "$IP4_GATEWAY" dev ${vmNIC} src "$VM_NIC_IP" table vm_traffic 2>/dev/null || true
+            ${ipRoute2} rule add fwmark 0x1 table vm_traffic priority 100 2>/dev/null || true
+            ${ipRoute2} route flush cache
+          fi
+          if [ "$ACTION" = "down" ]; then
+            ${ipRoute2} rule del fwmark 0x1 table vm_traffic priority 100 2>/dev/null || true
+            ${ipRoute2} route flush table vm_traffic 2>/dev/null || true
+          fi
+        fi
+      '';
+    }
+  ];
+  systemd.services.vm-routing-virbr0 = {
+    after = [
+      "libvirtd.service"
+      "network-online.target"
+    ];
+    requires = [ "libvirtd.service" ];
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig.Type = "oneshot";
+    serviceConfig.RemainAfterExit = true;
+    script = ''
+      ${ipRoute2} route replace ${vmSubnet} dev virbr0 table vm_traffic
+      ${ipRoute2} route replace ${vmSubnet} dev virbr0 table main
+      ${ipRoute2} route flush cache
+    '';
+  };
+
+  networking.firewall.checkReversePath = "loose";
+  networking.networkmanager.ensureProfiles = {
+    profiles = {
+      "${defaultNIC}" = {
+        connection = {
+          id = defaultNIC;
+          type = "ethernet";
+          interface-name = defaultNIC;
+        };
+        ipv4 = {
+          method = "auto";
+          route-metric = "100";
+        };
+      };
+      "${vmNIC}" = {
+        connection = {
+          id = vmNIC;
+          type = "ethernet";
+          interface-name = vmNIC;
+        };
+        ipv4 = {
+          method = "auto";
+          route-metric = "101";
+        };
+      };
+    };
+  };
+
+  networking.firewall.extraCommands = ''
+    iptables -D FORWARD -i virbr0 -o ${vmNIC} -j ACCEPT 2>/dev/null || true
+    iptables -D FORWARD -i ${vmNIC} -o virbr0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT 2>/dev/null || true
+    iptables -t nat -D POSTROUTING -s ${vmSubnet} ! -d ${vmSubnet} -o ${vmNIC} -j MASQUERADE 2>/dev/null || true
+    iptables -t mangle -D PREROUTING -i virbr0 -s ${vmSubnet} -j MARK --set-mark 0x1 2>/dev/null || true
+
+    iptables -t mangle -I PREROUTING -i virbr0 -s ${vmSubnet} -j MARK --set-mark 0x1
+
+    iptables -I FORWARD -i virbr0 -o ${vmNIC} -j ACCEPT
+    iptables -I FORWARD -i ${vmNIC} -o virbr0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+    iptables -t nat -I POSTROUTING -s ${vmSubnet} ! -d ${vmSubnet} -o ${vmNIC} -j MASQUERADE
+  '';
+  networking.firewall.extraStopCommands = ''
+    iptables -D FORWARD -i virbr0 -o ${vmNIC} -j ACCEPT 2>/dev/null || true
+    iptables -D FORWARD -i ${vmNIC} -o virbr0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT 2>/dev/null || true
+    iptables -t nat -D POSTROUTING -s ${vmSubnet} ! -d ${vmSubnet} -o ${vmNIC} -j MASQUERADE 2>/dev/null || true
+    iptables -t mangle -D PREROUTING -i virbr0 -s ${vmSubnet} -j MARK --set-mark 0x1 2>/dev/null || true
+  '';
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = 1;
+    "net.bridge.bridge-nf-call-iptables" = 1;
+  };
 
   # Enable CUPS to print documents.
   services.printing.enable = false;
