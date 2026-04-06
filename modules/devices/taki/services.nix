@@ -17,7 +17,7 @@
   systemd.network.wait-online.enable = false;
   boot.initrd.systemd.network.wait-online.enable = false;
 
-  systemd.services.tailscale-systray = {
+  systemd.user.services.tailscale-systray = {
     enable = true;
     description = "Tailscale System Tray";
     after = [ "graphical.target" ];
