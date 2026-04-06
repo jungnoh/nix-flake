@@ -37,8 +37,8 @@ let
     home.packages = with pkgs; [
       deno
       nodejs
-      nodePackages.pnpm
-      nodePackages.yarn
+      pnpm
+      yarn
     ];
   };
 
