@@ -19,6 +19,7 @@ in
     }
     (onlyDarwin {
       homebrew.casks = [
+        "keka"
         "1password"
         # Claude Code is installed at dev-env.nix
         "claude"
