@@ -1,14 +1,10 @@
 # See https://nixos.wiki/wiki/KDE
 {
-  lib,
-  config,
   pkgs,
-  ctx,
   inputs,
   ...
 }:
 let
-  inherit (ctx) username;
   inherit (inputs) plasma-manager;
 in
 #
@@ -26,7 +22,7 @@ in
     kdePackages.kpat
     kdePackages.ksudoku
     kdePackages.ktorrent
-    mpv
+    kdePackages.konsole
   ];
 
   home.sharedModules = [ plasma-manager.homeModules.plasma-manager ];
@@ -39,6 +35,11 @@ in
       powerButtonAction = "nothing";
       powerProfile = "performance";
       turnOffDisplay.idleTimeout = "never";
+    };
+    kscreenlocker = {
+      autoLock = false;
+      passwordRequired = true;
+      passwordRequiredDelay = null;
     };
     workspace = {
       colorScheme = "BreezeDark";
@@ -83,14 +84,18 @@ in
       {
         location = "bottom";
         alignment = "center";
-        floating = true;
-        lengthMode = "fit";
+        lengthMode = "fill";
+        floating = false;
+        height = 32;
         widgets = [
           {
             iconTasks = {
               launchers = [
                 "applications:org.kde.dolphin.desktop"
-                "applications:org.kde.konsole.desktop"
+                "applications:com.mitchellh.ghostty.desktop"
+                "applications:google-chrome.desktop"
+                "applications:obsidian.desktop"
+                "applications:dev.zed.Zed.desktop"
               ];
             };
           }
