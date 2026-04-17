@@ -60,7 +60,7 @@ let
       [ ];
 
   modules =
-    (import ../base)
+    ((import ../base) { inherit system; })
     ++ diskoModules
     ++ agenixModules
     ++ [ homeManager ]

@@ -4,16 +4,19 @@
   ...
 }:
 {
-  home.packages = with pkgs; [
-    asdf-vm
-    jetbrains-toolbox
-    brotli
-    cloc
-    nil
-    opencode
-    claude-code
-    sqlitebrowser
-    insomnia
-    just
-  ];
+  home.packages =
+    (with pkgs; [
+      asdf-vm
+      jetbrains-toolbox
+      brotli
+      cloc
+      nil
+      sqlitebrowser
+      insomnia
+      just
+    ])
+    ++ (with pkgs.master; [
+      opencode
+      claude-code
+    ]);
 }

@@ -25,4 +25,4 @@ let
         last values
     );
 in
-recursiveMerge (builtins.map (x: (import x) inputs) devices)
+recursiveMerge (map (x: (import x) inputs) devices)

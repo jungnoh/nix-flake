@@ -1,4 +1,5 @@
-{ ... }:
+{ system }:
+{ inputs, ... }:
 {
   nix.settings.experimental-features = [
     "nix-command"
@@ -6,6 +7,12 @@
   ];
   nixpkgs.config.allowUnfree = true;
   nixpkgs.overlays = [
+    (final: prev: {
+      master = import inputs.nixpkgs-master {
+        inherit system;
+        config.allowUnfree = true;
+      };
+    })
     # Note: Code from https://github.com/NixOS/nixpkgs/blob/nixos-25.11/pkgs/by-name/xr/xrdp/package.nix
     # Updates are needed when the upstream package is updated.
     (final: prev: {

@@ -21,7 +21,6 @@ let
 
 in
 {
-
   nixosConfigurations."${hostname}" = nixpkgs.lib.nixosSystem {
     inherit (host) system modules specialArgs;
   };

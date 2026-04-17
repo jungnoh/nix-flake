@@ -1,5 +1,6 @@
+{ system }:
 [
-  (import ./nix.nix { })
+  (import ./nix.nix { inherit system; })
   ./envs.nix
   ./home.nix
 ]

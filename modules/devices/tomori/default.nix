@@ -1,4 +1,4 @@
-{ nixpkgs, ... }@inputs:
+{ nixpkgs, nixpkgs-master, ... }@inputs:
 let
   hostname = "tomori";
   host = import ../mkHost.nix {
