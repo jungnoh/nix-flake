@@ -23,6 +23,60 @@ let
   vmSubnet = "192.168.122.0/24";
 
   ipRoute2 = "${pkgs.iproute2}/bin/ip";
+
+  # FlyGoat fork carrying neutrinolabs/xrdp PR #3774 (FFmpeg/dma-buf VAAPI/Vulkan H.264).
+  # The xorg-side dma-buf protocol changes live in a matching xorgxrdp branch.
+  # nixpkgs' dynamic_config.patch is skipped — it doesn't apply to FlyGoat's
+  # devel base. Replaced by --sysconfdir=/etc + a runtime rsakeys.ini symlink
+  # below; absolute certificate=/key_file= in xrdp.ini are honoured by
+  # unpatched xrdp already.
+  xrdpFlyGoatSrc = pkgs.fetchFromGitHub {
+    owner = "FlyGoat";
+    repo = "xrdp";
+    rev = "f52a35c559a11786084442c43668d66eff84ca0d";
+    hash = "sha256-6GBC5hWP+8XW1ZY0N1612Zm/plbzKw5us2l4cD65YH0=";
+    fetchSubmodules = true;
+  };
+  xorgxrdpHwAccel = pkgs.xrdp.passthru.xorgxrdp.overrideAttrs (_: {
+    src = pkgs.fetchFromGitHub {
+      owner = "FlyGoat";
+      repo = "xorgxrdp";
+      rev = "fb76740045dd0a2928dcfe1b51ed9335e7c03225";
+      hash = "sha256-Gre6Na2cmvPgMcKtkoj239q+oywKDeNcPVg07gnl/jk=";
+    };
+    # Point header lookups at the FlyGoat xrdp tree — the dma-buf protocol
+    # additions live in headers absent from upstream's common/ dir.
+    preConfigure = ''
+      ./bootstrap
+      export XRDP_CFLAGS="-I${xrdpFlyGoatSrc}/common -I${pkgs.libdrm.dev}/include -I${pkgs.libdrm.dev}/include/libdrm"
+    '';
+  });
+  xrdpHwAccel = pkgs.xrdp.overrideAttrs (old: {
+    src = xrdpFlyGoatSrc;
+    buildInputs = old.buildInputs ++ [
+      pkgs.ffmpeg
+      pkgs.libdrm
+      pkgs.libva
+      pkgs.x264
+      pkgs.xorg.libxkbfile
+    ];
+    configureFlags = (old.configureFlags or [ ]) ++ [
+      "--enable-ffmpeg"
+      "--enable-x264"
+      # Compile-time XRDP_CFG_PATH = /etc/xrdp; install still goes to $out
+      # via existing DESTDIR= installFlags. Replaces the keymaps_path hunks
+      # of dynamic_config.patch that did not apply.
+      "--sysconfdir=/etc"
+    ];
+    # nixpkgs' postInstall hardcodes the inline xorgxrdp store path; rewrite it.
+    # Also inject the #rsakeys_ini placeholder that nixpkgs xrdp.nix module
+    # expects to substitute (normally added by dynamic_config.patch).
+    postInstall = (old.postInstall or "") + ''
+      substituteInPlace $out/etc/xrdp/sesman.ini \
+        --replace-fail '${pkgs.xrdp.passthru.xorgxrdp}' '${xorgxrdpHwAccel}'
+      sed -i '/^\[Globals\]/a #rsakeys_ini=' $out/etc/xrdp/xrdp.ini
+    '';
+  });
 in
 {
   imports = [
@@ -209,16 +263,23 @@ in
       enable = true;
       openFirewall = true;
       defaultWindowManager = "xfce4-session";
-      package = pkgs.xrdp.overrideAttrs (old: {
-        buildInputs = old.buildInputs ++ [ pkgs.x264 ];
-        configureFlags = (old.configureFlags or [ ]) ++ [ "--enable-x264" ];
-      });
+      package = xrdpHwAccel;
       extraConfDirCommands = ''
           # Enable h264
           sed -i '/\[Xorg\]/a codec_id=20' $out/xrdp.ini
 
           # Cap color depth to 24bpp
           sed -i 's/^max_bpp=32$/max_bpp=24/' $out/xrdp.ini
+
+          # Unpatched xrdp opens XRDP_CFG_PATH/rsakeys.ini directly; redirect
+          # to the runtime-generated keys produced by the xrdp.service preStart.
+          ln -sf /run/xrdp/rsakeys.ini $out/rsakeys.ini
+
+          # Hardware H.264 via FFmpeg/VAAPI (PR #3774 backend).
+          # The encoder value is "FFmpeg" (mixed case, per gfx.toml comment);
+          # path lives in the global [FFmpeg] table.
+          sed -i 's/^h264_encoder = "x264"/h264_encoder = "FFmpeg"/' $out/gfx.toml
+          sed -i 's|^path = "software"|path = "vaapi"|' $out/gfx.toml
 
           ORIG_CONF=$(grep -A1 'param=-config' $out/sesman.ini | tail -1 | sed 's/param=//')
           cp "$ORIG_CONF" $out/xorg.conf
