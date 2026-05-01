@@ -153,7 +153,18 @@ in
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "net.bridge.bridge-nf-call-iptables" = 1;
+
+    # WAN-friendly TCP for xrdp
+    "net.core.default_qdisc" = "fq";
+    "net.ipv4.tcp_congestion_control" = "bbr";
+    "net.ipv4.tcp_notsent_lowat" = 16384;
+    "net.core.rmem_max" = 16777216;
+    "net.core.wmem_max" = 16777216;
+    "net.ipv4.tcp_rmem" = "4096 87380 16777216";
+    "net.ipv4.tcp_wmem" = "4096 65536 16777216";
   };
+
+  powerManagement.cpuFreqGovernor = "performance";
 
   # Enable CUPS to print documents.
   services.printing.enable = false;
@@ -205,6 +216,9 @@ in
       extraConfDirCommands = ''
           # Enable h264
           sed -i '/\[Xorg\]/a codec_id=20' $out/xrdp.ini
+
+          # Cap color depth to 24bpp
+          sed -i 's/^max_bpp=32$/max_bpp=24/' $out/xrdp.ini
 
           ORIG_CONF=$(grep -A1 'param=-config' $out/sesman.ini | tail -1 | sed 's/param=//')
           cp "$ORIG_CONF" $out/xorg.conf

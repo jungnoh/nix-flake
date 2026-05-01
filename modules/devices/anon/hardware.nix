@@ -31,6 +31,7 @@
     "kvm-amd"
     "amdgpu"
     "br_netfilter"
+    "tcp_bbr"
   ];
   boot.kernelParams = [ "amd_iommu=off" ];
   boot.extraModulePackages = [ ];
