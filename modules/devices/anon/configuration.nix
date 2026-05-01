@@ -271,6 +271,16 @@ in
           # Cap color depth to 24bpp
           sed -i 's/^max_bpp=32$/max_bpp=24/' $out/xrdp.ini
 
+          # Route xrdp + sesman logs to stderr so journalctl -u xrdp* sees them
+          # (defaults are LogFile=/dev/null + EnableConsole=false → silent unit).
+          for f in xrdp.ini sesman.ini; do
+            sed -i \
+              -e 's|^LogFile=/dev/null|LogFile=/dev/stderr|' \
+              -e 's|^#EnableConsole=false|EnableConsole=true|' \
+              -e 's|^#ConsoleLevel=INFO|ConsoleLevel=DEBUG|' \
+              $out/$f
+          done
+
           # Unpatched xrdp opens XRDP_CFG_PATH/rsakeys.ini directly; redirect
           # to the runtime-generated keys produced by the xrdp.service preStart.
           ln -sf /run/xrdp/rsakeys.ini $out/rsakeys.ini
