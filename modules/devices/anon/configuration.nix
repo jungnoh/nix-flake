@@ -334,6 +334,14 @@ in
     OOMScoreAdjust = -500;
   };
 
+  # Encoding runs inside the xrdp daemon (the xup module), not the per-user
+  # Xorg, so libva needs to find the AMD driver in xrdp.service's env or it
+  # silently falls back to software x264 — i.e. the 100% CPU symptom.
+  systemd.services.xrdp.environment = {
+    LIBVA_DRIVERS_PATH = "${pkgs.mesa}/lib/dri";
+    LIBVA_DRIVER_NAME = "radeonsi";
+  };
+
   services.udev.extraRules = ''
     # Attach the GPU and its renderD node to seat-xrdp
     SUBSYSTEM=="drm", KERNEL=="card1",       TAG+="seat", ENV{ID_SEAT}="seat-xrdp", TAG+="uaccess"
