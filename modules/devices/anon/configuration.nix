@@ -271,11 +271,11 @@ in
           # Cap color depth to 24bpp
           sed -i 's/^max_bpp=32$/max_bpp=24/' $out/xrdp.ini
 
-          # Route xrdp + sesman logs to stderr so journalctl -u xrdp* sees them
-          # (defaults are LogFile=/dev/null + EnableConsole=false → silent unit).
+          # Make xrdp + sesman log to stderr so journalctl -u xrdp* sees them.
+          # Default is EnableConsole=false; LogFile stays /dev/null because xrdp
+          # tries to open it as a regular file post-fork and chokes on /dev/stderr.
           for f in xrdp.ini sesman.ini; do
             sed -i \
-              -e 's|^LogFile=/dev/null|LogFile=/dev/stderr|' \
               -e 's|^#EnableConsole=false|EnableConsole=true|' \
               -e 's|^#ConsoleLevel=INFO|ConsoleLevel=DEBUG|' \
               $out/$f
