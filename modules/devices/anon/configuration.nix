@@ -220,9 +220,6 @@ in
 
           substituteInPlace $out/sesman.ini \
             --replace "$ORIG_CONF" '/etc/xrdp/xorg.conf' \
-            --replace 'param=.xorgxrdp.%s.log' 'param=.xorgxrdp.%s.log
-        param=-seat
-        param=seat-xrdp' \
             --replace '[Xorg]' '[Xorg]
         param=${xorgWrapper}'
 
@@ -279,33 +276,6 @@ in
   hardware.uinput.enable = true;
   services.udev.extraRules = ''
     KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"
-    # Attach the GPU and its renderD node to seat-xrdp
-    SUBSYSTEM=="drm", KERNEL=="card1",       TAG+="seat", ENV{ID_SEAT}="seat-xrdp", TAG+="uaccess"
-    SUBSYSTEM=="drm", KERNEL=="renderD128",  TAG+="seat", ENV{ID_SEAT}="seat-xrdp", TAG+="uaccess"
-
-    # Also attach the PCI device itself so logind recognises the seat as having a master device
-    # Replace with your actual PCI path from step 1
-    SUBSYSTEMS=="pci", KERNEL=="0000:06:00.0", TAG+="seat", ENV{ID_SEAT}="seat-xrdp"
-  '';
-
-  security.pam.services.xrdp-sesman = {
-    text = ''
-      auth      requisite    pam_nologin.so
-      auth      include      login
-      account   include      login
-      password  include      login
-
-      # Set XDG_SEAT before pam_systemd runs so the session is created on seat-xrdp
-      session   required     pam_env.so envfile=/etc/xrdp/xrdp-seat.env
-      session   required     pam_loginuid.so
-      session   required     ${pkgs.systemd}/lib/security/pam_systemd.so
-      session   include      login
-    '';
-  };
-
-  environment.etc."xrdp/xrdp-seat.env".text = ''
-    XDG_SEAT=seat-xrdp
-    XDG_SESSION_TYPE=x11
   '';
 
   # virt-manager
