@@ -286,9 +286,9 @@ in
           ln -sf /run/xrdp/rsakeys.ini $out/rsakeys.ini
 
           # Hardware H.264 via FFmpeg/VAAPI (PR #3774 backend).
-          # The encoder value is "FFmpeg" (mixed case, per gfx.toml comment);
-          # path lives in the global [FFmpeg] table.
-          sed -i 's/^h264_encoder = "x264"/h264_encoder = "FFmpeg"/' $out/gfx.toml
+          # Encoder enum match is case-sensitive lowercase ("FFmpeg" trips
+          # 'could not get valid H.264 encoder' in TConfig).
+          sed -i 's/^h264_encoder = "x264"/h264_encoder = "ffmpeg"/' $out/gfx.toml
           sed -i 's|^path = "software"|path = "vaapi"|' $out/gfx.toml
 
           ORIG_CONF=$(grep -A1 'param=-config' $out/sesman.ini | tail -1 | sed 's/param=//')
