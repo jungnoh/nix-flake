@@ -52,6 +52,8 @@ let
     '';
   });
   xrdpHwAccel = pkgs.xrdp.overrideAttrs (old: {
+    pname = "xrdp-flygoat";
+    version = "${old.version or "0.10.6"}-pr3774-f52a35c5";
     src = xrdpFlyGoatSrc;
     buildInputs = old.buildInputs ++ [
       pkgs.ffmpeg
@@ -286,8 +288,10 @@ in
           ln -sf /run/xrdp/rsakeys.ini $out/rsakeys.ini
 
           # Hardware H.264 via FFmpeg/VAAPI (PR #3774 backend).
-          # Encoder enum match is case-sensitive lowercase ("FFmpeg" trips
-          # 'could not get valid H.264 encoder' in TConfig).
+          # Strip BOM/CR defensively — TOML parser otherwise rejects keys
+          # whose lines have trailing \r as "value mismatch".
+          sed -i '1s/^\xef\xbb\xbf//' $out/gfx.toml
+          sed -i 's/\r$//' $out/gfx.toml
           sed -i 's/^h264_encoder = "x264"/h264_encoder = "ffmpeg"/' $out/gfx.toml
           sed -i 's|^path = "software"|path = "vaapi"|' $out/gfx.toml
 
