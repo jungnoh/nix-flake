@@ -186,6 +186,8 @@ in
       "libvirtd"
       "video"
       "render"
+      "input"
+      "uinput"
     ];
   };
   users.users.xrdp.extraGroups = [
@@ -230,10 +232,14 @@ in
 
     displayManager.defaultSession = "xfce";
     xserver = {
-      enable = false;
+      enable = true;
       desktopManager = {
         xterm.enable = false;
         xfce.enable = true;
+      };
+      displayManager = {
+        defaultSession = "xfce";
+        lightdm.enable = true;
       };
 
       # Configure keymap in X11
@@ -242,9 +248,37 @@ in
         variant = "";
       };
     };
+
+    sunshine = {
+      enable = true;
+      autoStart = true;
+      openFirewall = true;
+
+      settings = {
+        capture = "x11";
+        encoder = "vaapi";
+        min_log_level = "info";
+        origin_web_ui_allowed = "lan";
+      };
+    };
   };
 
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+
+  # Stop the screen blanker from killing your stream after 10 minutes
+  services.xserver.serverFlagsSection = ''
+    Option "BlankTime" "0"
+    Option "StandbyTime" "0"
+    Option "SuspendTime" "0"
+    Option "OffTime" "0"
+  '';
+
+  hardware.uinput.enable = true;
   services.udev.extraRules = ''
+    KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"
     # Attach the GPU and its renderD node to seat-xrdp
     SUBSYSTEM=="drm", KERNEL=="card1",       TAG+="seat", ENV{ID_SEAT}="seat-xrdp", TAG+="uaccess"
     SUBSYSTEM=="drm", KERNEL=="renderD128",  TAG+="seat", ENV{ID_SEAT}="seat-xrdp", TAG+="uaccess"

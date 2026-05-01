@@ -4,6 +4,7 @@
 
 {
   ctx,
+  pkgs,
   ...
 }:
 let
@@ -74,6 +75,10 @@ in
       };
     };
   };
+
+  environment.systemPackages = with pkgs; [
+    moonlight-qt # so you can also use this box as a client if you want
+  ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
