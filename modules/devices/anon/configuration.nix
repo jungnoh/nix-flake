@@ -258,6 +258,21 @@ in
     };
   };
 
+  # Nice is inherited by sesman's forked Xorg children, so the per-session
+  # encoder also runs at -5. OOMScoreAdjust shields xrdp from systemd-oomd.
+  systemd.services.xrdp.serviceConfig = {
+    Nice = -5;
+    CPUWeight = 500;
+    IOWeight = 500;
+    OOMScoreAdjust = -500;
+  };
+  systemd.services.xrdp-sesman.serviceConfig = {
+    Nice = -5;
+    CPUWeight = 500;
+    IOWeight = 500;
+    OOMScoreAdjust = -500;
+  };
+
   services.udev.extraRules = ''
     # Attach the GPU and its renderD node to seat-xrdp
     SUBSYSTEM=="drm", KERNEL=="card1",       TAG+="seat", ENV{ID_SEAT}="seat-xrdp", TAG+="uaccess"
