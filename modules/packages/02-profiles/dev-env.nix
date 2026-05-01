@@ -14,6 +14,7 @@
       sqlitebrowser
       insomnia
       just
+      gnumake
     ])
     ++ (with pkgs.master; [
       opencode

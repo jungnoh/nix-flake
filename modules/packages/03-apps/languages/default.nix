@@ -23,11 +23,11 @@ let
   };
   cfgDotnet = {
     home.packages = with pkgs; [
-      dotnet-sdk_9
+      dotnet-sdk_10
     ];
     home.sessionVariables = {
       # See https://stackoverflow.com/q/74895147
-      DOTNET_ROOT = "${pkgs.dotnet-sdk_9}/share/dotnet";
+      DOTNET_ROOT = "${pkgs.dotnet-sdk_10}/share/dotnet";
     };
     home.sessionPath = [
       "$HOME/.dotnet/tools"
