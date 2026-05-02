@@ -219,6 +219,7 @@ in
       enable = true;
       autoStart = true;
       openFirewall = true;
+      capSysAdmin = true;
 
       settings = {
         capture = "x11";
