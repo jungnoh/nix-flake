@@ -10,13 +10,6 @@
 }:
 let
   inherit (ctx) username;
-  mesaDriversPath = "${pkgs.mesa}/lib/dri";
-  xorgWrapper = pkgs.writeShellScript "xorg-xrdp-wrapper" ''
-    export LIBGL_DRIVERS_PATH=${mesaDriversPath}
-    export LIBVA_DRIVERS_PATH=${mesaDriversPath}
-    export EGL_PLATFORM=drm
-    exec ${pkgs.xorg.xorgserver}/bin/Xorg "$@"
-  '';
 
   defaultNIC = "enp5s0";
   vmNIC = "enp3s0";
@@ -35,6 +28,7 @@ in
     psmisc
     xdriinfo
     xorg.xdpyinfo
+    xrandr
     bintools
     (pkgs.writeShellScriptBin "mount-data" ''
       sudo cryptsetup open /dev/disk/by-partlabel/disk-data-data cryptdata
@@ -153,15 +147,6 @@ in
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "net.bridge.bridge-nf-call-iptables" = 1;
-
-    # WAN-friendly TCP for xrdp
-    "net.core.default_qdisc" = "fq";
-    "net.ipv4.tcp_congestion_control" = "bbr";
-    "net.ipv4.tcp_notsent_lowat" = 16384;
-    "net.core.rmem_max" = 16777216;
-    "net.core.wmem_max" = 16777216;
-    "net.ipv4.tcp_rmem" = "4096 87380 16777216";
-    "net.ipv4.tcp_wmem" = "4096 65536 16777216";
   };
 
   powerManagement.cpuFreqGovernor = "performance";
@@ -197,57 +182,32 @@ in
       "libvirtd"
       "video"
       "render"
+      "input"
+      "uinput"
     ];
   };
-  users.users.xrdp.extraGroups = [
-    "video"
-    "render"
-  ];
-
   services = {
-    xrdp = {
-      enable = true;
-      openFirewall = true;
-      defaultWindowManager = "xfce4-session";
-      package = pkgs.xrdp.overrideAttrs (old: {
-        buildInputs = old.buildInputs ++ [ pkgs.x264 ];
-        configureFlags = (old.configureFlags or [ ]) ++ [ "--enable-x264" ];
-      });
-      extraConfDirCommands = ''
-          # Enable h264
-          sed -i '/\[Xorg\]/a codec_id=20' $out/xrdp.ini
-
-          # Cap color depth to 24bpp
-          sed -i 's/^max_bpp=32$/max_bpp=24/' $out/xrdp.ini
-
-          ORIG_CONF=$(grep -A1 'param=-config' $out/sesman.ini | tail -1 | sed 's/param=//')
-          cp "$ORIG_CONF" $out/xorg.conf
-
-          substituteInPlace $out/xorg.conf \
-            --replace 'Load "fb"' 'Load "fb"
-          Load "dri3"
-          Load "glamoregl"' \
-            --replace 'Section "Device"' 'Section "Device"
-          Option "UseGlamor" "true"'
-
-          substituteInPlace $out/sesman.ini \
-            --replace "$ORIG_CONF" '/etc/xrdp/xorg.conf' \
-            --replace 'param=.xorgxrdp.%s.log' 'param=.xorgxrdp.%s.log
-        param=-seat
-        param=seat-xrdp' \
-            --replace '[Xorg]' '[Xorg]
-        param=${xorgWrapper}'
-
-          sed -i '/param=.*xorg-server.*bin\/Xorg/d' $out/sesman.ini
-      '';
-    };
-
     displayManager.defaultSession = "xfce";
     xserver = {
-      enable = false;
+      enable = true;
       desktopManager = {
         xterm.enable = false;
         xfce.enable = true;
+      };
+      displayManager = {
+        defaultSession = "xfce";
+        lightdm = {
+          enable = true;
+          # Lay out monitors before the greeter draws so lightdm appears on
+          # the DVI/KVM head (HDMI-A-2), not on the HDMI dummy plug (HDMI-A-1).
+          extraSeatDefaults = ''
+            display-setup-script=${pkgs.writeShellScript "lightdm-display-setup" ''
+              ${pkgs.xrandr}/bin/xrandr \
+                --output HDMI-A-2 --auto --primary \
+                --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
+            ''}
+          '';
+        };
       };
 
       # Configure keymap in X11
@@ -256,51 +216,48 @@ in
         variant = "";
       };
     };
-  };
 
-  # Nice is inherited by sesman's forked Xorg children, so the per-session
-  # encoder also runs at -5. OOMScoreAdjust shields xrdp from systemd-oomd.
-  systemd.services.xrdp.serviceConfig = {
-    Nice = -5;
-    CPUWeight = 500;
-    IOWeight = 500;
-    OOMScoreAdjust = -500;
-  };
-  systemd.services.xrdp-sesman.serviceConfig = {
-    Nice = -5;
-    CPUWeight = 500;
-    IOWeight = 500;
-    OOMScoreAdjust = -500;
-  };
+    sunshine = {
+      enable = true;
+      autoStart = true;
+      openFirewall = true;
+      capSysAdmin = true;
 
-  services.udev.extraRules = ''
-    # Attach the GPU and its renderD node to seat-xrdp
-    SUBSYSTEM=="drm", KERNEL=="card1",       TAG+="seat", ENV{ID_SEAT}="seat-xrdp", TAG+="uaccess"
-    SUBSYSTEM=="drm", KERNEL=="renderD128",  TAG+="seat", ENV{ID_SEAT}="seat-xrdp", TAG+="uaccess"
+      settings = {
+        capture = "x11";
+        encoder = "vaapi";
+        min_log_level = "info";
+        origin_web_ui_allowed = "lan";
+        # KVM is on DVI; HDMI has a dummy plug for the headless stream.
+        output_name = "HDMI-A-1";
+      };
+    };
 
-    # Also attach the PCI device itself so logind recognises the seat as having a master device
-    # Replace with your actual PCI path from step 1
-    SUBSYSTEMS=="pci", KERNEL=="0000:06:00.0", TAG+="seat", ENV{ID_SEAT}="seat-xrdp"
-  '';
-
-  security.pam.services.xrdp-sesman = {
-    text = ''
-      auth      requisite    pam_nologin.so
-      auth      include      login
-      account   include      login
-      password  include      login
-
-      # Set XDG_SEAT before pam_systemd runs so the session is created on seat-xrdp
-      session   required     pam_env.so envfile=/etc/xrdp/xrdp-seat.env
-      session   required     pam_loginuid.so
-      session   required     ${pkgs.systemd}/lib/security/pam_systemd.so
-      session   include      login
+    # HDMI-A-2 = physical DVI port (KVM, primary, where lightdm appears).
+    # HDMI-A-1 = physical HDMI port with dummy plug, captured by Sunshine.
+    xserver.displayManager.sessionCommands = ''
+      ${pkgs.xrandr}/bin/xrandr \
+        --output HDMI-A-2 --auto --primary \
+        --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
     '';
   };
 
-  environment.etc."xrdp/xrdp-seat.env".text = ''
-    XDG_SEAT=seat-xrdp
-    XDG_SESSION_TYPE=x11
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+
+  # Stop the screen blanker from killing your stream after 10 minutes
+  services.xserver.serverFlagsSection = ''
+    Option "BlankTime" "0"
+    Option "StandbyTime" "0"
+    Option "SuspendTime" "0"
+    Option "OffTime" "0"
+  '';
+
+  hardware.uinput.enable = true;
+  services.udev.extraRules = ''
+    KERNEL=="uinput", MODE="0660", GROUP="input", OPTIONS+="static_node=uinput"
   '';
 
   # virt-manager
@@ -320,7 +277,7 @@ in
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

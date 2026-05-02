@@ -39,7 +39,6 @@ in
         nixd
       ];
       home.packages = with pkgs; [
-        remmina
         _1password-gui
         (mpv.override {
           youtubeSupport = false;
