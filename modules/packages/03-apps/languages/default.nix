@@ -35,7 +35,6 @@ let
   };
   cfgNode = {
     home.packages = with pkgs; [
-      deno
       nodejs
       pnpm
       yarn

@@ -40,8 +40,14 @@ in
       ];
       home.packages = with pkgs; [
         remmina
-        mpv
         _1password-gui
+        (mpv.override {
+          youtubeSupport = false;
+          scripts = [
+            mpvScripts.uosc
+            mpvScripts.thumbfast
+          ];
+        })
       ];
     })
   ];

@@ -149,6 +149,8 @@ in
     "net.bridge.bridge-nf-call-iptables" = 1;
   };
 
+  powerManagement.cpuFreqGovernor = "performance";
+
   # Enable CUPS to print documents.
   services.printing.enable = false;
 
