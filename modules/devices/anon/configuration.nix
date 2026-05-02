@@ -10,13 +10,6 @@
 }:
 let
   inherit (ctx) username;
-  mesaDriversPath = "${pkgs.mesa}/lib/dri";
-  xorgWrapper = pkgs.writeShellScript "xorg-xrdp-wrapper" ''
-    export LIBGL_DRIVERS_PATH=${mesaDriversPath}
-    export LIBVA_DRIVERS_PATH=${mesaDriversPath}
-    export EGL_PLATFORM=drm
-    exec ${pkgs.xorg-server}/bin/Xorg "$@"
-  '';
 
   defaultNIC = "enp5s0";
   vmNIC = "enp3s0";
@@ -191,43 +184,7 @@ in
       "uinput"
     ];
   };
-  users.users.xrdp.extraGroups = [
-    "video"
-    "render"
-  ];
-
   services = {
-    xrdp = {
-      enable = true;
-      openFirewall = true;
-      defaultWindowManager = "xfce4-session";
-      package = pkgs.xrdp.overrideAttrs (old: {
-        buildInputs = old.buildInputs ++ [ pkgs.x264 ];
-        configureFlags = (old.configureFlags or [ ]) ++ [ "--enable-x264" ];
-      });
-      extraConfDirCommands = ''
-          # Enable h264
-          sed -i '/\[Xorg\]/a codec_id=20' $out/xrdp.ini
-
-          ORIG_CONF=$(grep -A1 'param=-config' $out/sesman.ini | tail -1 | sed 's/param=//')
-          cp "$ORIG_CONF" $out/xorg.conf
-
-          substituteInPlace $out/xorg.conf \
-            --replace 'Load "fb"' 'Load "fb"
-          Load "dri3"
-          Load "glamoregl"' \
-            --replace 'Section "Device"' 'Section "Device"
-          Option "UseGlamor" "true"'
-
-          substituteInPlace $out/sesman.ini \
-            --replace "$ORIG_CONF" '/etc/xrdp/xorg.conf' \
-            --replace '[Xorg]' '[Xorg]
-        param=${xorgWrapper}'
-
-          sed -i '/param=.*xorg-server.*bin\/Xorg/d' $out/sesman.ini
-      '';
-    };
-
     displayManager.defaultSession = "xfce";
     xserver = {
       enable = true;
