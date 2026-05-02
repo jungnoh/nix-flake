@@ -15,7 +15,7 @@ let
     export LIBGL_DRIVERS_PATH=${mesaDriversPath}
     export LIBVA_DRIVERS_PATH=${mesaDriversPath}
     export EGL_PLATFORM=drm
-    exec ${pkgs.xorg.xorgserver}/bin/Xorg "$@"
+    exec ${pkgs.xorg-server}/bin/Xorg "$@"
   '';
 
   defaultNIC = "enp5s0";
@@ -35,6 +35,7 @@ in
     psmisc
     xdriinfo
     xorg.xdpyinfo
+    xrandr
     bintools
     (pkgs.writeShellScriptBin "mount-data" ''
       sudo cryptsetup open /dev/disk/by-partlabel/disk-data-data cryptdata
@@ -236,7 +237,18 @@ in
       };
       displayManager = {
         defaultSession = "xfce";
-        lightdm.enable = true;
+        lightdm = {
+          enable = true;
+          # Lay out monitors before the greeter draws so lightdm appears on
+          # the DVI/KVM head (HDMI-A-2), not on the HDMI dummy plug (HDMI-A-1).
+          extraSeatDefaults = ''
+            display-setup-script=${pkgs.writeShellScript "lightdm-display-setup" ''
+              ${pkgs.xrandr}/bin/xrandr \
+                --output HDMI-A-2 --auto --primary \
+                --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
+            ''}
+          '';
+        };
       };
 
       # Configure keymap in X11
@@ -256,8 +268,18 @@ in
         encoder = "vaapi";
         min_log_level = "info";
         origin_web_ui_allowed = "lan";
+        # KVM is on DVI; HDMI has a dummy plug for the headless stream.
+        output_name = "HDMI-A-1";
       };
     };
+
+    # HDMI-A-2 = physical DVI port (KVM, primary, where lightdm appears).
+    # HDMI-A-1 = physical HDMI port with dummy plug, captured by Sunshine.
+    xserver.displayManager.sessionCommands = ''
+      ${pkgs.xrandr}/bin/xrandr \
+        --output HDMI-A-2 --auto --primary \
+        --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
+    '';
   };
 
   systemd.targets.sleep.enable = false;
