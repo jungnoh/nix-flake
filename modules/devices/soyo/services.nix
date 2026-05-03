@@ -43,6 +43,7 @@ in
       default = "http_status:404";
       # TODO: Add proper routing
       ingress = {
+        "links.suisei.dev" = "http://localhost:8001";
         "git.suisei.dev" = "http://localhost:8002";
       };
     };
@@ -177,7 +178,8 @@ in
     lfs.enable = true;
     settings = {
       server = {
-        SSH_PORT = lib.head config.services.openssh.ports;
+        DISABLE_SSH = true;
+        ROOT_URL = "https://git.suisei.dev";
         HTTP_PORT = internalPorts.forgejo;
       };
       # You can temporarily allow registration to create an admin user.
