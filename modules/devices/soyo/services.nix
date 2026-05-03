@@ -2,17 +2,24 @@
 let
   inherit (pkgs) lib;
 
-  externalPorts = {
-    linkwarden = 8001;
-    forgejo = 8002;
-  };
-  internalPorts = {
-    linkwarden = 9001;
-    forgejo = 9002;
-  };
-
   pgdump = "${pkgs.postgresql_17}/bin/pg_dump";
   s5cmd = "${pkgs.s5cmd}/bin/s5cmd";
+
+  nginxPort = 3939;
+  webServices = {
+    linkwarden = {
+      hostname = "links.suisei.dev";
+      port = 9001;
+      nginxConfig = { };
+    };
+    forgejo = {
+      hostname = "git.suisei.dev";
+      port = 9002;
+      nginxConfig = {
+        extraConfig = "client_max_body_size 512M;";
+      };
+    };
+  };
 in
 {
   # Tailscale
@@ -41,11 +48,10 @@ in
       credentialsFile = config.age.secrets.cloudflare-tunnel-creds.path;
       certificateFile = config.age.secrets.cloudflare-tunnel-token.path;
       default = "http_status:404";
-      # TODO: Add proper routing
-      ingress = {
-        "links.suisei.dev" = "http://localhost:8001";
-        "git.suisei.dev" = "http://localhost:8002";
-      };
+      ingress = lib.mapAttrs' (_: val: {
+        name = val.hostname;
+        value = "http://localhost:${toString nginxPort}";
+      }) webServices;
     };
   };
 
@@ -70,37 +76,35 @@ in
   };
 
   # Nginx
-  networking.firewall.allowedTCPPorts = builtins.attrValues externalPorts;
+  networking.firewall.allowedTCPPorts = [ nginxPort ];
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
-    virtualHosts."linkwarden" = {
-      listen = [
-        {
-          addr = "0.0.0.0";
-          port = externalPorts.linkwarden;
-        }
-      ];
-      locations."/" = {
-        proxyPass = "http://localhost:${toString internalPorts.linkwarden}";
-        proxyWebsockets = true;
-        extraConfig = "proxy_pass_header Authorization;";
-      };
-    };
-    virtualHosts.forgejo = {
-      listen = [
-        {
-          addr = "0.0.0.0";
-          port = externalPorts.forgejo;
-        }
-      ];
-      extraConfig = ''
-        client_max_body_size 512M;
-      '';
-      locations."/" = {
-        proxyPass = "http://localhost:${toString internalPorts.forgejo}";
-      };
-    };
+    commonHttpConfig = ''
+      set_real_ip_from 127.0.0.1;
+      real_ip_header CF-Connecting-IP;
+    '';
+
+    virtualHosts = lib.mapAttrs' (key: val: {
+      name = val.hostname;
+      value = lib.recursiveUpdate {
+        listen = [
+          {
+            addr = "0.0.0.0";
+            port = nginxPort;
+          }
+        ];
+        locations."/" = {
+          proxyPass = "http://localhost:${toString val.port}";
+          proxyWebsockets = true;
+          extraConfig = ''
+            proxy_pass_header Authorization;
+            proxy_set_header Connection $http_connection;
+            proxy_set_header Upgrade $http_upgrade;
+          '';
+        };
+      } val.nginxConfig;
+    }) webServices;
   };
 
   # Linkwarden
@@ -119,7 +123,7 @@ in
   services.linkwarden = {
     enable = true;
     enableRegistration = false;
-    port = internalPorts.linkwarden;
+    port = webServices.linkwarden.port;
     secretFiles = {
       POSTGRES_PASSWORD = config.age.secrets.linkwarden-postgres.path;
       NEXTAUTH_SECRET = config.age.secrets.linkwarden-nextauth.path;
@@ -128,8 +132,7 @@ in
     environment = {
       CUSTOM_OPENAI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/";
       OPENAI_MODEL = "gemini-3.1-flash-lite-preview";
-      # This is wrong, but works anyway
-      NEXTAUTH_URL = "http://localhost:3000/api/v1/auth";
+      NEXTAUTH_URL = "https://${webServices.linkwarden.hostname}/api/v1/auth";
     };
   };
 
@@ -180,7 +183,7 @@ in
       server = {
         DISABLE_SSH = true;
         ROOT_URL = "https://git.suisei.dev";
-        HTTP_PORT = internalPorts.forgejo;
+        HTTP_PORT = webServices.forgejo.port;
       };
       # You can temporarily allow registration to create an admin user.
       service.DISABLE_REGISTRATION = true;
