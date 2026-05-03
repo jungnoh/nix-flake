@@ -32,8 +32,20 @@ in
   systemd.network.wait-online.enable = false;
   boot.initrd.systemd.network.wait-online.enable = false;
 
-  # Github Actions Runner
+  # Cloudflare Tunnel
+  age.secrets.cloudflare-tunnel-token.file = ../../../secrets/cloudflare-tunnel-token.age;
+  age.secrets.cloudflare-tunnel-creds.file = ../../../secrets/cloudflare-tunnel-creds.age;
+  services.cloudflared.tunnels."bbd48770-65cd-4b5f-81b3-e8a9333597db" = {
+    credentialsFile = config.age.secrets.cloudflare-tunnel-creds.path;
+    certificateFile = config.age.secrets.cloudflare-tunnel-token.path;
+    default = "http_status:404";
+    # TODO: Add proper routing
+    ingress = {
+      "git.suisei.dev" = "http://localhost:8002";
+    };
+  };
 
+  # Github Actions Runner
   users.groups.ga-pekora = { };
   users.users.ga-pekora = {
     isSystemUser = true;
