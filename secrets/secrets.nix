@@ -22,4 +22,8 @@ in
     systems.soyo
     users.tomori
   ];
+  # Cloudflare Tunnel token
+  "cloudflare-tunnel-token.age".publicKeys = [ systems.soyo ];
+  # Cloudflare Tunnel credentials
+  "cloudflare-tunnel-creds.age".publicKeys = [ systems.soyo ];
 }
