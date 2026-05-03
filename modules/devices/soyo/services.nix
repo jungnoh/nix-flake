@@ -5,6 +5,7 @@ let
   pgdump = "${pkgs.postgresql_17}/bin/pg_dump";
   s5cmd = "${pkgs.s5cmd}/bin/s5cmd";
 
+  uptimeKumaPort = 39390;
   nginxPort = 3939;
   webServices = {
     linkwarden = {
@@ -22,6 +23,11 @@ let
   };
 in
 {
+  networking.firewall.allowedTCPPorts = [
+    nginxPort
+    uptimeKumaPort
+  ];
+
   # Tailscale
   # See https://wiki.nixos.org/wiki/Tailscale
   services.tailscale.enable = true;
@@ -76,7 +82,6 @@ in
   };
 
   # Nginx
-  networking.firewall.allowedTCPPorts = [ nginxPort ];
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
@@ -167,6 +172,7 @@ in
       echo "Cleaning up"
       rm -rf $TDIR
       echo "All done!"
+      ${pkgs.curl}/bin/curl "http://localhost:39390/api/push/gwAioyFKlIIqzBkt3oEWt7qDS2u60zXF?status=up&msg=OK&ping="
     '';
     serviceConfig = {
       Type = "oneshot";
@@ -226,10 +232,68 @@ in
       cd ~
       rm -rf $TDIR
       echo "All done!"
+
+      ${pkgs.curl}/bin/curl "http://localhost:39390/api/push/K0ENg1XT92xHS5VTVKHc1l7KXbP8f0VS?status=up&msg=OK&ping="
     '';
     serviceConfig = {
       Type = "oneshot";
       User = "forgejo";
+    };
+  };
+
+  # Uptime Kuma
+  services.uptime-kuma = {
+    enable = true;
+    settings = {
+      HOST = "0.0.0.0";
+      PORT = toString uptimeKumaPort;
+    };
+  };
+  users.groups.uptime-kuma = { };
+  users.users.uptime-kuma = {
+    isSystemUser = true;
+    group = "uptime-kuma";
+  };
+  systemd.services.uptime-kuma.serviceConfig = {
+    DynamicUser = lib.mkForce false;
+    User = "uptime-kuma";
+  };
+
+  age.secrets.uptime-kuma-backblaze-key = {
+    file = ../../../secrets/soyo-backblaze.age;
+    owner = "uptime-kuma";
+  };
+  systemd.timers."uptime-kuma-backup" = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 2:00:00";
+      Persistent = true;
+      Unit = "uptime-kuma-backup.service";
+    };
+  };
+  systemd.services."uptime-kuma-backup" = {
+    script = ''
+      export TDIR=$(${pkgs.mktemp}/bin/mktemp -d)
+
+      export AWS_ACCESS_KEY_ID=00544cfc0850c450000000003
+      export AWS_SECRET_ACCESS_KEY=$(< ${config.age.secrets.uptime-kuma-backblaze-key.path})
+      export S3_ENDPOINT_URL=https://s3.us-east-005.backblazeb2.com
+
+      echo "Dumping"
+      cd $TDIR
+      ${pkgs.sqlite}/bin/sqlite3 /var/lib/uptime-kuma/kuma.db ".dump" > $TDIR/kuma.sql
+      echo "Uploading"
+      ${s5cmd} sync $TDIR/ s3://jungnoh-soyo/uptime-kuma/
+      echo "Cleaning up"
+      cd ~
+      rm -rf $TDIR
+      echo "All done!"
+
+      ${pkgs.curl}/bin/curl "http://localhost:39390/api/push/zgJoTMK5QHK8Ho3YC4GdWo5pvqOR2PVz?status=up&msg=OK&ping="
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "uptime-kuma";
     };
   };
 }
