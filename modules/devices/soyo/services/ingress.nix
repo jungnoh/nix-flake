@@ -40,6 +40,12 @@ in
             port = nginxPort;
           }
         ];
+        locations."/robots.txt" = {
+          priority = 1;
+          return = ''
+            200 "User-agent: *\nDisallow: /"
+          '';
+        };
         locations."/" = {
           proxyPass = "http://localhost:${toString val.port}";
           proxyWebsockets = true;
