@@ -30,11 +30,11 @@ let
       time ? "*-*-* 2:00:00",
     }:
     let
-      healthCheckHost = "http://localhost:${serviceDefs.internal.uptimeKuma.port}";
+      healthCheckHost = "http://localhost:${toString serviceDefs.internal.uptimeKuma.port}";
     in
     {
       age.secrets."backup-storage-key-${name}" = {
-        file = ../../../secrets/soyo-backblaze.age;
+        file = ../../../../secrets/soyo-backblaze.age;
         owner = user;
       };
       systemd.timers."backup-${name}" = {
@@ -55,7 +55,7 @@ let
           echo "Dumping"
           ${script}
           echo "Uploading"
-          ${pkgs.s5cmd}/bin/s5cmd $TDIR/ s3://jungnoh-soyo/${name}/
+          ${pkgs.s5cmd}/bin/s5cmd sync $TDIR/ s3://jungnoh-soyo/${name}/
           echo "Cleaning up"
           cd /
           rm -rf $TDIR
@@ -71,7 +71,7 @@ let
       };
     };
 in
-map (m: m { inherit serviceDefs mkBackup; }) [
+map (m: (import m) { inherit serviceDefs mkBackup; }) [
   ./ci.nix
   ./forgejo.nix
   ./ingress.nix

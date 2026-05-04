@@ -1,5 +1,5 @@
 { ... }:
-{ pkgs, config }:
+{ pkgs, config, ... }:
 {
   users.groups.ga-pekora = { };
   users.users.ga-pekora = {
@@ -8,7 +8,7 @@
     useDefaultShell = true;
     extraGroups = [ "podman" ];
   };
-  age.secrets.ga-pekora-token.file = ../../../secrets/soyo-github-runner-pekora.age;
+  age.secrets.ga-pekora-token.file = ../../../../secrets/soyo-github-runner-pekora.age;
   services.github-runners = {
     pekora = {
       enable = true;

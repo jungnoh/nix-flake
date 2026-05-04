@@ -11,7 +11,7 @@ let
       ./configuration.nix
       ./hardware.nix
     ]
-    ++ ./services;
+    ++ (import ./services);
     disko_modules = [
       ./disko-config.nix
     ];
@@ -20,10 +20,8 @@ let
     ];
     languages = [ ];
   };
-
 in
 {
-
   nixosConfigurations."${hostname}" = nixpkgs.lib.nixosSystem {
     inherit (host) system modules specialArgs;
   };

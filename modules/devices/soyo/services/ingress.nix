@@ -1,4 +1,4 @@
-{ serviceDefs }:
+{ serviceDefs, ... }:
 { pkgs, config, ... }:
 let
   inherit (pkgs) lib;
@@ -6,8 +6,8 @@ let
 in
 {
   # Cloudflare Tunnel
-  age.secrets.cloudflare-tunnel-token.file = ../../../secrets/cloudflare-tunnel-token.age;
-  age.secrets.cloudflare-tunnel-creds.file = ../../../secrets/cloudflare-tunnel-creds.age;
+  age.secrets.cloudflare-tunnel-token.file = ../../../../secrets/cloudflare-tunnel-token.age;
+  age.secrets.cloudflare-tunnel-creds.file = ../../../../secrets/cloudflare-tunnel-creds.age;
   services.cloudflared = {
     enable = true;
     tunnels."bbd48770-65cd-4b5f-81b3-e8a9333597db" = {
