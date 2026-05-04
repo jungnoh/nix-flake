@@ -10,8 +10,8 @@ let
     system_modules = [
       ./configuration.nix
       ./hardware.nix
-      ./services.nix
-    ];
+    ]
+    ++ (import ./services);
     disko_modules = [
       ./disko-config.nix
     ];
@@ -20,10 +20,8 @@ let
     ];
     languages = [ ];
   };
-
 in
 {
-
   nixosConfigurations."${hostname}" = nixpkgs.lib.nixosSystem {
     inherit (host) system modules specialArgs;
   };
