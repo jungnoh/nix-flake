@@ -15,9 +15,9 @@
       insomnia
       just
       gnumake
+      opencode
     ])
     ++ (with pkgs.master; [
-      opencode
       claude-code
     ]);
 }
