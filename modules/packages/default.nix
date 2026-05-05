@@ -16,9 +16,11 @@ let
     desktop = [
       ./02-profiles/desktop.nix
       ./02-profiles/desktop-basic.nix
+      ./03-apps/ghostty.nix
     ];
     desktop-basic = [
       ./02-profiles/desktop-basic.nix
+      ./03-apps/ghostty.nix
     ];
     dev-env = [
       ./02-profiles/containers.nix
