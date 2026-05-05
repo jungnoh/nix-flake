@@ -1,5 +1,6 @@
 let
   users = {
+    pekora = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICOJls4HazXObD6edTR34Q4KaWgQ7fncg9dm8sCnYUBf";
     tomori = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJL8gwfkX0ql5CYkDVTq/RmEICwHLw5E+Ajb7e9czJHj";
   };
   systems = {
@@ -7,6 +8,12 @@ let
   };
 in
 {
+  # Private DNS records
+  "private-dns-records.age".publicKeys = [
+    systems.soyo
+    users.pekora
+    users.tomori
+  ];
   # GA runner token for jungnoh/pekora-cs
   "soyo-github-runner-pekora.age".publicKeys = [ systems.soyo ];
   # Linkwarden NEXTAUTH_SECRET

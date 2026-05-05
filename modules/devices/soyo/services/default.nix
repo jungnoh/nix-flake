@@ -73,6 +73,7 @@ let
 in
 map (m: (import m) { inherit serviceDefs mkBackup; }) [
   ./ci.nix
+  ./dns.nix
   ./forgejo.nix
   ./ingress.nix
   ./linkwarden.nix

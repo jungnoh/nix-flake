@@ -8,7 +8,10 @@ let
 in
 {
   environment = {
-    systemPackages = [ pkgs.vim ];
+    systemPackages = with pkgs; [
+      moonlight-qt
+      vim
+    ];
     systemPath = [
       "~/go/bin"
     ];
