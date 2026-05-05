@@ -99,6 +99,7 @@ in
   };
 
   networking.firewall.checkReversePath = "loose";
+  networking.nftables.enable = true;
   networking.networkmanager.ensureProfiles = {
     profiles = {
       "${defaultNIC}" = {
@@ -126,24 +127,24 @@ in
     };
   };
 
-  networking.firewall.extraCommands = ''
-    iptables -D FORWARD -i virbr0 -o ${vmNIC} -j ACCEPT 2>/dev/null || true
-    iptables -D FORWARD -i ${vmNIC} -o virbr0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT 2>/dev/null || true
-    iptables -t nat -D POSTROUTING -s ${vmSubnet} ! -d ${vmSubnet} -o ${vmNIC} -j MASQUERADE 2>/dev/null || true
-    iptables -t mangle -D PREROUTING -i virbr0 -s ${vmSubnet} -j MARK --set-mark 0x1 2>/dev/null || true
-
-    iptables -t mangle -I PREROUTING -i virbr0 -s ${vmSubnet} -j MARK --set-mark 0x1
-
-    iptables -I FORWARD -i virbr0 -o ${vmNIC} -j ACCEPT
-    iptables -I FORWARD -i ${vmNIC} -o virbr0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-    iptables -t nat -I POSTROUTING -s ${vmSubnet} ! -d ${vmSubnet} -o ${vmNIC} -j MASQUERADE
+  networking.firewall.extraForwardRules = ''
+    iifname "virbr0" oifname "${vmNIC}" accept
+    iifname "${vmNIC}" oifname "virbr0" ct state related,established accept
   '';
-  networking.firewall.extraStopCommands = ''
-    iptables -D FORWARD -i virbr0 -o ${vmNIC} -j ACCEPT 2>/dev/null || true
-    iptables -D FORWARD -i ${vmNIC} -o virbr0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT 2>/dev/null || true
-    iptables -t nat -D POSTROUTING -s ${vmSubnet} ! -d ${vmSubnet} -o ${vmNIC} -j MASQUERADE 2>/dev/null || true
-    iptables -t mangle -D PREROUTING -i virbr0 -s ${vmSubnet} -j MARK --set-mark 0x1 2>/dev/null || true
-  '';
+  networking.nftables.tables."vm-routing" = {
+    family = "ip";
+    content = ''
+      chain mangle-prerouting {
+        type filter hook prerouting priority mangle; policy accept;
+        iifname "virbr0" ip saddr ${vmSubnet} meta mark set 0x1
+      }
+
+      chain nat-postrouting {
+        type nat hook postrouting priority srcnat; policy accept;
+        ip saddr ${vmSubnet} ip daddr != ${vmSubnet} oifname "${vmNIC}" masquerade
+      }
+    '';
+  };
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "net.bridge.bridge-nf-call-iptables" = 1;
