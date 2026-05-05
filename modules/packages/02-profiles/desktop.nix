@@ -15,6 +15,7 @@ in
         telegram-desktop
         spotify
         obsidian
+        moonlight-qt
       ];
     }
     (onlyDarwin {

@@ -9,7 +9,6 @@ in
 {
   environment = {
     systemPackages = with pkgs; [
-      moonlight-qt
       vim
     ];
     systemPath = [
