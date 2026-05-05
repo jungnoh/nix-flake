@@ -148,6 +148,9 @@ in
   boot.kernel.sysctl = {
     "net.ipv4.ip_forward" = 1;
     "net.bridge.bridge-nf-call-iptables" = 1;
+    # Smooth UDP bursts toward the soyo subnet router for Sunshine streaming.
+    "net.core.rmem_max" = 7500000;
+    "net.core.wmem_max" = 7500000;
   };
 
   powerManagement.cpuFreqGovernor = "performance";

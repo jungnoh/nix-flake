@@ -21,6 +21,12 @@
   systemd.network.wait-online.enable = false;
   boot.initrd.systemd.network.wait-online.enable = false;
 
+  # Enlarged UDP socket buffers for the WireGuard userspace socket.
+  boot.kernel.sysctl = {
+    "net.core.rmem_max" = 7500000;
+    "net.core.wmem_max" = 7500000;
+  };
+
   # UDP GRO forwarding optimization for subnet router / exit node throughput.
   # https://tailscale.com/kb/1320/performance-best-practices#linux-optimizations-for-subnet-routers-and-exit-nodes
   systemd.services.tailscale-ethtool-tweaks = {
