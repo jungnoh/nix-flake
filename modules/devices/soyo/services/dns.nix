@@ -13,11 +13,8 @@
     enable = true;
     settings.server = {
       interface = [ "0.0.0.0" ];
-      access-control = [
-        "100.64.0.0/10 allow" # Tailscale subnet
-        "192.168.0.0/24 allow"
-        "192.168.39.0/24 allow"
-      ];
+      # Only allow for Tailscale nodes.
+      access-control = [ "100.64.0.0/10 allow" ];
       include = config.age.secrets.private-dns-records.path;
     };
 
