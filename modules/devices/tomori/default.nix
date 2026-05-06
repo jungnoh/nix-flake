@@ -1,4 +1,4 @@
-{ nixpkgs, nixpkgs-master, ... }@inputs:
+{ nixpkgs, ... }@inputs:
 let
   hostname = "tomori";
   host = import ../mkHost.nix {
@@ -8,6 +8,7 @@ let
     system_modules = [
       ./configuration.nix
       ./hardware.nix
+      (import ../../packages/03-apps/tailscale.nix { systray = true; })
     ];
     features = [
       "personal"

@@ -23,11 +23,7 @@ in
     (onlyDarwin {
       homebrew.casks = [
         "mullvad-vpn"
-        "tailscale-app"
       ];
-      home.programs.zsh.shellAliases = {
-        tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
-      };
     })
     (onlyLinux {
       services.mullvad-vpn = {

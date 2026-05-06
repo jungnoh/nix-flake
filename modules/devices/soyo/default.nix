@@ -10,6 +10,7 @@ let
     system_modules = [
       ./configuration.nix
       ./hardware.nix
+      (import ../../packages/03-apps/tailscale.nix { useRouting = true; })
     ]
     ++ (import ./services);
     disko_modules = [

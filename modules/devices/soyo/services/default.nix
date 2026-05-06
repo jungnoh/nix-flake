@@ -77,6 +77,5 @@ map (m: (import m) { inherit serviceDefs mkBackup; }) [
   ./forgejo.nix
   ./ingress.nix
   ./linkwarden.nix
-  ./tailscale.nix
   ./uptime-kuma.nix
 ]

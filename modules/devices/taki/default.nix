@@ -10,7 +10,7 @@ let
     system_modules = [
       ./configuration.nix
       ./hardware.nix
-      ./services.nix
+      (import ../../packages/03-apps/tailscale.nix { systray = true; })
     ];
     disko_modules = [
       ./disko-config.nix
