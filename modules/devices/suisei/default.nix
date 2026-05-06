@@ -10,6 +10,7 @@ let
     system = "aarch64-darwin";
     system_modules = [
       ./configuration.nix
+      ./ollama.nix
       (import ../../packages/03-apps/tailscale.nix { })
     ];
     features = [
