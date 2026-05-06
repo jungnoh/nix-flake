@@ -49,11 +49,42 @@ in
   # Enable networking
   networking.networkmanager.enable = true;
 
+  # Keep NetworkManager off libvirt-owned interfaces, otherwise it tries to
+  # manage virbr0/vnet* and leaves the bridge admin-down, breaking VM egress.
+  networking.networkmanager.unmanaged = [
+    "interface-name:virbr*"
+    "interface-name:vnet*"
+  ];
+
   # Enable WOL
   networking.interfaces.enp5s0.wakeOnLan.enable = true;
   networking.firewall.allowedUDPPorts = [ 9 ];
 
   networking.nftables.enable = true;
+
+  # Let libvirt VMs on the default NAT bridge reach the internet. The main
+  # firewall's forward chain otherwise drops their packets even though
+  # libvirt installs its own NAT rules.
+  networking.firewall.extraForwardRules = ''
+    iifname "virbr0" ip saddr 192.168.122.0/24 accept comment "libvirt NAT egress"
+    oifname "virbr0" ct state related,established accept comment "libvirt NAT return path"
+  '';
+
+  # Use libvirt's native nftables backend rather than the iptables-nft shim,
+  # which avoids ordering issues when networking.nftables.enable = true.
+  environment.etc."libvirt/network.conf".text = ''
+    firewall_backend = "nftables"
+  '';
+
+  networking.firewall.interfaces.virbr0 = {
+    allowedTCPPorts = [ 53 ];
+    allowedUDPPorts = [
+      53
+      67
+    ];
+  };
+
+  networking.networkmanager.dns = "default";
   networking.networkmanager.ensureProfiles = {
     profiles = {
       "${defaultNIC}" = {
@@ -65,6 +96,7 @@ in
         ipv4 = {
           method = "auto";
           route-metric = "100";
+          ignore-auto-dns = "true";
         };
       };
     };
