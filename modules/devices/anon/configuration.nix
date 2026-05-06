@@ -15,6 +15,10 @@ in
 {
   imports = [
     ./hardware.nix
+    (import ../../packages/03-apps/tailscale.nix {
+      useRouting = true;
+      systray = true;
+    })
     ../../packages/03-apps/vscode
   ];
 
