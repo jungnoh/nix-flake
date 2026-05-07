@@ -1,5 +1,6 @@
 {
   useRouting ? false,
+  useSSH ? false,
   systray ? false,
 }:
 {
@@ -14,7 +15,10 @@ let
 in
 lib.mkMerge [
   (onlyLinux {
-    services.tailscale.enable = true;
+    services.tailscale = {
+      enable = true;
+      extraUpFlags = if useSSH then [ "--ssh" ] else [ ];
+    };
     networking.nftables.enable = true;
     networking.firewall = {
       enable = true;
