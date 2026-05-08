@@ -13,21 +13,6 @@ let
   defaultNIC = "enp5s0";
 in
 {
-  imports = [
-    ./hardware.nix
-  ];
-
-  myOptions = {
-    tailscale = {
-      enable = true;
-      routing = true;
-      systray = true;
-    };
-    editors.vscode = {
-      enable = true;
-    };
-  };
-
   environment.systemPackages = with pkgs; [
     dnsmasq
     psmisc

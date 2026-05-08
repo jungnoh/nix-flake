@@ -5,12 +5,33 @@ import ../mkHost.nix {
   hostname = "taki";
   system = "x86_64-linux";
   username = "jungnoh";
-  use_agenix = true;
-  system_modules = [
+  modules = [
     ./configuration.nix
     ./hardware.nix
-  ];
-  disko_modules = [
     ./disko-config.nix
   ];
+
+  myOptions = {
+    containers.enable = true;
+    editors.zed.enable = true;
+    mullvad.enable = true;
+    tailscale = {
+      enable = true;
+      systray = true;
+    };
+    devtools = {
+      enable = true;
+      languages = {
+        rust = true;
+        golang = true;
+        dotnet = true;
+        node = true;
+      };
+    };
+    desktopApps = {
+      fun = true;
+      work = true;
+      games = true;
+    };
+  };
 }

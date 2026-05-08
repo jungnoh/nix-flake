@@ -5,13 +5,19 @@ import ../mkHost.nix {
   hostname = "soyo";
   system = "x86_64-linux";
   username = "jungnoh";
-  use_agenix = true;
-  system_modules = [
+  modules = [
     ./configuration.nix
     ./hardware.nix
+    ./disko-config.nix
   ]
   ++ (import ./services);
-  disko_modules = [
-    ./disko-config.nix
-  ];
+
+  myOptions = {
+    containers.enable = true;
+    tailscale = {
+      enable = true;
+      useRouting = true;
+      useSSH = true;
+    };
+  };
 }

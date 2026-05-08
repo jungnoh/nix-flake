@@ -5,11 +5,20 @@ import ../mkHost.nix {
   hostname = "anon";
   system = "x86_64-linux";
   username = "user";
-  system_modules = [
+  modules = [
     ./configuration.nix
     ./hardware.nix
-  ];
-  disko_modules = [
     ./disko-config.nix
   ];
+
+  myOptions = {
+    tailscale = {
+      enable = true;
+      routing = true;
+      systray = true;
+    };
+    editors.vscode = {
+      enable = true;
+    };
+  };
 }

@@ -4,8 +4,28 @@ import ../mkHost.nix {
 
   hostname = "suisei";
   system = "aarch64-darwin";
-  system_modules = [
+  modules = [
     ./configuration.nix
     ./ollama.nix
   ];
+
+  myOptions = {
+    darwin.homebrew = true;
+    editors.zed.enable = true;
+    mullvad.enable = true;
+    tailscale.enable = true;
+    devtools = {
+      enable = true;
+      langauges = {
+        rust = true;
+        golang = true;
+        dotnet = true;
+        node = true;
+      };
+    };
+    desktopApps = {
+      fun = true;
+      work = true;
+    };
+  };
 }

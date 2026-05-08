@@ -85,6 +85,7 @@ let
         go
         go-migrate
       ];
+      environment.systemPath = [ "~/go/bin" ];
     };
     dotnet = {
       home.packages = with pkgs; [

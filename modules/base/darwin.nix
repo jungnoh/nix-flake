@@ -40,8 +40,11 @@ with lib;
 
       taps = [ ];
     };
-    environment.variables.HOMEBREW_NO_ANALYTICS = mkIf myOptions.darwin.homebrew "1";
-    environment.systemPath = mkIf myOptions.darwin.homebrew [ "/opt/homebrew/bin" ];
+    environment = {
+      variables.HOMEBREW_NO_ANALYTICS = mkIf myOptions.darwin.homebrew "1";
+      systemPath = mkIf myOptions.darwin.homebrew [ "/opt/homebrew/bin" ];
+      pathsToLink = [ "/Applications" ];
+    };
 
     ## macOS Config
     system.primaryUser = username;

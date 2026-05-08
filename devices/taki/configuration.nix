@@ -10,31 +10,6 @@ let
   inherit (ctx) username hostname;
 in
 {
-  myOptions = {
-    containers.enable = true;
-    mullvad.enable = true;
-    tailscale = {
-      enable = true;
-      systray = true;
-    };
-    devtools = {
-      enable = true;
-      languages = {
-        rust = true;
-        golang = true;
-        dotnet = true;
-        node = true;
-      };
-    };
-    editors = {
-      zed.enable = true;
-    };
-    desktopApps = {
-      fun = true;
-      work = true;
-      games = true;
-    };
-  };
 
   boot.loader.grub = {
     efiSupport = true;
