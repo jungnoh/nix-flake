@@ -6,7 +6,7 @@
   ...
 }:
 let
-  inherit (ctx) onlyLinux;
+  inherit (lib) onlyLinux;
 in
 {
   config = lib.mkMerge [

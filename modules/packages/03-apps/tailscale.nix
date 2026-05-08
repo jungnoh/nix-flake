@@ -5,15 +5,19 @@
 }:
 {
   config,
-  ctx,
   pkgs,
   lib,
   ...
 }:
 let
-  inherit (ctx) onlyLinux onlyDarwin isLinux;
+  inherit (lib)
+    onlyLinux
+    onlyDarwin
+    isLinux
+    mkMerge
+    ;
 in
-lib.mkMerge [
+mkMerge [
   (onlyLinux {
     services.tailscale = {
       enable = true;

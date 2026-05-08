@@ -8,7 +8,7 @@
   ...
 }:
 let
-  inherit (ctx) onlyDarwin onlyLinux;
+  inherit (lib) onlyDarwin onlyLinux;
 in
 {
   config = lib.mkMerge [

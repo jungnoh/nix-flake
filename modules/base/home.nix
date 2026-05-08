@@ -1,15 +1,13 @@
 {
-  pkgs,
   lib,
-  config,
   options,
   ctx,
   ...
 }:
 let
-  inherit (ctx) username isDarwin;
+  inherit (ctx) username;
 
-  homeDir = if isDarwin then "/Users/${username}" else "/home/${username}";
+  homeDir = if lib.isDarwin then "/Users/${username}" else "/home/${username}";
 in
 with lib;
 {

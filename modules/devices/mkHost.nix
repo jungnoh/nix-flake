@@ -10,7 +10,11 @@
   use_agenix ? false,
 }:
 let
-  inherit (inputs) home-manager disko agenix;
+  inherit (inputs)
+    home-manager
+    disko
+    agenix
+    ;
 
   isDarwin = builtins.elem system [
     "aarch64-darwin"
@@ -24,16 +28,25 @@ let
   onlyDarwin = { ... }@inputs: (if isDarwin then inputs else { });
   onlyLinux = { ... }@inputs: (if isLinux then inputs else { });
 
+  mkIfDarwin = condition: { ... }@cfg: (if isDarwin then (lib.mkIf condition cfg) else { });
+  mkIfLinux = condition: { ... }@cfg: (if isLinux then (lib.mkIf condition cfg) else { });
+
+  lib = inputs.nixpkgs.lib.extend (
+    self: super: {
+      inherit
+        isDarwin
+        isLinux
+        onlyDarwin
+        onlyLinux
+        mkIfDarwin
+        mkIfLinux
+        ;
+    }
+  );
+
   # Context for me to use, will be passed via specialArgs
   ctx = {
-    inherit
-      isDarwin
-      isLinux
-      onlyDarwin
-      onlyLinux
-      username
-      hostname
-      ;
+    inherit username hostname;
   };
 
   homeManagerKey = if isDarwin then "darwinModules" else "nixosModules";
@@ -60,20 +73,30 @@ let
       [ ];
 
   modules =
-    ((import ../base) { inherit system; })
+    (import ../base)
     ++ diskoModules
     ++ agenixModules
     ++ [ homeManager ]
     ++ system_modules
     ++ (import ../packages { inherit features ctx languages; });
-in
-{
-  inherit system modules;
-  specialArgs = {
-    inherit
-      inputs
-      system
-      ctx
-      ;
+
+  systemArgs = {
+    inherit system modules;
+    specialArgs = {
+      inherit
+        lib
+        inputs
+        system
+        ctx
+        ;
+    };
   };
-}
+in
+if isDarwin then
+  {
+    darwinConfigurations."${hostname}" = inputs.nix-darwin.lib.darwinSystem systemArgs;
+  }
+else
+  {
+    nixosConfigurations."${hostname}" = inputs.nixpkgs.lib.nixosSystem systemArgs;
+  }

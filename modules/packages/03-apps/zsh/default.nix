@@ -5,9 +5,9 @@
   ...
 }:
 let
-  inherit (ctx) onlyLinux;
+  inherit (lib) onlyLinux mkMerge;
 in
-lib.mkMerge [
+mkMerge [
   (onlyLinux {
     users.defaultUserShell = pkgs.zsh;
     programs.zsh.enable = true;

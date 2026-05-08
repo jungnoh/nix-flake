@@ -1,12 +1,10 @@
 {
   features,
   languages,
-  ctx,
+  ...
 }:
 let
-  inherit (ctx) isDarwin;
-
-  commonModules = (if isDarwin then (import ./01-system/darwin) else (import ./01-system/linux)) ++ [
+  commonModules = [
     ./02-profiles/common.nix
     ./03-apps/git
     ./03-apps/zsh

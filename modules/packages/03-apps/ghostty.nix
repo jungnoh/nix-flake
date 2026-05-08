@@ -1,10 +1,10 @@
 {
   pkgs,
-  ctx,
+  lib,
   ...
 }:
 let
-  inherit (ctx) isDarwin;
+  inherit (lib) isDarwin;
   themeFile = pkgs.writeText "ghostty-theme-adventure" ''
     palette = 0=#040404
     palette = 1=#d84a33
