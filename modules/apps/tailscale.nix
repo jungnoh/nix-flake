@@ -63,7 +63,7 @@ in
       (mkIfLinux tsOptions.ssh {
         services.tailscale.extraUpFlags = [ "--ssh" ];
       })
-      (mkIfLinux tsOptions.systray {
+      (mkIfLinux (config.myOptions.linux.desktop && tsOptions.systray) {
         systemd.user.services.tailscale-systray = {
           enable = true;
           description = "Tailscale System Tray";

@@ -4,7 +4,7 @@
   pkgs,
   config,
   ...
-}@inputs:
+}:
 with lib;
 let
   webBrowserApps = byPlatform {

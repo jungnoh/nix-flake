@@ -40,7 +40,7 @@ with lib;
     };
   };
 
-  config = {
+  config = mkIf config.myOptions.ghostty.enable {
     home.packages = with pkgs; if isDarwin then [ ghostty-bin ] else [ ghostty ];
     home.configFile."ghostty/config".source = pkgs.writeText "ghostty-config" ''
       auto-update = "off"
