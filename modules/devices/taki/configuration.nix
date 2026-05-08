@@ -39,22 +39,6 @@ in
     ];
   };
 
-  services = {
-    xrdp = {
-      defaultWindowManager = "startplasma-x11";
-      enable = true;
-      openFirewall = true;
-    };
-
-    xserver = {
-      enable = true;
-      xkb = {
-        layout = "kr";
-        variant = "";
-      };
-    };
-  };
-
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
 
