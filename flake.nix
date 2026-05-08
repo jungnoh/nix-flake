@@ -23,7 +23,7 @@
   };
   outputs =
     { nixpkgs, ... }@inputs:
-    (import ./modules/devices) inputs
+    (import ./devices) inputs
     // {
       formatter.aarch64-darwin = nixpkgs.legacyPackages.aarch64-darwin.nixfmt-tree;
       formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;

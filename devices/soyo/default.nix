@@ -1,0 +1,17 @@
+inputs:
+import ../mkHost.nix {
+  inherit inputs;
+
+  hostname = "soyo";
+  system = "x86_64-linux";
+  username = "jungnoh";
+  use_agenix = true;
+  system_modules = [
+    ./configuration.nix
+    ./hardware.nix
+  ]
+  ++ (import ./services);
+  disko_modules = [
+    ./disko-config.nix
+  ];
+}

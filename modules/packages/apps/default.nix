@@ -1,0 +1,9 @@
+[
+  ./zsh
+  ./git.nix
+  ./ghostty.nix
+  ./tailscale.nix
+  ./vscode.nix
+  ./zed.nix
+  ./mullvad.nix
+]
