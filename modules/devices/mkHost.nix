@@ -3,7 +3,6 @@
   system,
   hostname,
   features,
-  languages ? [ ],
   disko_modules ? [ ],
   system_modules ? [ ],
   username ? "jungnoh",
@@ -78,7 +77,7 @@ let
     ++ agenixModules
     ++ [ homeManager ]
     ++ system_modules
-    ++ (import ../packages { inherit features ctx languages; });
+    ++ (import ../packages { inherit features ctx; });
 
   systemArgs = {
     inherit system modules;

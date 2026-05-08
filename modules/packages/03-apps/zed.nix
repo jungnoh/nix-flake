@@ -1,14 +1,19 @@
-# Common applications that are used in a desktop environment
 {
   pkgs,
   lib,
+  config,
   ...
 }:
-let
-  inherit (lib) onlyLinux;
-in
+with lib;
 {
-  config = lib.mkMerge [
+  options.myOptions.editors.zed = {
+    enable = mkOption {
+      type = types.bool;
+      default = false;
+    };
+  };
+
+  config = mkIf config.myOptions.editors.zed.enable (mkMerge [
     {
       home.packages = with pkgs; [
         nerd-fonts.jetbrains-mono
@@ -102,5 +107,5 @@ in
         ];
       };
     })
-  ];
+  ]);
 }

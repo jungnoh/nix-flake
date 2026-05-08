@@ -15,5 +15,4 @@ import ../mkHost.nix {
   features = [
     "desktop-basic"
   ];
-  languages = [ ];
 }

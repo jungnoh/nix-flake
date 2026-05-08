@@ -16,6 +16,18 @@ in
       enable = true;
       systray = true;
     };
+    devtools = {
+      enable = true;
+      languages = {
+        rust = true;
+        golang = true;
+        dotnet = true;
+        node = true;
+      };
+    };
+    editors = {
+      zed.enable = true;
+    };
   };
 
   boot.loader.grub = {

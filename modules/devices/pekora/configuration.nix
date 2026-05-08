@@ -4,6 +4,18 @@
     darwin.homebrew = true;
     tailscale.enable = true;
     containers.enable = true;
+    devtools = {
+      enable = true;
+      languages = {
+        rust = true;
+        golang = true;
+        dotnet = true;
+        node = true;
+      };
+    };
+    editors = {
+      zed.enable = true;
+    };
   };
 
   environment = {

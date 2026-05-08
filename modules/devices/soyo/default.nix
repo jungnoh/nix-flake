@@ -15,5 +15,4 @@ import ../mkHost.nix {
     ./disko-config.nix
   ];
   features = [ ];
-  languages = [ ];
 }

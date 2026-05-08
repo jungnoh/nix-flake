@@ -11,14 +11,7 @@ import ../mkHost.nix {
   features = [
     "personal"
     "desktop"
-    "dev-env"
     "kde"
     "games"
-  ];
-  languages = [
-    "rust"
-    "golang"
-    "dotnet"
-    "node"
   ];
 }

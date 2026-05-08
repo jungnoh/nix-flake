@@ -15,13 +15,17 @@ in
 {
   imports = [
     ./hardware.nix
-    ../../packages/03-apps/vscode
   ];
 
-  myOptions.tailscale = {
-    enable = true;
-    routing = true;
-    systray = true;
+  myOptions = {
+    tailscale = {
+      enable = true;
+      routing = true;
+      systray = true;
+    };
+    editors.vscode = {
+      enable = true;
+    };
   };
 
   environment.systemPackages = with pkgs; [

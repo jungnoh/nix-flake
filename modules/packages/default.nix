@@ -1,6 +1,5 @@
 {
   features,
-  languages,
   ...
 }:
 let
@@ -10,6 +9,9 @@ let
     ./03-apps/zsh
     ./03-apps/git.nix
     ./03-apps/tailscale.nix
+    ./03-apps/devtools.nix
+    ./03-apps/vscode.nix
+    ./03-apps/zed.nix
   ];
 
   featuresModuleMap = {
@@ -22,12 +24,6 @@ let
       ./02-profiles/desktop-basic.nix
       ./03-apps/ghostty.nix
     ];
-    dev-env = [
-      ./02-profiles/dev-env.nix
-      ./02-profiles/dev-env-cloud.nix
-      ./02-profiles/dev-env-database.nix
-      ./03-apps/zed
-    ];
     personal = [ ./02-profiles/personal.nix ];
     work = [ ./02-profiles/work.nix ];
     kde = [ ./02-profiles/kde.nix ];
@@ -35,9 +31,5 @@ let
   };
 
   featureModules = builtins.concatMap (p: featuresModuleMap."${p}") features;
-
-  languageModules = [
-    (import ./03-apps/languages { inherit languages; })
-  ];
 in
-commonModules ++ featureModules ++ languageModules
+commonModules ++ featureModules

@@ -1,7 +1,21 @@
 { pkgs, ... }:
 {
-  myOptions.darwin.homebrew = true;
-  myOptions.tailscale.enable = true;
+  myOptions = {
+    darwin.homebrew = true;
+    tailscale.enable = true;
+    devtools = {
+      enable = true;
+      langauges = {
+        rust = true;
+        golang = true;
+        dotnet = true;
+        node = true;
+      };
+    };
+    editors = {
+      zed.enable = true;
+    };
+  };
 
   environment = {
     systemPackages = [ pkgs.vim ];

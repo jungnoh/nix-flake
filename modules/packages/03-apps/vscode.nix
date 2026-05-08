@@ -1,13 +1,11 @@
 {
-  config,
-  lib,
   pkgs,
-  ctx,
+  lib,
+  config,
   ...
 }:
 let
-  inherit (ctx) onlyLinux;
-  vimHandleKeys = onlyLinux {
+  vimHandleKeys = lib.onlyLinux {
     "<C-a>" = false;
     "<C-c>" = false;
     "<C-f>" = false;
@@ -33,8 +31,16 @@ let
     }
   ) { } smallTabLanguages;
 in
+with lib;
 {
-  config = {
+  options.myOptions.editors.vscode = {
+    enable = mkOption {
+      type = types.bool;
+      default = false;
+    };
+  };
+
+  config = mkIf config.myOptions.editors.vscode.enable {
     home.programs.vscode = {
       enable = true;
       profiles.default = {
