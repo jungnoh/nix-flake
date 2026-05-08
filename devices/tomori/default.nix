@@ -8,8 +8,4 @@ import ../mkHost.nix {
     ./configuration.nix
     ./hardware.nix
   ];
-  features = [
-    "kde"
-    "games"
-  ];
 }

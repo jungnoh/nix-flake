@@ -13,8 +13,4 @@ import ../mkHost.nix {
   disko_modules = [
     ./disko-config.nix
   ];
-  features = [
-    "kde"
-    "games"
-  ];
 }

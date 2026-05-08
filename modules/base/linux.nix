@@ -1,7 +1,6 @@
 {
   lib,
   config,
-  ctx,
   ...
 }:
 let
@@ -14,6 +13,13 @@ with lib;
       type = types.bool;
       default = false;
       description = "Enable configuration for desktop environments.";
+    };
+    desktopEnv = mkOption {
+      type = types.enum [
+        "xfce"
+        "kde"
+      ];
+      default = "kde";
     };
   };
 

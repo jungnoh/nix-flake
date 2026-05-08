@@ -87,7 +87,7 @@ let
     ++ agenixModules
     ++ [ homeManager ]
     ++ system_modules
-    ++ (import ../modules/packages { inherit features ctx; });
+    ++ (import ../modules/packages);
 
   systemArgs = {
     inherit system modules;

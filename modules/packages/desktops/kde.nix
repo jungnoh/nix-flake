@@ -2,13 +2,16 @@
 {
   pkgs,
   inputs,
+  config,
+  lib,
   ...
 }:
 let
   inherit (inputs) plasma-manager;
+  enable =
+    lib.isLinux && config.myOptions.linux.desktop && config.myOptions.linux.desktopEnv == "kde";
 in
-{
-  services.xserver.enable = true;
+lib.mkIfLinux enable {
   services.displayManager.sddm.enable = true;
   services.desktopManager.plasma6.enable = true;
 

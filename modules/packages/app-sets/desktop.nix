@@ -82,6 +82,21 @@ let
     };
   };
 
+  gameApps = byPlatform {
+    linux = {
+      programs.steam = {
+        enable = true;
+        extraCompatPackages = with pkgs; [
+          proton-ge-bin
+        ];
+      };
+      environment.systemPackages = with pkgs; [
+        # Install dw-proton
+        protonplus
+      ];
+    };
+  };
+
   isDesktop = (isLinux && config.myOptions.linux.desktop) || isDarwin;
   desktopApps = config.myOptions.desktopApps;
 in
@@ -107,6 +122,11 @@ in
       default = false;
       description = "Install apps for productivity";
     };
+    games = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Install apps for games";
+    };
   };
 
   config = mkIf isDesktop (mkMerge [
@@ -114,5 +134,6 @@ in
     (mkIf desktopApps.tools toolApps)
     (mkIf desktopApps.fun funApps)
     (mkIf desktopApps.work workApps)
+    (mkIf desktopApps.games gameApps)
   ]);
 }

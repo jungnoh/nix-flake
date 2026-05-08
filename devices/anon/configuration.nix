@@ -152,35 +152,23 @@ in
     ];
   };
   services = {
-    displayManager.defaultSession = "xfce";
-    xserver = {
-      enable = true;
-      desktopManager = {
-        xterm.enable = false;
-        xfce.enable = true;
-      };
-      displayManager = {
-        defaultSession = "xfce";
-        lightdm = {
-          enable = true;
-          # Lay out monitors before the greeter draws so lightdm appears on
-          # the DVI/KVM head (HDMI-A-2), not on the HDMI dummy plug (HDMI-A-1).
-          extraSeatDefaults = ''
-            display-setup-script=${pkgs.writeShellScript "lightdm-display-setup" ''
-              ${pkgs.xrandr}/bin/xrandr \
-                --output HDMI-A-2 --auto --primary \
-                --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
-            ''}
-          '';
-        };
-      };
+    # Lay out monitors before the greeter draws so lightdm appears on
+    # the DVI/KVM head (HDMI-A-2), not on the HDMI dummy plug (HDMI-A-1).
+    xserver.displayManager.lightdm.extraSeatDefaults = ''
+      display-setup-script=${pkgs.writeShellScript "lightdm-display-setup" ''
+        ${pkgs.xrandr}/bin/xrandr \
+          --output HDMI-A-2 --auto --primary \
+          --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
+      ''}
+    '';
 
-      # Configure keymap in X11
-      xkb = {
-        layout = "kr";
-        variant = "";
-      };
-    };
+    # HDMI-A-2 = physical DVI port (KVM, primary, where lightdm appears).
+    # HDMI-A-1 = physical HDMI port with dummy plug, captured by Sunshine.
+    xserver.displayManager.sessionCommands = ''
+      ${pkgs.xrandr}/bin/xrandr \
+        --output HDMI-A-2 --auto --primary \
+        --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
+    '';
 
     sunshine = {
       enable = true;
@@ -197,14 +185,6 @@ in
         output_name = "HDMI-A-1";
       };
     };
-
-    # HDMI-A-2 = physical DVI port (KVM, primary, where lightdm appears).
-    # HDMI-A-1 = physical HDMI port with dummy plug, captured by Sunshine.
-    xserver.displayManager.sessionCommands = ''
-      ${pkgs.xrandr}/bin/xrandr \
-        --output HDMI-A-2 --auto --primary \
-        --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
-    '';
   };
 
   systemd.targets.sleep.enable = false;
@@ -230,14 +210,6 @@ in
   programs.virt-manager = {
     enable = true;
   };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
   # List services that you want to enable:
 

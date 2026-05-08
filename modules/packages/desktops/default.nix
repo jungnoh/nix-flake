@@ -1,0 +1,4 @@
+[
+  ./kde.nix
+  ./xfce.nix
+]

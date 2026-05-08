@@ -32,6 +32,7 @@ in
     desktopApps = {
       fun = true;
       work = true;
+      games = true;
     };
   };
 
