@@ -8,6 +8,12 @@ let
 in
 {
   config = {
+    myOptions.tailscale = {
+      enable = true;
+      useRouting = true;
+      useSSH = true;
+    };
+
     boot.loader.grub = {
       efiSupport = true;
       efiInstallAsRemovable = true;

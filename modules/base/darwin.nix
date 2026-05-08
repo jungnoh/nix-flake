@@ -1,11 +1,11 @@
 {
-  inputs,
+  lib,
   config,
   ctx,
   ...
-}:
+}@inputs:
 let
-  inherit (inputs) lib;
+  inherit (ctx) hostname username;
   myOptions = config.myOptions;
 in
 with lib;
@@ -18,7 +18,11 @@ with lib;
     };
   };
 
-  config = mkIf (myOptions.enable && ctx.isDarwin) {
+  config = mkIf (myOptions.enable && isDarwin) {
+    # Set Git commit hash for darwin-version.
+    system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
+
+    ## Homebrew
     homebrew = mkIf myOptions.darwin.homebrew {
       enable = true;
       prefix = "/opt/homebrew";
@@ -39,6 +43,25 @@ with lib;
     environment.variables.HOMEBREW_NO_ANALYTICS = mkIf myOptions.darwin.homebrew "1";
     environment.systemPath = mkIf myOptions.darwin.homebrew [ "/opt/homebrew/bin" ];
 
+    ## macOS Config
+    system.primaryUser = username;
+    security.pam.services.sudo_local.touchIdAuth = true;
+    system.defaults = {
+      finder = {
+        _FXShowPosixPathInTitle = true; # show full path in finder title
+        AppleShowAllExtensions = true; # show all file extensions
+        FXEnableExtensionChangeWarning = false; # disable warning when changing file extension
+        QuitMenuItem = true; # enable quit menu item
+        ShowPathbar = true; # show path bar
+        ShowStatusBar = true; # show status bar
+      };
+      dock = {
+        autohide = true;
+        show-recents = false; # disable recent apps
+      };
+    };
+
+    ## Networking
     # TODO: This may be different by device?
     networking.knownNetworkServices = [
       "USB 10/100/1000 LAN"
@@ -51,8 +74,8 @@ with lib;
       "2606:4700:4700::1111"
       "2606:4700:4700::1001"
     ];
-    networking.hostName = ctx.hostname;
-    networking.localHostName = ctx.hostname;
-    networking.computerName = ctx.hostname;
+    networking.hostName = hostname;
+    networking.localHostName = hostname;
+    networking.computerName = hostname;
   };
 }

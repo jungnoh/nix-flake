@@ -1,6 +1,7 @@
 { pkgs, ... }:
 {
   myOptions.darwin.homebrew = true;
+  myOptions.tailscale.enable = true;
 
   environment = {
     systemPackages = [ pkgs.vim ];

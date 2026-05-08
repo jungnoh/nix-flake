@@ -8,9 +8,14 @@
   ...
 }:
 let
-  inherit (ctx) username hostname;
+  inherit (ctx) username;
 in
 {
+  myOptions.tailscale = {
+    enable = true;
+    systray = true;
+  };
+
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;

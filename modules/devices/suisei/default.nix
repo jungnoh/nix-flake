@@ -7,7 +7,6 @@ import ../mkHost.nix {
   system_modules = [
     ./configuration.nix
     ./ollama.nix
-    (import ../../packages/03-apps/tailscale.nix { })
   ];
   features = [
     "personal"

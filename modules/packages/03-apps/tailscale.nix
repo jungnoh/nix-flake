@@ -1,9 +1,4 @@
 {
-  useRouting ? false,
-  useSSH ? false,
-  systray ? false,
-}:
-{
   config,
   pkgs,
   lib,
@@ -11,33 +6,65 @@
 }:
 let
   inherit (lib)
+    mkIfLinux
     onlyLinux
     onlyDarwin
-    isLinux
     mkMerge
     ;
 in
-mkMerge [
-  (onlyLinux {
-    services.tailscale = {
-      enable = true;
-      extraUpFlags = if useSSH then [ "--ssh" ] else [ ];
+{
+  options.myOptions.tailscale = with lib; {
+    enable = mkOption {
+      type = types.bool;
+      default = false;
     };
-    networking.nftables.enable = true;
-    networking.firewall = {
-      enable = true;
-      trustedInterfaces = [ "tailscale0" ];
-      allowedUDPPorts = [ config.services.tailscale.port ];
+    ssh = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Allow use of Tailscale SSH.";
     };
-    systemd.services.tailscaled.serviceConfig.Environment = [
-      "TS_DEBUG_FIREWALL_MODE=nftables"
-    ];
-    systemd.network.wait-online.enable = false;
-    boot.initrd.systemd.network.wait-online.enable = false;
+    routing = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Use routing. Only effective in Linux";
+    };
+    systray = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Create systray service. Only effective in Linux desktop environments.";
+    };
+  };
 
-    systemd.user.services.tailscale-systray =
-      if systray then
-        {
+  config =
+    let
+      tsOptions = config.myOptions.tailscale;
+    in
+    lib.mkIf tsOptions.enable (mkMerge [
+      (onlyDarwin {
+        homebrew.casks = [ "tailscale-app" ];
+        home.programs.zsh.shellAliases = {
+          tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
+        };
+      })
+      (onlyLinux {
+        services.tailscale.enable = true;
+        networking.nftables.enable = true;
+        networking.firewall = {
+          enable = true;
+          trustedInterfaces = [ "tailscale0" ];
+          allowedUDPPorts = [ config.services.tailscale.port ];
+        };
+        systemd.services.tailscaled.serviceConfig.Environment = [
+          "TS_DEBUG_FIREWALL_MODE=nftables"
+        ];
+        systemd.network.wait-online.enable = false;
+        boot.initrd.systemd.network.wait-online.enable = false;
+      })
+      (mkIfLinux tsOptions.ssh {
+        services.tailscale.extraUpFlags = [ "--ssh" ];
+      })
+      (mkIfLinux tsOptions.systray {
+        systemd.user.services.tailscale-systray = {
           enable = true;
           description = "Tailscale System Tray";
           after = [ "graphical.target" ];
@@ -48,13 +75,9 @@ mkMerge [
             Type = "simple";
             ExecStart = "/run/current-system/sw/bin/tailscale systray";
           };
-        }
-      else
-        { enable = false; };
-  })
-  (
-    if (isLinux && useRouting) then
-      {
+        };
+      })
+      (mkIfLinux tsOptions.routing {
         services.tailscale.useRoutingFeatures = "server";
 
         # Enlarged UDP socket buffers for the WireGuard userspace socket.
@@ -83,14 +106,6 @@ mkMerge [
             ethtool -K "$NETDEV" rx-udp-gro-forwarding on rx-gro-list off
           '';
         };
-      }
-    else
-      { }
-  )
-  (onlyDarwin {
-    homebrew.casks = [ "tailscale-app" ];
-    home.programs.zsh.shellAliases = {
-      tailscale = "/Applications/Tailscale.app/Contents/MacOS/Tailscale";
-    };
-  })
-]
+      })
+    ]);
+}

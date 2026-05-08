@@ -8,6 +8,7 @@ let
     ./02-profiles/common.nix
     ./03-apps/git
     ./03-apps/zsh
+    ./03-apps/tailscale.nix
   ];
 
   featuresModuleMap = {

@@ -9,7 +9,6 @@ import ../mkHost.nix {
   system_modules = [
     ./configuration.nix
     ./hardware.nix
-    (import ../../packages/03-apps/tailscale.nix { systray = true; })
   ];
   disko_modules = [
     ./disko-config.nix

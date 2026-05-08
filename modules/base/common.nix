@@ -1,7 +1,9 @@
-{ inputs, system, ... }:
-let
-  inherit (inputs) lib;
-in
+{
+  lib,
+  system,
+  inputs,
+  ...
+}:
 {
   options.myOptions = with lib; {
     enable = mkOption {

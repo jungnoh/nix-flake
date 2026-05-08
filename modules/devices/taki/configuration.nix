@@ -10,6 +10,11 @@ let
   inherit (ctx) username hostname;
 in
 {
+  myOptions.tailscale = {
+    enable = true;
+    systray = true;
+  };
+
   boot.loader.grub = {
     efiSupport = true;
     efiInstallAsRemovable = true;

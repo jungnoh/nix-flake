@@ -6,7 +6,6 @@ import ../mkHost.nix {
   system = "aarch64-darwin";
   system_modules = [
     ./configuration.nix
-    (import ../../packages/03-apps/tailscale.nix { })
   ];
   features = [
     "personal"

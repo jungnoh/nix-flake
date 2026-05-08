@@ -15,12 +15,14 @@ in
 {
   imports = [
     ./hardware.nix
-    (import ../../packages/03-apps/tailscale.nix {
-      useRouting = true;
-      systray = true;
-    })
     ../../packages/03-apps/vscode
   ];
+
+  myOptions.tailscale = {
+    enable = true;
+    routing = true;
+    systray = true;
+  };
 
   environment.systemPackages = with pkgs; [
     dnsmasq
