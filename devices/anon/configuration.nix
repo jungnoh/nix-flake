@@ -154,10 +154,11 @@ in
         --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
     '';
 
+    avahi.enable = false;
     sunshine = {
       enable = true;
       autoStart = true;
-      openFirewall = true;
+      openFirewall = false;
       capSysAdmin = true;
 
       settings = {
