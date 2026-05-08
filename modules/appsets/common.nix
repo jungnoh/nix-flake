@@ -52,6 +52,9 @@ in
       };
     })
     (onlyLinux {
+      environment.systemPackages = with pkgs; [
+        psmisc
+      ];
       programs.nh = {
         enable = true;
         clean.enable = true;

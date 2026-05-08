@@ -13,13 +13,7 @@ let
   defaultNIC = "enp5s0";
 in
 {
-  environment.systemPackages = with pkgs; [
-    dnsmasq
-    psmisc
-    xdriinfo
-    xorg.xdpyinfo
-    xrandr
-    bintools
+  environment.systemPackages = [
     (pkgs.writeShellScriptBin "mount-data" ''
       sudo cryptsetup open /dev/disk/by-partlabel/disk-data-data cryptdata
       sudo mount /dev/mapper/cryptdata /mnt/data

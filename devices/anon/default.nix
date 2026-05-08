@@ -20,6 +20,9 @@ import ../mkHost.nix {
       enable = true;
       systray = true;
     };
+    desktopApps = {
+      tools = false;
+    };
     editors.vscode.enable = true;
     virtualization.virt-manager.enable = true;
   };
