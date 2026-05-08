@@ -12,6 +12,10 @@ import ../mkHost.nix {
   ];
 
   myOptions = {
+    linux = {
+      desktop = true;
+      desktopEnv = "kde";
+    };
     virtualization.containers.enable = true;
     editors.zed.enable = true;
     mullvad.enable = true;

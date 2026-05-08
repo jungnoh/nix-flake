@@ -12,14 +12,15 @@ import ../mkHost.nix {
   ];
 
   myOptions = {
+    linux = {
+      desktop = true;
+      desktopEnv = "xfce";
+    };
     tailscale = {
       enable = true;
-      routing = true;
       systray = true;
     };
-    editors.vscode = {
-      enable = true;
-    };
+    editors.vscode.enable = true;
     virtualization.virt-manager.enable = true;
   };
 }

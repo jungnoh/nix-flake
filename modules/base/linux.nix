@@ -2,6 +2,7 @@
   lib,
   config,
   ctx,
+  pkgs,
   ...
 }:
 let
