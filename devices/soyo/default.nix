@@ -16,8 +16,8 @@ import ../mkHost.nix {
     virtualization.containers.enable = true;
     tailscale = {
       enable = true;
-      useRouting = true;
-      useSSH = true;
+      routing = true;
+      ssh = true;
     };
   };
 }

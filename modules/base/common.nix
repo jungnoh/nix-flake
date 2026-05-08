@@ -10,7 +10,7 @@
       type = types.bool;
       default = true;
     };
-    timeZone = mkOption {
+    timezone = mkOption {
       type = types.str;
       default = "Asia/Seoul";
       description = "Time zone to be used in system.";

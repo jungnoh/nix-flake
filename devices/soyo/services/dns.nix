@@ -2,7 +2,7 @@
 { config, ... }:
 {
   age.secrets."private-dns-records" = {
-    file = ../../secrets/private-dns-records.age;
+    file = ../../../secrets/private-dns-records.age;
     owner = "unbound";
     group = "unbound";
     mode = "0440";

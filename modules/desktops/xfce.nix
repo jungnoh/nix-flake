@@ -10,8 +10,7 @@ let
     lib.isLinux && config.myOptions.linux.desktop && config.myOptions.linux.desktopEnv == "xfce";
 in
 lib.mkIfLinux enable {
-  displayManager.defaultSession = "xfce";
-  xserver = {
+  services.xserver = {
     enable = true;
     desktopManager = {
       xterm.enable = false;

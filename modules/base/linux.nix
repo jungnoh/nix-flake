@@ -1,9 +1,11 @@
 {
   lib,
   config,
+  ctx,
   ...
 }:
 let
+  inherit (ctx) hostname;
   myOptions = config.myOptions;
 in
 with lib;

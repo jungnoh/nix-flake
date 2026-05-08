@@ -34,7 +34,7 @@ let
     in
     {
       age.secrets."backup-storage-key-${name}" = {
-        file = ../../secrets/soyo-backblaze.age;
+        file = ../../../secrets/soyo-backblaze.age;
         owner = user;
       };
       systemd.timers."backup-${name}" = {

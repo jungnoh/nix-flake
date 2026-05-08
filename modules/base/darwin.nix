@@ -18,7 +18,7 @@ with lib;
     };
   };
 
-  config = mkIf (myOptions.enable && isDarwin) {
+  config = mkIfDarwin myOptions.enable {
     # Set Git commit hash for darwin-version.
     system.configurationRevision = inputs.self.rev or inputs.self.dirtyRev or null;
 

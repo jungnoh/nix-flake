@@ -80,12 +80,16 @@ let
         "$HOME/.cargo/bin"
       ];
     };
-    golang = {
-      home.packages = with pkgs; [
-        go
-        go-migrate
-      ];
-      environment.systemPath = [ "~/go/bin" ];
+    golang = byPlatform {
+      common = {
+        home.packages = with pkgs; [
+          go
+          go-migrate
+        ];
+      };
+      darwin = {
+        environment.systemPath = [ "~/go/bin" ];
+      };
     };
     dotnet = {
       home.packages = with pkgs; [
