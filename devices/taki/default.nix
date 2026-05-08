@@ -12,7 +12,7 @@ import ../mkHost.nix {
   ];
 
   myOptions = {
-    containers.enable = true;
+    virtualization.containers.enable = true;
     editors.zed.enable = true;
     mullvad.enable = true;
     tailscale = {

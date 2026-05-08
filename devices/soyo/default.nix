@@ -13,7 +13,7 @@ import ../mkHost.nix {
   ++ (import ./services);
 
   myOptions = {
-    containers.enable = true;
+    virtualization.containers.enable = true;
     tailscale = {
       enable = true;
       useRouting = true;

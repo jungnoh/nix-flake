@@ -20,5 +20,6 @@ import ../mkHost.nix {
     editors.vscode = {
       enable = true;
     };
+    virtualization.virt-manager.enable = true;
   };
 }
