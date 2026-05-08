@@ -131,6 +131,11 @@ in
     ];
   };
   services = {
+    displayManager.autoLogin = {
+      enable = true;
+      user = username;
+    };
+
     # Lay out monitors before the greeter draws so lightdm appears on
     # the DVI/KVM head (HDMI-A-2), not on the HDMI dummy plug (HDMI-A-1).
     xserver.displayManager.lightdm.extraSeatDefaults = ''
@@ -160,6 +165,7 @@ in
         encoder = "vaapi";
         min_log_level = "info";
         origin_web_ui_allowed = "lan";
+        origin_pin_allowed = "lan";
         # KVM is on DVI; HDMI has a dummy plug for the headless stream.
         output_name = "HDMI-A-1";
       };
