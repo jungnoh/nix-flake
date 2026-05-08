@@ -152,6 +152,10 @@ in
       ${pkgs.xrandr}/bin/xrandr \
         --output HDMI-A-2 --auto --primary \
         --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
+
+      ${pkgs.xset}/bin/xset s off
+      ${pkgs.xset}/bin/xset s noblank
+      ${pkgs.xset}/bin/xset -dpms
     '';
 
     avahi.enable = false;
@@ -177,6 +181,16 @@ in
   systemd.targets.suspend.enable = false;
   systemd.targets.hibernate.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
+
+  services.logind.settings.Login = {
+    HandlePowerKey = "ignore";
+    HandleSuspendKey = "ignore";
+    HandleHibernateKey = "ignore";
+    HandleLidSwitch = "ignore";
+    HandleLidSwitchExternalPower = "ignore";
+    HandleLidSwitchDocked = "ignore";
+    IdleAction = "ignore";
+  };
 
   # Stop the screen blanker from killing your stream after 10 minutes
   services.xserver.serverFlagsSection = ''
