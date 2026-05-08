@@ -45,8 +45,8 @@ let
       onlyDarwin = { ... }@inputs: (if isDarwin then inputs else { });
       onlyLinux = { ... }@inputs: (if isLinux then inputs else { });
 
-      mkIfDarwin = condition: { ... }@cfg: (if isDarwin then (inputs.lib.mkIf condition cfg) else { });
-      mkIfLinux = condition: { ... }@cfg: (if isLinux then (inputs.lib.mkIf condition cfg) else { });
+      mkIfDarwin = condition: { ... }@cfg: (if isDarwin then (self.mkIf condition cfg) else { });
+      mkIfLinux = condition: { ... }@cfg: (if isLinux then (self.mkIf condition cfg) else { });
 
       byPlatform =
         {
