@@ -1,7 +1,7 @@
 {
-  config,
-  lib,
   pkgs,
+  lib,
+  config,
   ...
 }:
 let
@@ -13,14 +13,23 @@ let
   };
 in
 {
+  options.myOptions.git = with lib; {
+    name = mkOption {
+      type = types.str;
+      default = "Junghoon Noh";
+    };
+    email = mkOption {
+      type = types.str;
+      default = "jungnoh.dev@gmail.com";
+    };
+  };
   config = {
     environment.systemPackages = with pkgs; [ git ];
     home.programs.git = {
       enable = true;
       settings = {
         user = {
-          name = "Junghoon Noh";
-          email = "jungnoh.dev@gmail.com";
+          inherit (config.myOptions.git) name email;
         };
         checkout = {
           defaultRemote = "origin";

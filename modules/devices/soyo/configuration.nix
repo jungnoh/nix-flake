@@ -8,10 +8,13 @@ let
 in
 {
   config = {
-    myOptions.tailscale = {
-      enable = true;
-      useRouting = true;
-      useSSH = true;
+    myOptions = {
+      containers.enable = true;
+      tailscale = {
+        enable = true;
+        useRouting = true;
+        useSSH = true;
+      };
     };
 
     boot.loader.grub = {

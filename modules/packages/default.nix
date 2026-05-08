@@ -6,8 +6,9 @@
 let
   commonModules = [
     ./02-profiles/common.nix
-    ./03-apps/git
+    ./02-profiles/containers.nix
     ./03-apps/zsh
+    ./03-apps/git.nix
     ./03-apps/tailscale.nix
   ];
 
@@ -22,13 +23,11 @@ let
       ./03-apps/ghostty.nix
     ];
     dev-env = [
-      ./02-profiles/containers.nix
       ./02-profiles/dev-env.nix
       ./02-profiles/dev-env-cloud.nix
       ./02-profiles/dev-env-database.nix
       ./03-apps/zed
     ];
-    containers = [ ./02-profiles/containers.nix ];
     personal = [ ./02-profiles/personal.nix ];
     work = [ ./02-profiles/work.nix ];
     kde = [ ./02-profiles/kde.nix ];

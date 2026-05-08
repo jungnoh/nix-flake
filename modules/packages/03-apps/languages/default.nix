@@ -1,6 +1,5 @@
 { languages }:
 {
-  config,
   lib,
   pkgs,
   ...

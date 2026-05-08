@@ -4,16 +4,18 @@
 
 {
   ctx,
-  pkgs,
   ...
 }:
 let
   inherit (ctx) username;
 in
 {
-  myOptions.tailscale = {
-    enable = true;
-    systray = true;
+  myOptions = {
+    containers.enable = true;
+    tailscale = {
+      enable = true;
+      systray = true;
+    };
   };
 
   # Bootloader.

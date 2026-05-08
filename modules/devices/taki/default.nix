@@ -17,7 +17,6 @@ import ../mkHost.nix {
     "personal"
     "desktop"
     "dev-env"
-    "containers"
     "kde"
     "games"
   ];

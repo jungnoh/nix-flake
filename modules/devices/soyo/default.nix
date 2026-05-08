@@ -14,8 +14,6 @@ import ../mkHost.nix {
   disko_modules = [
     ./disko-config.nix
   ];
-  features = [
-    "containers"
-  ];
+  features = [ ];
   languages = [ ];
 }

@@ -10,9 +10,12 @@ let
   inherit (ctx) username hostname;
 in
 {
-  myOptions.tailscale = {
-    enable = true;
-    systray = true;
+  myOptions = {
+    containers.enable = true;
+    tailscale = {
+      enable = true;
+      systray = true;
+    };
   };
 
   boot.loader.grub = {

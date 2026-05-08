@@ -1,14 +1,20 @@
 {
   lib,
   pkgs,
-  ctx,
+  config,
   ...
 }:
 let
   inherit (lib) onlyDarwin onlyLinux;
 in
+with lib;
 {
-  config = lib.mkMerge [
+  options.myOptions.containers.enable = mkOption {
+    type = types.bool;
+    default = false;
+  };
+
+  config = mkIf config.myOptions.containers.enable (mkMerge [
     {
       home.packages = with pkgs; [
         docker
@@ -31,5 +37,5 @@ in
         };
       };
     })
-  ];
+  ]);
 }

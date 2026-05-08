@@ -1,7 +1,10 @@
 { pkgs, ... }:
 {
-  myOptions.darwin.homebrew = true;
-  myOptions.tailscale.enable = true;
+  myOptions = {
+    darwin.homebrew = true;
+    tailscale.enable = true;
+    containers.enable = true;
+  };
 
   environment = {
     systemPackages = with pkgs; [
