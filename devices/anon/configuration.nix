@@ -136,21 +136,17 @@ in
       user = username;
     };
 
-    # Lay out monitors before the greeter draws so lightdm appears on
-    # the DVI/KVM head (HDMI-A-2), not on the HDMI dummy plug (HDMI-A-1).
     xserver.displayManager.lightdm.extraSeatDefaults = ''
       display-setup-script=${pkgs.writeShellScript "lightdm-display-setup" ''
         ${pkgs.xrandr}/bin/xrandr \
-          --output HDMI-1 --auto --primary \
+          --output HDMI-1 --auto --primary --mode 2560x1440 \
           --output HDMI-2 --auto --right-of HDMI-1 || true
       ''}
     '';
 
-    # HDMI-A-2 = physical DVI port (KVM, primary, where lightdm appears).
-    # HDMI-A-1 = physical HDMI port with dummy plug, captured by Sunshine.
     xserver.displayManager.sessionCommands = ''
       ${pkgs.xrandr}/bin/xrandr \
-        --output HDMI-1 --auto --primary \
+        --output HDMI-1 --auto --primary --mode 2560x1440 \
         --output HDMI-2 --auto --right-of HDMI-1 || true
 
       ${pkgs.xset}/bin/xset s off
@@ -171,8 +167,7 @@ in
         min_log_level = "info";
         origin_web_ui_allowed = "lan";
         origin_pin_allowed = "lan";
-        # KVM is on DVI; HDMI has a dummy plug for the headless stream.
-        output_name = "HDMI-1";
+        output_name = "0";
       };
     };
   };
