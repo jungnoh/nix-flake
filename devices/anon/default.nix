@@ -16,6 +16,10 @@ import ../mkHost.nix {
       desktop = true;
       desktopEnv = "xfce";
     };
+    git = {
+      name = "";
+      email = "";
+    };
     tailscale = {
       enable = true;
       systray = true;

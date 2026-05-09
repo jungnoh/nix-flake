@@ -141,8 +141,8 @@ in
     xserver.displayManager.lightdm.extraSeatDefaults = ''
       display-setup-script=${pkgs.writeShellScript "lightdm-display-setup" ''
         ${pkgs.xrandr}/bin/xrandr \
-          --output HDMI-A-2 --auto --primary \
-          --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
+          --output HDMI-1 --auto --primary \
+          --output HDMI-2 --auto --right-of HDMI-1 || true
       ''}
     '';
 
@@ -150,8 +150,8 @@ in
     # HDMI-A-1 = physical HDMI port with dummy plug, captured by Sunshine.
     xserver.displayManager.sessionCommands = ''
       ${pkgs.xrandr}/bin/xrandr \
-        --output HDMI-A-2 --auto --primary \
-        --output HDMI-A-1 --auto --right-of HDMI-A-2 || true
+        --output HDMI-1 --auto --primary \
+        --output HDMI-2 --auto --right-of HDMI-1 || true
 
       ${pkgs.xset}/bin/xset s off
       ${pkgs.xset}/bin/xset s noblank
@@ -172,7 +172,7 @@ in
         origin_web_ui_allowed = "lan";
         origin_pin_allowed = "lan";
         # KVM is on DVI; HDMI has a dummy plug for the headless stream.
-        output_name = "HDMI-A-1";
+        output_name = "HDMI-1";
       };
     };
   };
