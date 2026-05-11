@@ -32,7 +32,7 @@ in
       value = lib.recursiveUpdate {
         listen = [
           {
-            addr = "0.0.0.0";
+            addr = "127.0.0.1";
             port = nginxPort;
           }
         ];
