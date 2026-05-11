@@ -15,8 +15,7 @@ let
       inherit myOptions;
     }
   ]
-  ++ (import ../modules)
-  ++ modules;
+  ++ (import ../modules);
 
   linuxModules = [
     home-manager.nixosModules.home-manager
@@ -27,8 +26,7 @@ let
       inherit myOptions;
     }
   ]
-  ++ (import ../modules)
-  ++ modules;
+  ++ (import ../modules);
 
   isDarwin = builtins.elem system [
     "aarch64-darwin"
