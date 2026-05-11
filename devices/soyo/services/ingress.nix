@@ -26,10 +26,6 @@ in
   services.nginx = {
     enable = true;
     recommendedProxySettings = true;
-    commonHttpConfig = ''
-      set_real_ip_from 127.0.0.1;
-      real_ip_header CF-Connecting-IP;
-    '';
 
     virtualHosts = lib.mapAttrs' (key: val: {
       name = val.hostname;
@@ -42,14 +38,14 @@ in
         ];
         locations."/robots.txt" = {
           priority = 1;
-          return = ''
-            200 "User-agent: *\nDisallow: /"
-          '';
+          return = ''200 "User-agent: *''\nDisallow: /"'';
         };
         locations."/" = {
           proxyPass = "http://localhost:${toString val.port}";
           proxyWebsockets = true;
           extraConfig = ''
+            set_real_ip_from 127.0.0.1;
+            real_ip_header CF-Connecting-IP;
             proxy_pass_header Authorization;
             proxy_set_header Connection $http_connection;
             proxy_set_header Upgrade $http_upgrade;

@@ -44,7 +44,7 @@ with lib;
     home.packages = with pkgs; if isDarwin then [ ghostty-bin ] else [ ghostty ];
     home.configFile."ghostty/config".source = pkgs.writeText "ghostty-config" ''
       auto-update = "off"
-      shell-integration-features = "ssh-env, ssh-terminfo"
+      shell-integration-features = "ssh-env"
       theme = "${themeFile}"
     '';
   };
