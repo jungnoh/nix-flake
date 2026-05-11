@@ -11,6 +11,7 @@ let
     rev = "b56365b13a318b544ecb0df112bbbd12c4e61bce";
     sha256 = "sha256-CdjSugU06nOiRBWx/CrLKlLRUi3OQWAuhe/pV+BgRb8=";
   };
+  gitOptions = config.myOptions.git;
 in
 {
   options.myOptions.git = with lib; {
@@ -22,14 +23,20 @@ in
       type = types.str;
       default = "jungnoh.dev@gmail.com";
     };
+    persistCredentials = mkOption {
+      type = types.bool;
+      default = true;
+      description = "Use libsecret if true, cache if false";
+    };
   };
   config = {
     environment.systemPackages = with pkgs; [ git ];
     home.programs.git = {
       enable = true;
+      package = lib.mkIf gitOptions.persistCredentials pkgs.gitFull;
       settings = {
         user = {
-          inherit (config.myOptions.git) name email;
+          inherit (gitOptions) name email;
         };
         checkout = {
           defaultRemote = "origin";
@@ -57,6 +64,7 @@ in
         fetch.pruneTags = "true";
         fetch.all = "true";
         help.autocorrect = "prompt";
+        credential.helper = if gitOptions.persistCredentials then "libsecret" else "cache";
       };
       includes = [
         { path = "${gitAliasRepo}/gitalias.txt"; }

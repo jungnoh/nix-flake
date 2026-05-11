@@ -13,6 +13,7 @@ import ../mkHost.nix {
   ++ (import ./services);
 
   myOptions = {
+    git.persistCredentials = false;
     virtualization.containers.enable = true;
     tailscale = {
       enable = true;

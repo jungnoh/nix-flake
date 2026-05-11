@@ -19,6 +19,7 @@ import ../mkHost.nix {
     git = {
       name = "";
       email = "";
+      persistCredentials = false;
     };
     tailscale = {
       enable = true;
