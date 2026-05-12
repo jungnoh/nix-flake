@@ -25,6 +25,7 @@ let
     darwin = {
       home.packages = with pkgs; [
         betterdisplay
+        localsend
       ];
       homebrew.casks = [
         "keka"
@@ -37,6 +38,7 @@ let
       };
     };
     linux = {
+      programs.localsend.enable = true;
       home.packages = with pkgs; [
         parted
         _1password-gui
