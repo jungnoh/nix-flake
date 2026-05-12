@@ -35,12 +35,80 @@ with lib;
         "1.0.0.1#one.one.one.one"
       ];
 
-      ## Basic utilities for Linux
-
       ## i18n options to set in servers as well
       i18n.defaultCharset = "UTF-8";
       i18n.defaultLocale = "en_US.UTF-8";
       i18n.extraLocaleSettings.LC_ALL = "en_US.UTF-8";
+    }
+    # Hardening
+    {
+      boot.kernel.sysctl = {
+        "dev.tty.ldisc_autoload" = 0;
+        "fs.protected_fifos" = 2;
+        "fs.protected_regular" = 2;
+        "fs.suid_dumpable" = false;
+        "kernel.kptr_restrict" = 2;
+        "kernel.sysrq" = false;
+        "kernel.unprivileged_bpf_disabled" = true;
+
+        "net.core.bpf_jit_harden" = 2;
+
+        "net.ipv4.conf.all.accept_redirects" = false;
+        "net.ipv4.conf.default.accept_redirects" = false;
+
+        "net.ipv6.conf.all.accept_redirects" = false;
+        "net.ipv6.conf.default.accept_redirects" = false;
+
+        "net.ipv4.conf.all.log_martians" = true;
+        "net.ipv4.conf.default.log_martians" = true;
+
+        "net.ipv4.conf.all.rp_filter" = true;
+        "net.ipv4.conf.all.send_redirects" = false;
+      };
+
+      boot.blacklistedKernelModules = [
+        # Obscure network protocols
+        "ax25"
+        "dccp"
+        "netrom"
+        "rose"
+        "sctp"
+        "tipc"
+
+        # Old or rare or insufficiently audited filesystems
+        "adfs"
+        "affs"
+        "bfs"
+        "befs"
+        "cramfs"
+        "efs"
+        "erofs"
+        "exofs"
+        "freevxfs"
+        "f2fs"
+        "hfs"
+        "hpfs"
+        "jfs"
+        "minix"
+        "nilfs2"
+        "ntfs"
+        "omfs"
+        "qnx4"
+        "qnx6"
+        "sysv"
+        "ufs"
+      ];
+
+      fileSystems."/proc" = {
+        device = "proc";
+        fsType = "proc";
+        options = [
+          "defaults"
+          "hidepid=2"
+        ];
+      };
+
+      security.sudo.execWheelOnly = true;
     }
     (mkIf myOptions.linux.desktop {
       i18n.inputMethod = {
