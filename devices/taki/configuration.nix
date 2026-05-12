@@ -40,9 +40,6 @@ in
     ];
   };
 
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
   hardware.graphics = {
     enable = true;
     enable32Bit = true;

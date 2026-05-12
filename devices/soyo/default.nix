@@ -15,6 +15,7 @@ import ../mkHost.nix {
   myOptions = {
     git.persistCredentials = false;
     virtualization.containers.enable = true;
+    ssh.enable = true;
     tailscale = {
       enable = true;
       routing = true;

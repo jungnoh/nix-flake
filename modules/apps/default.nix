@@ -2,6 +2,7 @@
   ./zsh
   ./git.nix
   ./ghostty.nix
+  ./ssh.nix
   ./tailscale.nix
   ./vscode.nix
   ./zed.nix
