@@ -43,6 +43,7 @@ with lib;
     # Hardening
     {
       boot.kernel.sysctl = {
+        "dev.tty.ldisc_autoload" = 0;
         "fs.protected_fifos" = 2;
         "fs.protected_regular" = 2;
         "fs.suid_dumpable" = false;
@@ -68,8 +69,11 @@ with lib;
       boot.blacklistedKernelModules = [
         # Obscure network protocols
         "ax25"
+        "dccp"
         "netrom"
         "rose"
+        "sctp"
+        "tipc"
 
         # Old or rare or insufficiently audited filesystems
         "adfs"
