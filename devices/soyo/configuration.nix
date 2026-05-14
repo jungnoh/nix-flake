@@ -8,6 +8,10 @@ let
 in
 {
   config = {
+    services.filebrowser-quantum = {
+      enable = true;
+    };
+
     boot.loader.grub = {
       efiSupport = true;
       efiInstallAsRemovable = true;
