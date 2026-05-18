@@ -21,7 +21,7 @@ in
     };
     email = mkOption {
       type = types.str;
-      default = "jungnoh.dev@gmail.com";
+      default = "jungnoh@suisei.dev";
     };
     persistCredentials = mkOption {
       type = types.bool;

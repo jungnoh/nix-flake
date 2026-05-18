@@ -56,6 +56,7 @@ let
   funApps = byPlatform {
     common = {
       home.packages = with pkgs; [
+        protonmail-desktop
         telegram-desktop
         spotify
         moonlight-qt
@@ -72,7 +73,10 @@ let
 
   workApps = byPlatform {
     common = {
-      home.packages = with pkgs; [ obsidian ];
+      home.packages = with pkgs; [
+        obsidian
+        protonmail-desktop
+      ];
     };
     darwin = {
       homebrew.casks = [ "claude" ];
