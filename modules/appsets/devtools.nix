@@ -24,15 +24,21 @@ let
         nixd
       ];
     };
-    ai = {
-      home.packages =
-        (with pkgs; [
-          opencode
-          gemini-cli-bin
-        ])
-        ++ (with pkgs.master; [
-          claude-code
-        ]);
+    ai = byPlatform {
+      common = {
+        home.packages =
+          (with pkgs; [
+            opencode
+            gemini-cli-bin
+          ])
+          ++ (with pkgs.master; [
+            claude-code
+            codex
+          ]);
+      };
+      darwin = {
+        homebrew.casks = [ "steipete/tap/codexbar" ];
+      };
     };
     cloud = {
       home.packages = with pkgs; [
