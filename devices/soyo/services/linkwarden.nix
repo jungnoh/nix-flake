@@ -33,7 +33,7 @@ lib.mkMerge [
       };
       environment = {
         CUSTOM_OPENAI_BASE_URL = "https://generativelanguage.googleapis.com/v1beta/openai/";
-        OPENAI_MODEL = "gemini-3.1-flash-lite-preview";
+        OPENAI_MODEL = "gemini-3.5-flash";
         NEXTAUTH_URL = "https://${linkwarden.hostname}/api/v1/auth";
       };
     };
