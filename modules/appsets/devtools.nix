@@ -110,6 +110,13 @@ let
       ];
     };
     node = {
+      home.file.".npmrc".text = ''
+        prefix=~/.npm-global
+        fund=false
+      '';
+      home.sessionPath = [
+        "$HOME/.npm-global/bin"
+      ];
       home.packages = with pkgs; [
         nodejs
         pnpm
