@@ -16,7 +16,7 @@ import ../mkHost.nix {
     tailscale.enable = true;
     devtools = {
       enable = true;
-      langauges = {
+      languages = {
         rust = true;
         golang = true;
         dotnet = true;
