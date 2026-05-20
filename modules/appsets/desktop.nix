@@ -9,15 +9,16 @@ with lib;
 let
   webBrowserApps = byPlatform {
     common = {
-      home.packages = [ pkgs.google-chrome ];
+      myOptions.helium.enable = true;
     };
     darwin = {
-      home.packages = [ pkgs.librewolf ];
+      home.packages = with pkgs; [
+        librewolf
+        google-chrome
+      ];
     };
     linux = {
-      home.programs.librewolf = {
-        enable = true;
-      };
+      home.programs.librewolf.enable = true;
     };
   };
 

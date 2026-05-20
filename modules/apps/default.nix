@@ -7,4 +7,5 @@
   ./vscode.nix
   ./zed.nix
   ./mullvad.nix
+  ./helium-browser.nix
 ]
